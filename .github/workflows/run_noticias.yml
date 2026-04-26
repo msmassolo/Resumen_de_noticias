@@ -1,0 +1,35 @@
+name: Generar Noticias
+
+on:
+  schedule:
+    - cron: '0 11,15,21 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repo
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: |
+          pip install requests beautifulsoup4 python-dotenv
+
+      - name: Ejecutar script
+        run: python main_web.py
+
+      - name: Subir cambios
+        run: |
+          git config --global user.name "bot"
+          git config --global user.email "bot@github.com"
+          git add index.html
+          git commit -m "update automatico" || echo "no changes"
+          git push
+          
