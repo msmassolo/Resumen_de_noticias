@@ -19,11 +19,14 @@ def obtener_diario_y_clase(url):
 
 def generar_web(contenido):
 
-    # Idioma fecha
+    # Idioma fecha (FIX GitHub)
     try:
         locale.setlocale(locale.LC_TIME, "es_AR.UTF-8")
     except:
-        locale.setlocale(locale.LC_TIME, "Spanish")
+        try:
+            locale.setlocale(locale.LC_TIME, "es_ES.UTF-8")
+        except:
+            locale.setlocale(locale.LC_TIME, "")
 
     fecha_actual = datetime.now()
     fecha_formateada = fecha_actual.strftime("%A %d de %B de %Y")
@@ -81,7 +84,6 @@ def generar_web(contenido):
                 capturando_resumen = False
 
             elif capturando_resumen and l and not l.startswith("TITULO:") and not l.startswith("LINKS:") and "----" not in l:
-                # Continuar capturando líneas del resumen
                 resumen += "\n" + l
 
             if "-----------------------------" in l:
@@ -116,13 +118,11 @@ def generar_web(contenido):
     if categoria_actual is not None:
         html_noticias += "</section>"
 
-    # 🔥 FILTROS
     filtros_html = '<div class="filtros">'
     for cat in sorted(categorias_set):
         filtros_html += f'<button class="filtro-btn" data-cat="{cat}">{cat}</button>'
     filtros_html += '</div>'
 
-    # 🔥 TEMPLATE HTML (SIN f-string NI format)
     html = """
     <html>
     <head>
@@ -212,45 +212,10 @@ def generar_web(contenido):
             __NOTICIAS__
         </div>
 
-        <script>
-            const botones = document.querySelectorAll(".filtro-btn");
-            const secciones = document.querySelectorAll(".categoria-section");
-
-            let activa = null;
-
-            botones.forEach(btn => {
-                btn.addEventListener("click", () => {
-
-                    const cat = btn.getAttribute("data-cat");
-
-                    if (activa === cat) {
-                        activa = null;
-                        botones.forEach(b => b.classList.remove("active"));
-                        secciones.forEach(s => s.style.display = "block");
-                        return;
-                    }
-
-                    activa = cat;
-
-                    botones.forEach(b => b.classList.remove("active"));
-                    btn.classList.add("active");
-
-                    secciones.forEach(sec => {
-                        if (sec.getAttribute("data-categoria") === cat) {
-                            sec.style.display = "block";
-                        } else {
-                            sec.style.display = "none";
-                        }
-                    });
-                });
-            });
-        </script>
-
     </body>
     </html>
     """
 
-    # 🔥 Reemplazos seguros
     html = html.replace("__FECHA__", fecha_formateada)
     html = html.replace("__HORA__", hora_formateada)
     html = html.replace("__FILTROS__", filtros_html)
@@ -258,4 +223,3 @@ def generar_web(contenido):
 
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)
-        
