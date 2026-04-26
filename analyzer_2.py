@@ -3,9 +3,13 @@ import requests
 import time
 from dotenv import load_dotenv
 
+# 🔥 Cargar variables
 load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY")
+
+if not API_KEY:
+    raise ValueError("❌ GROQ_API_KEY no está definida (ni en .env ni en GitHub Secrets)")
 
 URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.1-8b-instant"
@@ -43,7 +47,7 @@ INPUT:
 Tareas:
 
 1. Crear un TITULO claro del evento
-2. Crear un RESUMEN breve (Max 5 lineas), en caso de que las dos noticias presenten al hecho de forma diferente, marcar esa diferencia de que dice cada uno de los diarios.
+2. Crear un RESUMEN breve (Max 5 lineas)
 3. Incluir EXACTAMENTE los links dados
 
 ---
@@ -96,7 +100,7 @@ LINKS:
 
             texto = response.json()["choices"][0]["message"]["content"]
 
-            # 🔴 FILTRO ANTI-BASURA
+            # 🔴 filtro de seguridad
             if "Después de analizar" in texto or "(Agregar" in texto:
                 print("⚠️ Output inválido detectado")
                 return None

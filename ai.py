@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
+# Cargar variables de entorno (.env en local / Secrets en GitHub)
 load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY")

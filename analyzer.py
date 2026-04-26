@@ -3,9 +3,13 @@ import requests
 import time
 from dotenv import load_dotenv
 
+# 🔥 Cargar variables de entorno
 load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY")
+
+if not API_KEY:
+    raise ValueError("❌ GROQ_API_KEY no está definida (ni en .env ni en GitHub Secrets)")
 
 URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.1-8b-instant"
@@ -47,12 +51,6 @@ NO agrupar:
 - NO forzar agrupaciones
 - Si hay duda → NO agrupar
 
-⚠️ PROHIBIDO AGRUPAR:
-
-- no comparten actores principales
-- no comparten mismo hecho exacto
-- noticias con temas distintos aunque sean de economía
-
 ⚠️ IMPORTANTE:
 - Cada noticia debe aparecer UNA sola vez
 - No repetir índices
@@ -71,7 +69,7 @@ GRUPO:
 - 4
 - 5
 
-(No agregar explicaciones, texto extra ni títulos)
+(No agregar explicaciones ni texto extra)
 
 ---
 
