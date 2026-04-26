@@ -6,9 +6,9 @@ from scrapers.utils import es_reciente
 def get_infobae():
 
     secciones = {
-        "economia": ("https://www.infobae.com/economia/", 1),
-        "politica": ("https://www.infobae.com/politica/", 1),
-        "america": ("https://www.infobae.com/america/", 1)
+        "economia": ("https://www.infobae.com/economia/", 4),
+        "politica": ("https://www.infobae.com/politica/", 4),
+        "america": ("https://www.infobae.com/america/", 4)
     }
 
     headers = {"User-Agent": "Mozilla/5.0"}

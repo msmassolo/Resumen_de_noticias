@@ -6,9 +6,9 @@ from scrapers.utils import es_reciente
 def get_lanacion():
 
     secciones = {
-        "economia": ("https://www.lanacion.com.ar/economia/", 1),
-        "politica": ("https://www.lanacion.com.ar/politica/", 1),
-        "mundo": ("https://www.lanacion.com.ar/el-mundo/", 1)
+        "economia": ("https://www.lanacion.com.ar/economia/", 4),
+        "politica": ("https://www.lanacion.com.ar/politica/", 4),
+        "mundo": ("https://www.lanacion.com.ar/el-mundo/", 4)
     }
 
     headers = {"User-Agent": "Mozilla/5.0"}

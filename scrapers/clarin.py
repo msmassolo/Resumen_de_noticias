@@ -5,9 +5,9 @@ from bs4 import BeautifulSoup
 def get_clarin():
 
     secciones = {
-        "economia": ("https://www.clarin.com/economia", 1),
-        "politica": ("https://www.clarin.com/politica", 1),
-        "mundo": ("https://www.clarin.com/mundo", 1)
+        "economia": ("https://www.clarin.com/economia", 4),
+        "politica": ("https://www.clarin.com/politica", 4),
+        "mundo": ("https://www.clarin.com/mundo", 4)
     }
 
     headers = {
