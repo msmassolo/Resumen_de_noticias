@@ -1,0 +1,11 @@
+# ignorar entorno
+venv/
+__pycache__/
+
+# ignorar secretos
+.env
+
+# ignorar temporales
+*.log
+
+# permitir todo lo demás
