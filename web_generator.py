@@ -1,225 +1,207 @@
-from datetime import datetime
-import locale
+html = f"""
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen de Noticias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <style>
 
-def obtener_diario_y_clase(url):
-    if "clarin.com" in url:
-        return "Clarín", "clarin"
-    elif "lanacion.com" in url:
-        return "La Nación", "lanacion"
-    elif "infobae.com" in url:
-        return "Infobae", "infobae"
-    elif "pagina12.com.ar" in url:
-        return "Página 12", "pagina12"
-    elif "ambito.com" in url:
-        return "Ámbito", "ambito"
-    else:
-        return "Fuente", "default"
+        body {{
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+            background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #f4f1ee, #fafafa);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            color: #222;
+        }}
 
+        @keyframes gradientBG {{
+            0% {{ background-position: 0% 50%; }}
+            50% {{ background-position: 100% 50%; }}
+            100% {{ background-position: 0% 50%; }}
+        }}
 
-def generar_web(contenido):
+        .header {{
+            text-align: center;
+            padding: 40px 20px 10px;
+        }}
 
-    # Idioma fecha (FIX GitHub)
-    try:
-        locale.setlocale(locale.LC_TIME, "es_AR.UTF-8")
-    except:
-        try:
-            locale.setlocale(locale.LC_TIME, "es_ES.UTF-8")
-        except:
-            locale.setlocale(locale.LC_TIME, "")
+        .header h1 {{
+            margin: 0;
+            font-size: 36px;
+            letter-spacing: -0.5px;
+        }}
 
-    fecha_actual = datetime.now()
-    fecha_formateada = fecha_actual.strftime("%A %d de %B de %Y")
-    hora_formateada = fecha_actual.strftime("%H:%M")
+        .header p {{
+            margin-top: 8px;
+            font-size: 14px;
+            opacity: 0.7;
+        }}
 
-    bloques = contenido.split("CATEGORIA:")
+        .filtros {{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+        }}
 
-    html_noticias = ""
-    categoria_actual = None
-    categorias_set = set()
+        .filtro-btn {{
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid #e0e0e0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }}
 
-    for bloque in bloques:
-        if not bloque.strip():
-            continue
+        .filtro-btn:hover {{
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }}
 
-        lineas = bloque.strip().split("\n")
-        categoria = lineas[0].strip().upper()
+        .filtro-btn.active {{
+            background: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+        }}
 
-        categorias_set.add(categoria)
+        .container {{
+            max-width: 820px;
+            margin: auto;
+            padding: 0 20px 40px;
+        }}
 
-        if categoria != categoria_actual:
+        .categoria-section {{
+            margin-bottom: 40px;
+            animation: fadeIn 0.4s ease;
+        }}
 
-            if categoria_actual is not None:
-                html_noticias += "</section>"
+        @keyframes fadeIn {{
+            from {{
+                opacity: 0;
+                transform: translateY(10px);
+            }}
+            to {{
+                opacity: 1;
+                transform: translateY(0);
+            }}
+        }}
 
-            html_noticias += f"""
-            <section class="categoria-section" data-categoria="{categoria}">
-                <h2>{categoria}</h2>
-            """
+        .categoria-section h2 {{
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }}
 
-            categoria_actual = categoria
+        .card {{
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            padding: 22px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.25s ease;
+        }}
 
-        titulo = ""
-        resumen = ""
-        links = []
-        capturando_resumen = False
+        .card:hover {{
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }}
 
-        for i, l in enumerate(lineas[1:], start=1):
-            l_original = l
-            l = l.strip()
+        .card h3 {{
+            margin-bottom: 10px;
+            font-size: 19px;
+            line-height: 1.35;
+        }}
 
-            if l.startswith("TITULO:"):
-                titulo = l.replace("TITULO:", "").strip()
-                capturando_resumen = False
+        .card p {{
+            color: #555;
+            line-height: 1.6;
+        }}
 
-            elif l.startswith("RESUMEN:"):
-                resumen = l.replace("RESUMEN:", "").strip()
-                capturando_resumen = True
+        .sources {{
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }}
 
-            elif l.startswith("LINKS:"):
-                capturando_resumen = False
+        .chip {{
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }}
 
-            elif l.startswith("- http"):
-                links.append(l.replace("- ", "").strip())
-                capturando_resumen = False
+        .chip:hover {{
+            transform: scale(1.05);
+            opacity: 0.9;
+        }}
 
-            elif capturando_resumen and l and not l.startswith("TITULO:") and not l.startswith("LINKS:") and "----" not in l:
-                resumen += "\n" + l
+        .infobae {{ background:#fff3e6; color:#ff6a00; }}
+        .lanacion {{ background:#e6f0ff; color:#1a4ed8; }}
+        .clarin {{ background:#ffeaea; color:#d93025; }}
+        .pagina12 {{ background:#f0e6ff; color:#6b21a8; }}
+        .ambito {{ background:#e6fff5; color:#047857; }}
 
-            if "-----------------------------" in l:
+    </style>
 
-                links = list(set(links))
+</head>
 
-                html_noticias += f"""
-                <article class="card" data-categoria="{categoria}">
-                    <h3>{titulo}</h3>
-                    <p>{resumen}</p>
-                    <div class="sources">
-                """
+<body>
 
-                for link in links:
-                    nombre, clase = obtener_diario_y_clase(link)
+    <div class="header">
+        <h1>📰 Resumen de Noticias</h1>
+        <p>Edición {fecha_formateada} · {hora_formateada} hs</p>
+    </div>
 
-                    html_noticias += f"""
-                        <a href="{link}" target="_blank" class="chip {clase}">
-                            {nombre}
-                        </a>
-                    """
+    {filtros_html}
 
-                html_noticias += """
-                    </div>
-                </article>
-                """
+    <div class="container">
+        {html_noticias}
+    </div>
 
-                titulo = ""
-                resumen = ""
-                links = []
+    <script>
+        const botones = document.querySelectorAll(".filtro-btn");
+        const secciones = document.querySelectorAll(".categoria-section");
 
-    if categoria_actual is not None:
-        html_noticias += "</section>"
+        let activa = null;
 
-    filtros_html = '<div class="filtros">'
-    for cat in sorted(categorias_set):
-        filtros_html += f'<button class="filtro-btn" data-cat="{cat}">{cat}</button>'
-    filtros_html += '</div>'
+        botones.forEach(btn => {{
+            btn.addEventListener("click", () => {{
 
-    html = """
-    <html>
-    <head>
-        <title>Resumen de Noticias</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                const categoria = btn.dataset.cat;
 
-        <style>
-            body {
-                margin: 0;
-                font-family: Arial;
-                background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #f4f1ee, #fafafa);
-                background-size: 400% 400%;
-                animation: gradientBG 18s ease infinite;
-            }
+                if (activa === categoria) {{
+                    activa = null;
+                    botones.forEach(b => b.classList.remove("active"));
+                    secciones.forEach(sec => sec.style.display = "block");
+                    return;
+                }}
 
-            @keyframes gradientBG {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
+                activa = categoria;
 
-            .header {
-                text-align: center;
-                padding: 40px;
-            }
+                botones.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
 
-            .filtros {
-                text-align: center;
-                margin-bottom: 20px;
-            }
+                secciones.forEach(sec => {{
+                    if (sec.dataset.categoria === categoria) {{
+                        sec.style.display = "block";
+                    }} else {{
+                        sec.style.display = "none";
+                    }}
+                }});
+            }});
+        });
+    </script>
 
-            .filtro-btn {
-                padding: 8px 12px;
-                margin: 5px;
-                border-radius: 20px;
-                border: 1px solid #ccc;
-                cursor: pointer;
-                background: white;
-            }
-
-            .filtro-btn.active {
-                background: black;
-                color: white;
-            }
-
-            .container {
-                max-width: 900px;
-                margin: auto;
-                padding: 20px;
-            }
-
-            .categoria-section h2 {
-                text-align: center;
-            }
-
-            .card {
-                background: white;
-                padding: 15px;
-                margin-bottom: 15px;
-                border-radius: 10px;
-            }
-
-            .chip {
-                padding: 5px 10px;
-                border-radius: 20px;
-                font-size: 12px;
-                margin-right: 5px;
-                text-decoration: none;
-            }
-
-            .infobae { background:#fff3e6; color:#ff6a00; }
-            .lanacion { background:#e6f0ff; color:#1a4ed8; }
-            .clarin { background:#ffeaea; color:#d93025; }
-        </style>
-    </head>
-
-    <body>
-
-        <div class="header">
-            <h1>📰 Resumen de Noticias</h1>
-            <p>Edición __FECHA__ · __HORA__ hs</p>
-        </div>
-
-        __FILTROS__
-
-        <div class="container">
-            __NOTICIAS__
-        </div>
-
-    </body>
-    </html>
-    """
-
-    html = html.replace("__FECHA__", fecha_formateada)
-    html = html.replace("__HORA__", hora_formateada)
-    html = html.replace("__FILTROS__", filtros_html)
-    html = html.replace("__NOTICIAS__", html_noticias)
-
-    with open("index.html", "w", encoding="utf-8") as f:
-        f.write(html)
+</body>
+</html>
+"""
