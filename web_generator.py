@@ -3,17 +3,15 @@ html = f"""
 <head>
     <meta charset="UTF-8">
     <title>Resumen de Noticias</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
 
         body {{
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+            font-family: Arial;
             background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #f4f1ee, #fafafa);
             background-size: 400% 400%;
             animation: gradientBG 18s ease infinite;
-            color: #222;
         }}
 
         @keyframes gradientBG {{
@@ -24,39 +22,35 @@ html = f"""
 
         .header {{
             text-align: center;
-            padding: 40px 20px 10px;
+            padding: 40px;
         }}
 
         .header h1 {{
             margin: 0;
-            font-size: 36px;
-            letter-spacing: -0.5px;
+            font-size: 34px;
         }}
 
         .header p {{
             margin-top: 8px;
-            font-size: 14px;
-            opacity: 0.7;
+            color: #666;
         }}
 
         .filtros {{
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin: 20px 0 30px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }}
 
         .filtro-btn {{
             padding: 10px 18px;
             border-radius: 999px;
-            border: 1px solid #e0e0e0;
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(6px);
+            border: 1px solid #ddd;
+            background: white;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 500;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }}
 
         .filtro-btn:hover {{
@@ -67,56 +61,39 @@ html = f"""
         .filtro-btn.active {{
             background: #1a1a1a;
             color: white;
-            border-color: #1a1a1a;
         }}
 
         .container {{
             max-width: 820px;
             margin: auto;
-            padding: 0 20px 40px;
+            padding: 20px;
         }}
 
         .categoria-section {{
             margin-bottom: 40px;
-            animation: fadeIn 0.4s ease;
-        }}
-
-        @keyframes fadeIn {{
-            from {{
-                opacity: 0;
-                transform: translateY(10px);
-            }}
-            to {{
-                opacity: 1;
-                transform: translateY(0);
-            }}
         }}
 
         .categoria-section h2 {{
             text-align: center;
             margin-bottom: 25px;
-            letter-spacing: 1px;
         }}
 
         .card {{
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(8px);
-            padding: 22px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: all 0.25s ease;
+            background: white;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
         }}
 
         .card:hover {{
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.08);
         }}
 
         .card h3 {{
             margin-bottom: 10px;
-            font-size: 19px;
-            line-height: 1.35;
         }}
 
         .card p {{
@@ -125,24 +102,16 @@ html = f"""
         }}
 
         .sources {{
-            margin-top: 14px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            margin-top: 12px;
         }}
 
         .chip {{
+            display: inline-block;
             padding: 6px 10px;
             border-radius: 999px;
             font-size: 12px;
+            margin-right: 6px;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }}
-
-        .chip:hover {{
-            transform: scale(1.05);
-            opacity: 0.9;
         }}
 
         .infobae {{ background:#fff3e6; color:#ff6a00; }}
@@ -152,7 +121,6 @@ html = f"""
         .ambito {{ background:#e6fff5; color:#047857; }}
 
     </style>
-
 </head>
 
 <body>
@@ -199,7 +167,7 @@ html = f"""
                     }}
                 }});
             }});
-        });
+        }});
     </script>
 
 </body>
