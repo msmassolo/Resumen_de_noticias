@@ -6,15 +6,43 @@ from analyzer_2 import unificar_bloques
 
 from web_generator import generar_web
 
+import json
+import os
 import time
 import subprocess
 from dotenv import load_dotenv
 
 load_dotenv()
 
+CACHE_IA_PATH = ".cache_ai.json"
+
+
+def cargar_cache_ia():
+    try:
+        with open(CACHE_IA_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data if isinstance(data, dict) else {}
+    except FileNotFoundError:
+        return {}
+    except Exception as e:
+        print(f"⚠️ No se pudo leer cache IA: {e}")
+        return {}
+
+
+def guardar_cache_ia(cache):
+    try:
+        with open(CACHE_IA_PATH, "w", encoding="utf-8") as f:
+            json.dump(cache, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"⚠️ No se pudo guardar cache IA: {e}")
+
 
 # 🔥 NUEVO: función para subir a GitHub
 def subir_index_github():
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        print("\nGitHub Actions se encarga del commit/push final.\n")
+        return
+
     print("\n🚀 Subiendo index.html a GitHub...\n")
 
     try:
@@ -29,8 +57,32 @@ def subir_index_github():
 
 
 def parsear_grupos(texto):
+    if not texto:
+        return []
+
+    try:
+        data = json.loads(texto)
+        grupos = []
+        usados = set()
+
+        for grupo in data:
+            grupo_limpio = []
+            for idx in grupo:
+                idx = int(idx)
+                if idx > 0 and idx not in usados:
+                    grupo_limpio.append(idx)
+                    usados.add(idx)
+            if grupo_limpio:
+                grupos.append(grupo_limpio)
+
+        if grupos:
+            return grupos
+    except Exception:
+        pass
+
     grupos = []
     grupo_actual = []
+    usados = set()
 
     for linea in texto.split("\n"):
         linea = linea.strip()
@@ -43,7 +95,9 @@ def parsear_grupos(texto):
         elif linea.startswith("-"):
             try:
                 idx = int(linea.replace("-", "").strip())
-                grupo_actual.append(idx)
+                if idx not in usados:
+                    grupo_actual.append(idx)
+                    usados.add(idx)
             except:
                 pass
 
@@ -60,19 +114,29 @@ def ejecutar_proyecto():
     print(f"📰 Total noticias: {len(noticias)}")
 
     resultados = []
+    cache_ia = cargar_cache_ia()
+    cache_modificada = False
 
     # 🔴 ETAPA 1: IA
     for i, n in enumerate(noticias, start=1):
         print(f"\n🔎 [{i}/{len(noticias)}] {n['diario']}")
         print(f"📰 {n['titulo'][:80]}...")
 
-        contenido = obtener_contenido(n["link"])
+        cache_key = n["link"]
+        if cache_key in cache_ia:
+            data = cache_ia[cache_key]
+            print("✅ Cache IA")
+        else:
+            contenido = obtener_contenido(n["link"])
 
-        if not contenido:
-            print("⚠️ Sin contenido")
-            continue
+            if not contenido:
+                print("⚠️ Sin contenido")
+                continue
 
-        data = procesar_noticia(n["titulo"], contenido)
+            data = procesar_noticia(n["titulo"], contenido)
+            cache_ia[cache_key] = data
+            cache_modificada = True
+            time.sleep(1.2)
 
         resultados.append({
             "diario": n["diario"],
@@ -84,7 +148,9 @@ def ejecutar_proyecto():
         })
 
         print("✅ OK")
-        time.sleep(1.2)
+
+    if cache_modificada:
+        guardar_cache_ia(cache_ia)
 
     if not resultados:
         print("❌ No hay resultados")
@@ -118,6 +184,10 @@ def ejecutar_proyecto():
             continue
 
         grupos = parsear_grupos(res)
+        usados = {idx for grupo in grupos for idx in grupo}
+        for idx in range(1, len(lista) + 1):
+            if idx not in usados:
+                grupos.append([idx])
 
         for grupo in grupos:
             eventos = []
@@ -143,7 +213,8 @@ LINKS:
                 salida_final += final
                 salida_final += "\n-----------------------------\n"
 
-            time.sleep(3)
+            if len(eventos) > 1:
+                time.sleep(3)
 
     print("\n--- GENERANDO WEB ---\n")
 

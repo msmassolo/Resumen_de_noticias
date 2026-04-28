@@ -1,6 +1,5 @@
 from datetime import datetime
 from html import escape
-import locale
 from urllib.parse import urlparse
 
 
@@ -23,13 +22,27 @@ def obtener_diario_y_clase(url):
     return "Fuente", "default"
 
 
-def configurar_locale_fecha():
-    for locale_name in ("es_AR.UTF-8", "es_ES.UTF-8", "Spanish_Argentina", "Spanish_Spain", ""):
-        try:
-            locale.setlocale(locale.LC_TIME, locale_name)
-            return
-        except locale.Error:
-            continue
+DIAS = ("lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo")
+MESES = (
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+)
+
+
+def formatear_fecha_es(fecha):
+    dia = DIAS[fecha.weekday()]
+    mes = MESES[fecha.month - 1]
+    return f"{dia} {fecha.day:02d} de {mes} de {fecha.year}"
 
 
 def normalizar_links(links):
@@ -159,10 +172,8 @@ def generar_filtros(categorias):
 
 
 def generar_web(contenido, output_path="index.html"):
-    configurar_locale_fecha()
-
     fecha_actual = datetime.now()
-    fecha_formateada = fecha_actual.strftime("%A %d de %B de %Y")
+    fecha_formateada = formatear_fecha_es(fecha_actual)
     hora_formateada = fecha_actual.strftime("%H:%M")
 
     noticias = parsear_contenido(contenido)

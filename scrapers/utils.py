@@ -4,6 +4,9 @@ from datetime import datetime, timedelta
 import re
 
 
+MAX_CONTENIDO_CHARS = 1400
+
+
 def obtener_contenido(link):
     headers = {
         "User-Agent": "Mozilla/5.0",
@@ -29,7 +32,7 @@ def obtener_contenido(link):
             if len(contenido) > 50:
                 texto += contenido + "\n"
 
-        return texto[:2000]
+        return texto[:MAX_CONTENIDO_CHARS]
 
     except requests.exceptions.Timeout:
         print("⚠️ Timeout al cargar noticia")

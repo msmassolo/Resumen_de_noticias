@@ -1,122 +1,31 @@
-import os
-import requests
-import time
-from dotenv import load_dotenv
-
-# 🔥 Cargar variables de entorno
-load_dotenv()
-
-API_KEY = os.getenv("GROQ_API_KEY")
-
-if not API_KEY:
-    raise ValueError("❌ GROQ_API_KEY no está definida (ni en .env ni en GitHub Secrets)")
-
-URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL = "llama-3.1-8b-instant"
+from groq_client import pedir_groq, recortar_texto
 
 
 def agrupar_noticias(resultados):
+    if not resultados:
+        return None
 
-    texto = ""
+    if len(resultados) == 1:
+        return "[[1]]"
 
+    items = []
     for i, r in enumerate(resultados, start=1):
-        texto += f"""
-Noticia {i}:
-Evento: {r['evento'][:120]}
-Medio: {r['diario']}
-"""
+        evento = recortar_texto(r.get("evento", ""), 90)
+        medio = recortar_texto(r.get("diario", ""), 20)
+        items.append(f"{i}|{medio}|{evento}")
 
-    prompt = f"""
-Sos un editor de noticias.
+    prompt = (
+        "Agrupa solo noticias del MISMO hecho exacto. No agrupes mismo tema ni consecuencias. "
+        "Usa cada indice una vez. Devuelve solo JSON minificado, ejemplo [[1,3],[2]].\n"
+        + "\n".join(items)
+    )
 
-Tenés una lista de noticias que YA pertenecen a la MISMA categoría.
-
-Tu tarea es AGRUPARLAS según si describen el MISMO HECHO puntual.
-
-⚠️ DEFINICIÓN CLAVE:
-
-Dos noticias son el mismo grupo SOLO si:
-- describen el mismo evento exacto
-- misma situación concreta
-- mismo hecho noticioso
-
-NO agrupar:
-❌ mismo tema general (ej: economía)
-❌ noticias relacionadas pero distintas
-❌ análisis o consecuencias
-
-⚠️ REGLAS:
-- NO inventar
-- NO interpretar de más
-- NO forzar agrupaciones
-- Si hay duda → NO agrupar
-
-⚠️ IMPORTANTE:
-- Cada noticia debe aparecer UNA sola vez
-- No repetir índices
-- No dejar noticias afuera
-
-⚠️ FORMATO OBLIGATORIO:
-
-GRUPO:
-- 1
-- 3
-
-GRUPO:
-- 2
-
-GRUPO:
-- 4
-- 5
-
-(No agregar explicaciones ni texto extra)
-
----
-
-Noticias:
-{texto}
-"""
-
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    data = {
-        "model": MODEL,
-        "messages": [
-            {"role": "system", "content": "Agrupás noticias por evento exacto."},
-            {"role": "user", "content": prompt}
-        ],
-        "temperature": 0.1,
-        "max_tokens": 600
-    }
-
-    for intento in range(3):
-        try:
-            print(f"📏 Prompt length: {len(prompt)}")
-            print(f"🔁 Intento {intento+1}/3")
-
-            response = requests.post(
-                URL,
-                headers=headers,
-                json=data,
-                timeout=(5, 20)
-            )
-
-            if response.status_code == 429:
-                print("⏳ Rate limit → esperando 10s...")
-                time.sleep(10)
-                continue
-
-            if response.status_code != 200:
-                print("❌ Error:", response.text)
-                return None
-
-            return response.json()["choices"][0]["message"]["content"]
-
-        except Exception as e:
-            print("⚠️ Error:", e)
-            time.sleep(5)
-
-    return None
+    max_tokens = min(220, 30 + len(resultados) * 8)
+    print(f"Groq grupos: {len(resultados)} noticias, prompt {len(prompt)} chars")
+    return pedir_groq(
+        "Agrupas noticias por evento exacto.",
+        prompt,
+        max_tokens=max_tokens,
+        temperature=0,
+        retries=2,
+    )

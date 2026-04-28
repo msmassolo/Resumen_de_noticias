@@ -1,114 +1,82 @@
-import os
-import requests
-import time
-from dotenv import load_dotenv
+import json
 
-# 🔥 Cargar variables
-load_dotenv()
+from groq_client import pedir_groq, recortar_texto
 
-API_KEY = os.getenv("GROQ_API_KEY")
 
-if not API_KEY:
-    raise ValueError("❌ GROQ_API_KEY no está definida (ni en .env ni en GitHub Secrets)")
+def _extraer_eventos_y_links(texto):
+    eventos = []
+    links = []
+    leyendo_eventos = False
+    leyendo_links = False
 
-URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL = "llama-3.1-8b-instant"
+    for linea in texto.splitlines():
+        linea = linea.strip()
+        if not linea:
+            continue
+        if linea == "LINKS:":
+            leyendo_eventos = False
+            leyendo_links = True
+            continue
+        if linea == "EVENTOS:":
+            leyendo_eventos = True
+            leyendo_links = False
+            continue
+        if leyendo_links and linea.startswith("- http"):
+            links.append(linea.replace("- ", "", 1).strip())
+        elif leyendo_eventos:
+            eventos.extend(item.strip() for item in linea.split("|") if item.strip())
+
+    return eventos, list(dict.fromkeys(links))
+
+
+def _formatear(titulo, resumen, links):
+    links_txt = "\n".join(f"- {link}" for link in links)
+    return f"TITULO: {titulo}\nRESUMEN: {resumen}\nLINKS:\n{links_txt}"
 
 
 def unificar_bloques(texto):
+    eventos, links = _extraer_eventos_y_links(texto)
 
-    prompt = f"""
-Sos un editor de noticias.
+    if not eventos or not links:
+        return None
 
-Recibís un grupo de noticias del MISMO evento.
+    if len(eventos) == 1:
+        evento = recortar_texto(eventos[0], 140)
+        return _formatear(evento, evento, links)
 
-Tu tarea es SOLO redactar el resultado final.
+    eventos_txt = "\n".join(f"- {recortar_texto(evento, 90)}" for evento in eventos[:4])
+    prompt = (
+        "Redacta una noticia unica basada solo en estos eventos. "
+        'Devuelve JSON minificado: {"titulo":"max 16 palabras","resumen":"max 35 palabras"}\n'
+        f"{eventos_txt}"
+    )
 
-INPUT:
-{texto}
+    print(f"Groq redaccion: {len(eventos)} eventos")
+    respuesta = pedir_groq(
+        "Redactas sintesis breves sin inventar.",
+        prompt,
+        max_tokens=95,
+        temperature=0,
+        retries=2,
+    )
 
-⚠️ REGLAS OBLIGATORIAS (NO ROMPER):
+    try:
+        data = json.loads(respuesta or "")
+        titulo = str(data.get("titulo", "")).strip()
+        resumen = str(data.get("resumen", "")).strip()
+    except json.JSONDecodeError:
+        titulo = ""
+        resumen = ""
+        for linea in (respuesta or "").splitlines():
+            linea = linea.strip()
+            if linea.startswith("TITULO:"):
+                titulo = linea.replace("TITULO:", "", 1).strip()
+            elif linea.startswith("RESUMEN:"):
+                resumen = linea.replace("RESUMEN:", "", 1).strip()
 
-- NO inventar links
-- NO escribir texto adicional
-- NO explicar nada
-- NO usar markdown (**)
-- NO repetir categorías
-- NO agregar frases como "Después de analizar..."
+    if not titulo:
+        titulo = recortar_texto(eventos[0], 140)
+    if not resumen:
+        resumen = recortar_texto(" ".join(eventos[:2]), 220)
 
-⚠️ SOLO USAR:
-- los eventos dados
-- los links dados
-
-⚠️ SI NO PODÉS HACERLO → devolver vacío
-
----
-
-Tareas:
-
-1. Crear un TITULO claro del evento
-2. Crear un RESUMEN breve (Max 5 lineas)
-3. Incluir EXACTAMENTE los links dados
-
----
-
-FORMATO EXACTO:
-
-TITULO: ...
-RESUMEN: ...
-LINKS:
-- link
-- link
-
-(SIN texto adicional)
-"""
-
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    data = {
-        "model": MODEL,
-        "messages": [
-            {"role": "system", "content": "Redactás sin inventar ni agregar contenido."},
-            {"role": "user", "content": prompt}
-        ],
-        "temperature": 0,
-        "max_tokens": 200
-    }
-
-    for intento in range(3):
-        try:
-            print(f"🔁 Redacción intento {intento+1}/3")
-
-            response = requests.post(
-                URL,
-                headers=headers,
-                json=data,
-                timeout=(5, 20)
-            )
-
-            if response.status_code == 429:
-                print("⏳ Rate limit → esperando 6s...")
-                time.sleep(6)
-                continue
-
-            if response.status_code != 200:
-                print("❌ Error:", response.text)
-                return None
-
-            texto = response.json()["choices"][0]["message"]["content"]
-
-            # 🔴 filtro de seguridad
-            if "Después de analizar" in texto or "(Agregar" in texto:
-                print("⚠️ Output inválido detectado")
-                return None
-
-            return texto
-
-        except Exception as e:
-            print("⚠️ Error:", e)
-            time.sleep(4)
-
-    return None
+    return _formatear(titulo, resumen, links)
