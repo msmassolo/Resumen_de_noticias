@@ -1,141 +1,202 @@
 from datetime import datetime
+from html import escape
 import locale
+from urllib.parse import urlparse
+
+
+MEDIOS = {
+    "clarin.com": ("Clarín", "clarin"),
+    "lanacion.com": ("La Nación", "lanacion"),
+    "infobae.com": ("Infobae", "infobae"),
+    "pagina12.com.ar": ("Página 12", "pagina12"),
+    "ambito.com": ("Ámbito", "ambito"),
+}
 
 
 def obtener_diario_y_clase(url):
-    if "clarin.com" in url:
-        return "Clarín", "clarin"
-    elif "lanacion.com" in url:
-        return "La Nación", "lanacion"
-    elif "infobae.com" in url:
-        return "Infobae", "infobae"
-    elif "pagina12.com.ar" in url:
-        return "Página 12", "pagina12"
-    elif "ambito.com" in url:
-        return "Ámbito", "ambito"
-    else:
-        return "Fuente", "default"
+    dominio = urlparse(url).netloc.lower()
+
+    for dominio_medio, medio in MEDIOS.items():
+        if dominio_medio in dominio:
+            return medio
+
+    return "Fuente", "default"
 
 
-def generar_web(contenido):
-
-    # Idioma fecha (FIX GitHub)
-    try:
-        locale.setlocale(locale.LC_TIME, "es_AR.UTF-8")
-    except:
+def configurar_locale_fecha():
+    for locale_name in ("es_AR.UTF-8", "es_ES.UTF-8", "Spanish_Argentina", "Spanish_Spain", ""):
         try:
-            locale.setlocale(locale.LC_TIME, "es_ES.UTF-8")
-        except:
-            locale.setlocale(locale.LC_TIME, "")
+            locale.setlocale(locale.LC_TIME, locale_name)
+            return
+        except locale.Error:
+            continue
+
+
+def normalizar_links(links):
+    return list(dict.fromkeys(link for link in links if link.startswith(("http://", "https://"))))
+
+
+def parsear_contenido(contenido):
+    noticias = []
+    categoria_actual = None
+    noticia_actual = None
+    capturando_resumen = False
+
+    def guardar_noticia():
+        nonlocal noticia_actual
+
+        if not noticia_actual:
+            return
+
+        noticia_actual["links"] = normalizar_links(noticia_actual["links"])
+
+        if noticia_actual["titulo"] or noticia_actual["resumen"] or noticia_actual["links"]:
+            noticias.append(noticia_actual)
+
+        noticia_actual = None
+
+    for linea in contenido.splitlines():
+        linea = linea.strip()
+
+        if not linea:
+            continue
+
+        if linea.startswith("CATEGORIA:"):
+            guardar_noticia()
+            categoria_actual = linea.replace("CATEGORIA:", "", 1).strip().upper()
+            capturando_resumen = False
+            continue
+
+        if linea.startswith("TITULO:"):
+            guardar_noticia()
+            noticia_actual = {
+                "categoria": categoria_actual or "GENERAL",
+                "titulo": linea.replace("TITULO:", "", 1).strip(),
+                "resumen": "",
+                "links": [],
+            }
+            capturando_resumen = False
+            continue
+
+        if noticia_actual is None:
+            noticia_actual = {
+                "categoria": categoria_actual or "GENERAL",
+                "titulo": "",
+                "resumen": "",
+                "links": [],
+            }
+
+        if linea.startswith("RESUMEN:"):
+            noticia_actual["resumen"] = linea.replace("RESUMEN:", "", 1).strip()
+            capturando_resumen = True
+        elif linea.startswith("LINKS:"):
+            capturando_resumen = False
+        elif linea.startswith("- http"):
+            noticia_actual["links"].append(linea.replace("- ", "", 1).strip())
+            capturando_resumen = False
+        elif "-----------------------------" in linea:
+            guardar_noticia()
+            capturando_resumen = False
+        elif capturando_resumen:
+            noticia_actual["resumen"] = f"{noticia_actual['resumen']}\n{linea}".strip()
+
+    guardar_noticia()
+    return noticias
+
+
+def generar_html_noticias(noticias):
+    html_noticias = ""
+    categoria_actual = None
+
+    for noticia in noticias:
+        categoria = noticia["categoria"]
+
+        if categoria != categoria_actual:
+            if categoria_actual is not None:
+                html_noticias += "</section>"
+
+            html_noticias += f"""
+            <section class="categoria-section" data-categoria="{escape(categoria)}">
+                <h2>{escape(categoria)}</h2>
+            """
+            categoria_actual = categoria
+
+        html_noticias += f"""
+                <article class="card" data-categoria="{escape(categoria)}">
+                    <h3>{escape(noticia["titulo"])}</h3>
+                    <p>{escape(noticia["resumen"]).replace(chr(10), "<br>")}</p>
+                    <div class="sources">
+        """
+
+        for link in noticia["links"]:
+            nombre, clase = obtener_diario_y_clase(link)
+            html_noticias += f"""
+                        <a href="{escape(link, quote=True)}" target="_blank" rel="noopener noreferrer" class="chip {escape(clase)}">
+                            {escape(nombre)}
+                        </a>
+            """
+
+        html_noticias += """
+                    </div>
+                </article>
+        """
+
+    if categoria_actual is not None:
+        html_noticias += "</section>"
+
+    return html_noticias
+
+
+def generar_filtros(categorias):
+    filtros_html = '<div class="filtros" aria-label="Filtros de categoría">'
+    filtros_html += '<button class="filtro-btn active" data-cat="TODAS" type="button">Todas</button>'
+
+    for cat in sorted(categorias):
+        filtros_html += f'<button class="filtro-btn" data-cat="{escape(cat)}" type="button">{escape(cat)}</button>'
+
+    filtros_html += "</div>"
+    return filtros_html
+
+
+def generar_web(contenido, output_path="index.html"):
+    configurar_locale_fecha()
 
     fecha_actual = datetime.now()
     fecha_formateada = fecha_actual.strftime("%A %d de %B de %Y")
     hora_formateada = fecha_actual.strftime("%H:%M")
 
-    bloques = contenido.split("CATEGORIA:")
+    noticias = parsear_contenido(contenido)
+    categorias = {noticia["categoria"] for noticia in noticias}
 
-    html_noticias = ""
-    categoria_actual = None
-    categorias_set = set()
-
-    for bloque in bloques:
-        if not bloque.strip():
-            continue
-
-        lineas = bloque.strip().split("\n")
-        categoria = lineas[0].strip().upper()
-
-        categorias_set.add(categoria)
-
-        if categoria != categoria_actual:
-
-            if categoria_actual is not None:
-                html_noticias += "</section>"
-
-            html_noticias += f"""
-            <section class="categoria-section" data-categoria="{categoria}">
-                <h2>{categoria}</h2>
-            """
-
-            categoria_actual = categoria
-
-        titulo = ""
-        resumen = ""
-        links = []
-        capturando_resumen = False
-
-        for i, l in enumerate(lineas[1:], start=1):
-            l_original = l
-            l = l.strip()
-
-            if l.startswith("TITULO:"):
-                titulo = l.replace("TITULO:", "").strip()
-                capturando_resumen = False
-
-            elif l.startswith("RESUMEN:"):
-                resumen = l.replace("RESUMEN:", "").strip()
-                capturando_resumen = True
-
-            elif l.startswith("LINKS:"):
-                capturando_resumen = False
-
-            elif l.startswith("- http"):
-                links.append(l.replace("- ", "").strip())
-                capturando_resumen = False
-
-            elif capturando_resumen and l and not l.startswith("TITULO:") and not l.startswith("LINKS:") and "----" not in l:
-                resumen += "\n" + l
-
-            if "-----------------------------" in l:
-
-                links = list(set(links))
-
-                html_noticias += f"""
-                <article class="card" data-categoria="{categoria}">
-                    <h3>{titulo}</h3>
-                    <p>{resumen}</p>
-                    <div class="sources">
-                """
-
-                for link in links:
-                    nombre, clase = obtener_diario_y_clase(link)
-
-                    html_noticias += f"""
-                        <a href="{link}" target="_blank" class="chip {clase}">
-                            {nombre}
-                        </a>
-                    """
-
-                html_noticias += """
-                    </div>
-                </article>
-                """
-
-                titulo = ""
-                resumen = ""
-                links = []
-
-    if categoria_actual is not None:
-        html_noticias += "</section>"
-
-    filtros_html = '<div class="filtros">'
-    for cat in sorted(categorias_set):
-        filtros_html += f'<button class="filtro-btn" data-cat="{cat}">{cat}</button>'
-    filtros_html += '</div>'
+    html_noticias = generar_html_noticias(noticias)
+    filtros_html = generar_filtros(categorias)
 
     html = """
-    <html>
+    <!doctype html>
+    <html lang="es">
     <head>
+        <meta charset="utf-8">
         <title>Resumen de Noticias</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <style>
+            * {
+                box-sizing: border-box;
+            }
+
             body {
                 margin: 0;
-                font-family: Arial;
-                background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #f4f1ee, #fafafa);
+                font-family: Arial, Helvetica, sans-serif;
+                color: #1f2933;
+                background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #eef7f2, #fafafa);
                 background-size: 400% 400%;
                 animation: gradientBG 18s ease infinite;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                body {
+                    animation: none;
+                }
             }
 
             @keyframes gradientBG {
@@ -146,80 +207,166 @@ def generar_web(contenido):
 
             .header {
                 text-align: center;
-                padding: 40px;
+                padding: 36px 20px 22px;
+            }
+
+            .header h1 {
+                margin: 0 0 8px;
+                font-size: clamp(28px, 5vw, 44px);
+                line-height: 1.1;
+            }
+
+            .header p {
+                margin: 0;
+                color: #52616b;
             }
 
             .filtros {
-                text-align: center;
-                margin-bottom: 20px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                max-width: 900px;
+                margin: 0 auto 18px;
+                padding: 0 20px;
             }
 
             .filtro-btn {
-                padding: 8px 12px;
-                margin: 5px;
-                border-radius: 20px;
-                border: 1px solid #ccc;
+                min-height: 36px;
+                padding: 8px 13px;
+                border-radius: 999px;
+                border: 1px solid #d3d8de;
                 cursor: pointer;
                 background: white;
+                color: #1f2933;
+                font: inherit;
+                font-size: 14px;
+            }
+
+            .filtro-btn:hover,
+            .filtro-btn:focus-visible {
+                border-color: #111827;
+                outline: none;
             }
 
             .filtro-btn.active {
-                background: black;
+                background: #111827;
+                border-color: #111827;
                 color: white;
             }
 
             .container {
                 max-width: 900px;
                 margin: auto;
-                padding: 20px;
+                padding: 12px 20px 36px;
+            }
+
+            .categoria-section {
+                margin-top: 20px;
+            }
+
+            .categoria-section[hidden],
+            .card[hidden] {
+                display: none;
             }
 
             .categoria-section h2 {
                 text-align: center;
+                margin: 22px 0 14px;
+                font-size: 18px;
+                letter-spacing: 0;
             }
 
             .card {
-                background: white;
-                padding: 15px;
-                margin-bottom: 15px;
-                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.92);
+                padding: 18px;
+                margin-bottom: 14px;
+                border: 1px solid rgba(214, 221, 230, 0.8);
+                border-radius: 8px;
+                box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+            }
+
+            .card h3 {
+                margin: 0 0 10px;
+                font-size: 20px;
+                line-height: 1.25;
+            }
+
+            .card p {
+                margin: 0 0 14px;
+                line-height: 1.55;
+                color: #374151;
+            }
+
+            .sources {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
             }
 
             .chip {
+                display: inline-flex;
+                align-items: center;
+                min-height: 28px;
                 padding: 5px 10px;
-                border-radius: 20px;
+                border-radius: 999px;
                 font-size: 12px;
-                margin-right: 5px;
+                font-weight: 700;
                 text-decoration: none;
             }
 
-            .infobae { background:#fff3e6; color:#ff6a00; }
+            .chip:hover {
+                text-decoration: underline;
+            }
+
+            .infobae { background:#fff3e6; color:#b84c00; }
             .lanacion { background:#e6f0ff; color:#1a4ed8; }
-            .clarin { background:#ffeaea; color:#d93025; }
+            .clarin { background:#ffeaea; color:#b42318; }
+            .pagina12 { background:#f1e8ff; color:#6d28d9; }
+            .ambito { background:#e8f7ef; color:#047857; }
+            .default { background:#edf2f7; color:#334155; }
         </style>
     </head>
 
     <body>
 
         <div class="header">
-            <h1>📰 Resumen de Noticias</h1>
+            <h1>Resumen de Noticias</h1>
             <p>Edición __FECHA__ · __HORA__ hs</p>
         </div>
 
         __FILTROS__
 
-        <div class="container">
+        <main class="container">
             __NOTICIAS__
-        </div>
+        </main>
+
+        <script>
+            const botonesFiltro = document.querySelectorAll(".filtro-btn");
+            const secciones = document.querySelectorAll(".categoria-section");
+
+            botonesFiltro.forEach((boton) => {
+                boton.addEventListener("click", () => {
+                    const categoria = boton.dataset.cat;
+
+                    botonesFiltro.forEach((item) => item.classList.remove("active"));
+                    boton.classList.add("active");
+
+                    secciones.forEach((seccion) => {
+                        seccion.hidden = categoria !== "TODAS" && seccion.dataset.categoria !== categoria;
+                    });
+                });
+            });
+        </script>
 
     </body>
     </html>
     """
 
-    html = html.replace("__FECHA__", fecha_formateada)
-    html = html.replace("__HORA__", hora_formateada)
+    html = html.replace("__FECHA__", escape(fecha_formateada))
+    html = html.replace("__HORA__", escape(hora_formateada))
     html = html.replace("__FILTROS__", filtros_html)
     html = html.replace("__NOTICIAS__", html_noticias)
 
-    with open("index.html", "w", encoding="utf-8") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
