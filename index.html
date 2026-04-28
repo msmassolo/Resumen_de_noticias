@@ -1,16 +1,29 @@
 
-    <html>
+    <!doctype html>
+    <html lang="es">
     <head>
+        <meta charset="utf-8">
         <title>Resumen de Noticias</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <style>
+            * {
+                box-sizing: border-box;
+            }
+
             body {
                 margin: 0;
-                font-family: Arial;
-                background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #f4f1ee, #fafafa);
+                font-family: Arial, Helvetica, sans-serif;
+                color: #1f2933;
+                background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #eef7f2, #fafafa);
                 background-size: 400% 400%;
                 animation: gradientBG 18s ease infinite;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                body {
+                    animation: none;
+                }
             }
 
             @keyframes gradientBG {
@@ -21,299 +34,398 @@
 
             .header {
                 text-align: center;
-                padding: 40px;
+                padding: 36px 20px 22px;
+            }
+
+            .header h1 {
+                margin: 0 0 8px;
+                font-size: clamp(28px, 5vw, 44px);
+                line-height: 1.1;
+            }
+
+            .header p {
+                margin: 0;
+                color: #52616b;
             }
 
             .filtros {
-                text-align: center;
-                margin-bottom: 20px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                max-width: 900px;
+                margin: 0 auto 18px;
+                padding: 0 20px;
             }
 
             .filtro-btn {
-                padding: 8px 12px;
-                margin: 5px;
-                border-radius: 20px;
-                border: 1px solid #ccc;
+                min-height: 36px;
+                padding: 8px 13px;
+                border-radius: 999px;
+                border: 1px solid #d3d8de;
                 cursor: pointer;
                 background: white;
+                color: #1f2933;
+                font: inherit;
+                font-size: 14px;
+            }
+
+            .filtro-btn:hover,
+            .filtro-btn:focus-visible {
+                border-color: #111827;
+                outline: none;
             }
 
             .filtro-btn.active {
-                background: black;
+                background: #111827;
+                border-color: #111827;
                 color: white;
             }
 
             .container {
                 max-width: 900px;
                 margin: auto;
-                padding: 20px;
+                padding: 12px 20px 36px;
+            }
+
+            .categoria-section {
+                margin-top: 20px;
+            }
+
+            .categoria-section[hidden],
+            .card[hidden] {
+                display: none;
             }
 
             .categoria-section h2 {
                 text-align: center;
+                margin: 22px 0 14px;
+                font-size: 18px;
+                letter-spacing: 0;
             }
 
             .card {
-                background: white;
-                padding: 15px;
-                margin-bottom: 15px;
-                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.92);
+                padding: 18px;
+                margin-bottom: 14px;
+                border: 1px solid rgba(214, 221, 230, 0.8);
+                border-radius: 8px;
+                box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+            }
+
+            .card h3 {
+                margin: 0 0 10px;
+                font-size: 20px;
+                line-height: 1.25;
+            }
+
+            .card p {
+                margin: 0 0 14px;
+                line-height: 1.55;
+                color: #374151;
+            }
+
+            .sources {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
             }
 
             .chip {
+                display: inline-flex;
+                align-items: center;
+                min-height: 28px;
                 padding: 5px 10px;
-                border-radius: 20px;
+                border-radius: 999px;
                 font-size: 12px;
-                margin-right: 5px;
+                font-weight: 700;
                 text-decoration: none;
             }
 
-            .infobae { background:#fff3e6; color:#ff6a00; }
+            .chip:hover {
+                text-decoration: underline;
+            }
+
+            .infobae { background:#fff3e6; color:#b84c00; }
             .lanacion { background:#e6f0ff; color:#1a4ed8; }
-            .clarin { background:#ffeaea; color:#d93025; }
+            .clarin { background:#ffeaea; color:#b42318; }
+            .pagina12 { background:#f1e8ff; color:#6d28d9; }
+            .ambito { background:#e8f7ef; color:#047857; }
+            .default { background:#edf2f7; color:#334155; }
         </style>
     </head>
 
     <body>
 
         <div class="header">
-            <h1>📰 Resumen de Noticias</h1>
-            <p>Edición Tuesday 28 de April de 2026 · 19:54 hs</p>
+            <h1>Resumen de Noticias</h1>
+            <p>Edición Tuesday 28 de April de 2026 · 21:09 hs</p>
         </div>
 
-        <div class="filtros"><button class="filtro-btn" data-cat="ECONOMIA">ECONOMIA</button><button class="filtro-btn" data-cat="INTERNACIONAL">INTERNACIONAL</button><button class="filtro-btn" data-cat="POLITICA">POLITICA</button></div>
+        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas</button><button class="filtro-btn" data-cat="ECONOMIA" type="button">ECONOMIA</button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">INTERNACIONAL</button><button class="filtro-btn" data-cat="POLITICA" type="button">POLITICA</button></div>
 
-        <div class="container">
+        <main class="container">
             
             <section class="categoria-section" data-categoria="ECONOMIA">
                 <h2>ECONOMIA</h2>
             
                 <article class="card" data-categoria="ECONOMIA">
-                    <h3>Caputo anuncia licitación de rutas nacionales y alumnos abuchean a CEO de fintech en evento de emprendedores.</h3>
-                    <p>El ministro de Economía, Luis Caputo, anunció la licitación de 9.000 kilómetros de rutas nacionales. Mientras tanto, alumnos de secundaria abuchearon al CEO de una fintech en un evento de emprendedores.</p>
+                    <h3>El Banco Central adquiere USD 53 millones y el dólar baja</h3>
+                    <p>El Banco Central adquirió USD 53 millones este martes, cortando una racha de cuatro subas consecutivas del dólar. El dólar bajó antes de una licitación clave del Tesoro. Las reservas del Banco Central perforaron los USD 46.000 millones. El Banco Central siguió con la compra de dólares. El dólar bajó y cortó una racha de cuatro subas consecutivas.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/economia/2026/04/28/por-que-me-dicen-vendepatria-alumnos-de-secundaria-abuchearon-al-ceo-de-una-fintech" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/economia/2026/04/28/el-banco-central-siguio-con-la-compra-de-dolares-pero-las-reservas-perforaron-los-usd-46000-millones/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
-                        <a href="https://www.infobae.com/economia/2026/04/28/cuales-son-los-planes-en-los-que-confia-caputo-para-reactivar-el-golpeado-sector-de-la-construccion/" target="_blank" class="chip infobae">
+            
+                        <a href="https://www.infobae.com/economia/2026/04/28/el-dolar-bajo-y-c" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
                     </div>
                 </article>
-                
+        
                 <article class="card" data-categoria="ECONOMIA">
-                    <h3>Autobahn Motors inaugura el ABM Building en Singapur</h3>
-                    <p>Autobahn Motors inauguró el ABM Building en diciembre de 2016 en Singapur.</p>
+                    <h3>Luis Caputo anuncia planes para reactivar el sector de la construcción en Argentina.</h3>
+                    <p>Luis Caputo anunció planes para reactivar el sector de la construcción en Argentina. Los detalles de los planes se pueden encontrar en el artículo de Infobae. El objetivo es revitalizar el sector golpeado. Se espera que los planes tengan un impacto positivo en la economía. El anuncio de Caputo generó interés en la comunidad económica.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/economia/2026/04/28/maquina-expendedora-de-superautos-deportivos-donde-esta-y-como-funciona-la-futurista-torre-de-15-pisos/" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/economia/2026/04/28/cuales-son-los-planes-en-los-que-confia-caputo-para-reactivar-el-golpeado-sector-de-la-construccion/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
                     </div>
                 </article>
-                
+        
                 <article class="card" data-categoria="ECONOMIA">
-                    <h3>El dólar baja y corta racha de cuatro subas consecutivas.</h3>
-                    <p>El dólar experimentó una caída, interrumpiendo una racha de cuatro subas consecutivas. Este movimiento se produjo antes de una licitación clave del Tesoro.</p>
+                    <h3>Autobahn Motors inaugura el ABM Building en diciembre de 2016</h3>
+                    <p>Autobahn Motors inauguró el ABM Building en diciembre de 2016.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/economia/2026/04/28/el-dolar-bajo-y-corto-una-racha-de-cuatro-subas-consecutivas-antes-de-una-licitacion-clave-del-tesoro/" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/economia/2026/04/28/maquina-expendedora-de-superautos-deportivos-donde-esta-y-como-funciona-la-futurista-torre-de-15-pisos/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
                     </div>
                 </article>
-                
+        
+                <article class="card" data-categoria="ECONOMIA">
+                    <h3>La inversión extranjera más grande de la historia argentina enfrenta bloqueos de rutas y disputas limítrofes</h3>
+                    <p>La inversión extranjera más grande de la historia argentina enfrenta bloqueos de rutas y disputas limítrofes. El proyecto enfrenta múltiples desafíos. La situación es compleja. La inversión es significativa. El impacto es importante.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/economia/la-inversion-extranjera-mas-grande-de-la-historia-argentina-enfrenta-bloqueos-de-rutas-disputas-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="ECONOMIA">
+                    <h3>Más de 12.000 jóvenes colmaron el Movistar Arena para escuchar a emprendedores y a María Becerra</h3>
+                    <p>Más de 12.000 jóvenes asistieron al evento en el Movistar Arena para escuchar a emprendedores y a la cantante María Becerra.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/economia/negocios/mas-de-12000-jovenes-colmaron-el-movistar-arena-para-escuchar-a-emprendedores-y-a-maria-becerra-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
                 <article class="card" data-categoria="ECONOMIA">
                     <h3>Aumentos en surtidores golpearon el consumo de combustible en marzo</h3>
                     <p>Los aumentos en los surtidores de combustible en marzo afectaron negativamente el consumo de combustible en el país. Solo YPF logró aumentar sus ventas en ese mes. El impacto de los aumentos en el consumo de combustible fue significativo. La situación económica del país se vio afectada por esta decisión. El consumo de combustible disminuyó en marzo.</p>
                     <div class="sources">
-                
-                        <a href="https://www.lanacion.com.ar/economia/los-aumentos-en-los-surtidores-golpearon-el-consumo-de-combustible-en-marzo-y-solo-ypf-aumento-sus-nid28042026/" target="_blank" class="chip lanacion">
+        
+                        <a href="https://www.lanacion.com.ar/economia/los-aumentos-en-los-surtidores-golpearon-el-consumo-de-combustible-en-marzo-y-solo-ypf-aumento-sus-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             La Nación
                         </a>
-                    
+            
                     </div>
                 </article>
-                
-                <article class="card" data-categoria="ECONOMIA">
-                    <h3>Sturzenegger presenta medidas desregulatorias al Congreso</h3>
-                    <p>Federico Sturzenegger adelantó medidas desregulatorias para enviar al Congreso. El objetivo es recibir apoyo de los gobernadores. Se espera que estas medidas tengan un impacto en la economía. Sturzenegger pidió apoyo a los gobernadores. Las medidas serán presentadas al Congreso.</p>
-                    <div class="sources">
-                
-                        <a href="https://www.lanacion.com.ar/economia/sturzenegger-adelanto-las-medidas-que-presentara-al-congreso-y-le-pidio-apoyo-a-los-gobernadores-nid28042026/" target="_blank" class="chip lanacion">
-                            La Nación
-                        </a>
-                    
-                    </div>
-                </article>
-                
-                <article class="card" data-categoria="ECONOMIA">
-                    <h3>Efecto Temu.Andreani invierte US$30 millones en una planta logística y sumará hubs en Miami y China</h3>
-                    <p>Temu.Andreani invirtió US$30 millones en una planta logística. Se sumarán hubs en Miami y China. Esta inversión busca mejorar la eficiencia logística. El objetivo es aumentar la capacidad de entrega. La planta logística será un paso importante en el crecimiento de la empresa.</p>
-                    <div class="sources">
-                
-                        <a href="https://www.lanacion.com.ar/economia/negocios/efecto-temu-andreani-invierte-us30-millones-en-una-planta-logistica-y-sumara-hubs-en-miami-y-china-nid28042026/" target="_blank" class="chip lanacion">
-                            La Nación
-                        </a>
-                    
-                    </div>
-                </article>
-                
+        
                 <article class="card" data-categoria="ECONOMIA">
                     <h3>Cortes de gas a estaciones de GNC y empresas para priorizar hogares</h3>
                     <p>El gobierno dispuso cortes de gas a estaciones de GNC y empresas para priorizar a los hogares debido al frío. Se busca reducir la demanda de gas para evitar cortes en suministro a los hogares. Las estaciones de GNC y empresas serán afectadas por los cortes. El objetivo es garantizar el suministro de gas a los hogares. La medida se tomó para abordar la situación de frío en el país.</p>
                     <div class="sources">
-                
-                        <a href="https://www.lanacion.com.ar/economia/por-el-frio-disponen-cortes-de-gas-a-empresas-y-estaciones-de-gnc-para-priorizar-hogares-nid28042026/" target="_blank" class="chip lanacion">
+        
+                        <a href="https://www.lanacion.com.ar/economia/por-el-frio-disponen-cortes-de-gas-a-empresas-y-estaciones-de-gnc-para-priorizar-hogares-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             La Nación
                         </a>
-                    
+            
                     </div>
                 </article>
-                
+        
                 <article class="card" data-categoria="ECONOMIA">
-                    <h3>Multiples eventos globales y nacionales destacan en la actualidad</h3>
-                    <p>
-La guerra entre Estados Unidos, Israel e Irán sigue siendo un tema de preocupación. En el ámbito político, Javier Milei y sus medidas han generado interés. El rey Carlos III visitó a Donald Trump en los Estados Unidos. Además, se registró un asalto a una familia por parte de motochorros, quienes obligaron a una mujer en silla de ruedas a bajar.</p>
+                    <h3>Eventos Políticos y Sociales en Argentina y en el Mundo</h3>
+                    <p>La guerra entre Estados Unidos, Israel e Irán sigue siendo un tema de debate en la comunidad internacional. En Argentina, el presidente Javier Milei realizará una exposición económica en el Palacio Libertad. En el ámbito social, los dichos de Eliana Guercio sobre Yipio, participante de Gran Hermano, encendieron las redes. Además, el cruce de Belliboni y Lilia Lemoine en comisión de Diputados generó interés.</p>
                     <div class="sources">
-                
-                        <a href="https://www.clarin.com/mundo/guerra-estados-unidos-israel-iran-vivo-buque-repleto-gas-natural-licuado-atraveso-estrecho-ormuz-trump-analiza-propuesta-teheran-reabrir-paso_0_UNV1MCwdWv.html" target="_blank" class="chip clarin">
+        
+                        <a href="https://www.clarin.com/mundo/guerra-estados-unidos-israel-iran-vivo-buque-repleto-gas-natural-licuado-atraveso-estrecho-ormuz-trump-analiza-propuesta-teheran-reabrir-paso_0_UNV1MCwd" target="_blank" rel="noopener noreferrer" class="chip clarin">
                             Clarín
                         </a>
-                    
-                        <a href="https://www.clarin.com/politica/javier-mile" target="_blank" class="chip clarin">
-                            Clarín
-                        </a>
-                    
+            
                     </div>
                 </article>
-                </section>
+        </section>
             <section class="categoria-section" data-categoria="POLITICA">
                 <h2>POLITICA</h2>
             
                 <article class="card" data-categoria="POLITICA">
-                    <h3>El gobierno porteño financia obras con el cobro de la atención a extranjeros en hospitales públicos.</h3>
-                    <p>El gobierno porteño ha informado que financia obras con el cobro de la atención a extranjeros en hospitales públicos.</p>
+                    <h3>Manuel Adorni presenta su Informe de Gestión en la Cámara de Diputados y la Corte reclama a Kicillof por las vacantes.</h3>
+                    <p>Manuel Adorni presentó su Informe de Gestión en la Cámara de Diputados, mientras que la Corte emitió un fuerte reclamo a Kicillof por las vacantes, considerándolas una necesidad institucional impostergable.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/politica/2026/04/28/el-gobierno-porteno-informo-que-financia-obras-con-el-cobro-de-la-atencion-a-extranjeros-en-hospitales-publicos/" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/politica/2026/04/28/va-a-estar-bueno-como-vive-manuel-adorni-las-ultimas-horas-antes-de-la-sesion-clave-en-diputados/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
-                    </div>
-                </article>
-                
-                <article class="card" data-categoria="POLITICA">
-                    <h3>Otro fallo a favor del Gobierno por la reforma laboral: apartaron a la Justicia del Trabajo de la causa</h3>
-                    <p>La Cámara Contenciosa y de Trabajo de la Corte Suprema de Justicia apartó a la Justicia del Trabajo de la causa que cuestionaba la reforma laboral. Este fallo es a favor del Gobierno. La decisión se tomó en un proceso judicial que involucraba la constitucionalidad de la reforma laboral. La Justicia del Trabajo había sido parte de la causa. El fallo es visto como un golpe para los opositores de la reforma laboral.</p>
-                    <div class="sources">
-                
-                        <a href="https://www.infobae.com/politica/2026/04/28/otro-fallo-a-favor-del-gobierno-por-la-reforma-laboral-apartaron-a-la-justicia-del-trabajo-de-la" target="_blank" class="chip infobae">
+            
+                        <a href="https://www.infobae.com/politica/2026/04/28/fuerte-reclamo-de-la-corte-a-kicillof-por-las-vacantes-es" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
                     </div>
                 </article>
-                
+        
                 <article class="card" data-categoria="POLITICA">
-                    <h3>Choferes luchan por sobrevivir en medio de la crisis del transporte</h3>
-                    <p>Un chofer compartió su duro relato sobre cómo la crisis del transporte lo está afectando, destacando la dificultad para mantener a su hijo. La situación es crítica y muchos conductores están sufriendo las consecuencias. La crisis del transporte sigue siendo un tema de preocupación en el país. Los choferes están luchando por sobrevivir en un mercado cada vez más difícil. La situación es cada vez más desesperante.</p>
+                    <h3>El gobierno porteño financia obras con el cobro de la atención a extranjeros en hospitales públicos</h3>
+                    <p>El gobierno porteño informó que financia obras con el cobro de la atención a extranjeros en hospitales públicos.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/politica/2026/04/28/hoy-en-dia-me-esta-manteniendo-mi-hijo-el-duro-relato-de-un-chofer-en-medio-de-la-crisis-del-transporte/" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/politica/2026/04/28/el-gobierno-porteno-informo-que-financia-obras-con-el-cobro-de-la-atencion-a-extranjeros-en-hospitales-publicos/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
                     </div>
                 </article>
-                
+        
                 <article class="card" data-categoria="POLITICA">
-                    <h3>Javier Milei defiende a Manuel Adorni y rechaza la intimación del Gobierno al paro docente universitario</h3>
-                    <p>
-Javier Milei defendió a Manuel Adorni durante su interrogatorio en Diputados, mientras que el diputado Yacobitti cuestionó la intimación del Gobierno al paro docente universitario. Milei también habló sobre la suba de la inflación y rechazó cualquier medida que pueda afectar a la economía. El paro docente universitario sigue siendo un tema de debate en el país. La militancia libertaria se mostró en apoyo a Adorni durante su interrogatorio. El evento fue cubierto por varios medios de comunicación.</p>
+                    <h3>El Gobierno obtiene nuevos favores judiciales con la reforma laboral</h3>
+                    <p>La Justicia del Trabajo fue apartada de la causa de la reforma laboral, lo que beneficia al Gobierno. Además, se informó sobre gastos de la esposa de Manuel Adorni y pagos de Elías Suárez. La Justicia Contencioso Administrativa Federal definirá si la ley es constitucional. Tres gobernadores aliados de Milei celebraron la estabilidad macroeconómica pero advirtieron sobre la inestabilidad fiscal. La reforma laboral cambia de fuero.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/politica/2026/04/28/yacobitti-cuestiono-la-intimacion-del-gobierno-al" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/politica/2026/04/28/otro-fallo-a-favor-del-gobierno-por-la-reforma-laboral-apartaron-a-la-justicia-del-trabajo-de-la-causa/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
-                    </div>
-                </article>
-                
-                <article class="card" data-categoria="POLITICA">
-                    <h3>La Corte bonaerense le reclama a Kicillof la cobertura "urgente" de sus vacantes</h3>
-                    <p>La Corte bonaerense le reclamó a Axel Kicillof que active de manera urgente las negociaciones para cubrir las vacantes en la provincia.</p>
-                    <div class="sources">
-                
-                        <a href="https://www.lanacion.com.ar/politica/la-corte-bonaerense-le-reclamo-a-axel-kicillof-que-active-de-manera-urgente-las-negociaciones-para-nid28042026/" target="_blank" class="chip lanacion">
-                            La Nación
+            
+                        <a href="https://www.lan" target="_blank" rel="noopener noreferrer" class="chip default">
+                            Fuente
                         </a>
-                    
+            
                     </div>
                 </article>
-                
-                <article class="card" data-categoria="POLITICA">
-                    <h3>Nicolás Del Caño: "Milei está en un momento de crecimiento en el rechazo a su gobierno"</h3>
-                    <p>Nicolás Del Caño afirmó que el gobierno de Milei está en un momento de crecimiento en el rechazo.</p>
-                    <div class="sources">
-                
-                        <a href="https://www.clarin.com/videos/nicolas-cano-milei-momento-crecimiento-rechazo-gobierno_3_V5JftR2a55.html" target="_blank" class="chip clarin">
-                            Clarín
-                        </a>
-                    
-                    </div>
-                </article>
-                </section>
+        </section>
             <section class="categoria-section" data-categoria="INTERNACIONAL">
                 <h2>INTERNACIONAL</h2>
             
                 <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Estados Unidos envía insumos médicos a Venezuela mientras un yate ruso cruza el Estrecho de Ormuz sin problemas.</h3>
-                    <p>Estados Unidos envió 71 toneladas de insumos médicos a Venezuela. El yate Nord, propiedad de Alexei Mordashov, cruzó el Estrecho de Ormuz sin problemas. El destino de los insumos médicos es objeto de dudas. El yate ruso atravesó el estrecho pese al bloqueo. El incidente se produjo el 28 de abril de 2026.</p>
+                    <h3>Israel destruye complejo de túneles de Hezbollah en el sur del Líbano</h3>
+                    <p>Israel ha destruido un complejo de túneles de Hezbollah en el sur del Líbano, construido con apoyo del régimen iraní. El jefe militar israelí reconoce &quot;incidentes poco éticos&quot; en la guerra. El ataque se produce en el contexto de la guerra entre Israel, Estados Unidos e Irán. La operación militar israelí busca debilitar a Hezbollah. El régimen iraní respalda a la organización.</p>
                     <div class="sources">
-                
-                        <a href="https://www.lanacion.com.ar/el-m" target="_blank" class="chip lanacion">
-                            La Nación
-                        </a>
-                    
-                        <a href="https://www.infobae.com/venezuela/2026/04/28/dudas-sobre-el-destino-de-las-71-toneladas-de-insumos-medicos-que-envio-estados-unidos-a-venezuela/" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/america/mundo/2026/04/28/israel-destruyo-un-complejo-de-tuneles-de-hezbollah-construido-con-apoyo-del-regimen-irani-en-el-sur-del-libano/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
+                        <a href="https://www.lanacion.com.ar/el" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            La Nación
+                        </a>
+            
                     </div>
                 </article>
-                
+        
+                <article class="card" data-categoria="INTERNACIONAL">
+                    <h3>Dos jóvenes ucranianos secuestrados por Rusia cuentan su testimonio en Madrid.</h3>
+                    <p>Dos jóvenes ucranianos secuestrados por Rusia compartieron su testimonio en Madrid, describiendo la situación en la que fueron apuntados con armas cuando intentaron huir.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/america/mundo/2026/04/28/el-testimonio-de-los-ninos-secuestrados-por-rusia-nos-apuntaron-con-armas-cuando-intentamos-huir/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Infobae
+                        </a>
+            
+                    </div>
+                </article>
+        
                 <article class="card" data-categoria="INTERNACIONAL">
                     <h3>Lula da Silva y Flávio Bolsonaro empatan en una nueva encuesta en Brasil</h3>
                     <p>Una nueva encuesta arrojó un empate técnico entre Lula da Silva y Flávio Bolsonaro en Brasil.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/america/america-latina/2026/04/28/una-nueva-encuesta-arrojo-un-empate-tecnico-entre-lula-da-silva-y-flavio-bolsonaro-en-brasil/" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/america/america-latina/2026/04/28/una-nueva-encuesta-arrojo-un-empate-tecnico-entre-lula-da-silva-y-flavio-bolsonaro-en-brasil/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
                     </div>
                 </article>
-                
+        
                 <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Eventos mundiales y nacionales: actualidad del día 28 de abril de 2026</h3>
-                    <p>
-Taylor Swift revela su proceso creativo para escribir canciones, mientras que un analista internacional explica el cambio de estrategia de EE.UU. tras el atentado en Nueva York. En el conflicto en Medio Oriente, se cumplen 60 días de la guerra entre Estados Unidos, Israel y Irán. Un experto analiza por qué el intento de atentado en el Hilton beneficia a Trump en este momento. Además, se reporta un atentado en un hotel de Nueva York y un caso de narcisismo clínico en la sociedad actual.</p>
+                    <h3>La magia detrás de Taylor Swift: cómo la famosa cantante escribe sus canciones</h3>
+                    <p>Taylor Swift comparte su proceso creativo para escribir canciones. La cantante revela sus inspiraciones y técnicas para componer éxitos musicales. Su enfoque en la autenticidad y la conexión con sus fans es clave en su éxito. La magia detrás de Taylor Swift se refleja en su música y estilo único. Su capacidad para conectar con su audiencia es un aspecto fundamental de su éxito.</p>
                     <div class="sources">
-                
-                        <a href="https://www.infobae.com/entretenimiento/2026/04/28/la-magia-detras-de-taylor-swift-como-la-famosa-cantante" target="_blank" class="chip infobae">
+        
+                        <a href="https://www.infobae.com/entretenimiento/2026/04/28/la-magia-detras-de-taylor-swift-como-la-famosa-cantante-escribe-sus-canciones/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Infobae
                         </a>
-                    
+            
                     </div>
                 </article>
-                </section>
-        </div>
+        
+                <article class="card" data-categoria="INTERNACIONAL">
+                    <h3>El curioso momento de la reina Letizia con un hombre en silla de ruedas en el Palacio de la Zarzuela</h3>
+                    <p>La reina Letizia se quedó con el joystick de un hombre en silla de ruedas en un incidente en el Palacio de la Zarzuela.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/el-mundo/el-curioso-momento-de-la-reina-letizia-con-un-hombre-en-silla-de-ruedas-en-el-palacio-de-la-zarzuela-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL">
+                    <h3>La NASA presenta el cohete Artemis III para enviar astronautas al espacio</h3>
+                    <p>La NASA ha anunciado los detalles del cohete Artemis III, que será utilizado para enviar astronautas a la Luna. El cohete cuenta con una columna vertebral innovadora que mejorará su eficiencia. La misión Artemis III busca establecer un programa de vuelos regulares a la Luna. El cohete Artemis III será un paso importante en la exploración espacial. La NASA ha trabajado en el desarrollo de este cohete durante varios años.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/el-mundo/artemis-iii-asi-sera-la-columna-vertebral-del-nuevo-cohete-que-la-nasa-enviara-al-espacio-nid25042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL">
+                    <h3>El Departamento de Justicia acusa al exdirector del FBI por un posteo en Instagram</h3>
+                    <p>El Departamento de Justicia ha acusado al exdirector del FBI por un posteo en Instagram que se considera polémico. El exdirector del FBI ya había sido acusado anteriormente por el gobierno de Trump. El caso se refiere a un mensaje publicado en Instagram. El exdirector del FBI ya había sido acusado anteriormente por el gobierno de Trump. El caso sigue siendo objeto de debate.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/estados-unidos/el-gobierno-de-trump-vuelve-a-acusar-al-exdirector-del-fbi-ahora-por-un-polemico-mensaje-en-redes-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        </section>
+        </main>
+
+        <script>
+            const botonesFiltro = document.querySelectorAll(".filtro-btn");
+            const secciones = document.querySelectorAll(".categoria-section");
+
+            botonesFiltro.forEach((boton) => {
+                boton.addEventListener("click", () => {
+                    const categoria = boton.dataset.cat;
+
+                    botonesFiltro.forEach((item) => item.classList.remove("active"));
+                    boton.classList.add("active");
+
+                    secciones.forEach((seccion) => {
+                        seccion.hidden = categoria !== "TODAS" && seccion.dataset.categoria !== categoria;
+                    });
+                });
+            });
+        </script>
 
     </body>
     </html>
