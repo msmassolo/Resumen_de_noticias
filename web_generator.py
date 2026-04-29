@@ -23,7 +23,7 @@ def obtener_diario_y_clase(url):
     return "Fuente", "default"
 
 
-DIAS = ("lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo")
+DIAS = ("lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo")
 MESES = (
     "enero",
     "febrero",
@@ -118,25 +118,49 @@ def parsear_contenido(contenido):
     return noticias
 
 
+ORDEN_CATEGORIAS = ("POLITICA", "ECONOMIA", "INTERNACIONAL", "GENERAL")
+
+
+def ordenar_categorias(categorias):
+    orden = {categoria: indice for indice, categoria in enumerate(ORDEN_CATEGORIAS)}
+    return sorted(categorias, key=lambda categoria: (orden.get(categoria, len(orden)), categoria))
+
+
+def clave_categoria(categoria):
+    orden = {nombre: indice for indice, nombre in enumerate(ORDEN_CATEGORIAS)}
+    return orden.get(categoria, len(orden)), categoria
+
+
 def generar_html_noticias(noticias):
     html_noticias = ""
     categoria_actual = None
+    indice_en_categoria = 0
 
     for noticia in noticias:
         categoria = noticia["categoria"]
 
         if categoria != categoria_actual:
             if categoria_actual is not None:
-                html_noticias += "</section>"
+                html_noticias += "</div></section>"
+
+            total_categoria = sum(1 for item in noticias if item["categoria"] == categoria)
 
             html_noticias += f"""
             <section class="categoria-section" data-categoria="{escape(categoria)}">
-                <h2>{escape(categoria)}</h2>
+                <div class="section-heading">
+                    <h2>{escape(categoria.title())}</h2>
+                    <span>{total_categoria} noticias</span>
+                </div>
+                <div class="news-grid">
             """
             categoria_actual = categoria
+            indice_en_categoria = 0
+
+        indice_en_categoria += 1
+        card_clase = "card featured" if indice_en_categoria == 1 else "card"
 
         html_noticias += f"""
-                <article class="card" data-categoria="{escape(categoria)}">
+                <article class="{card_clase}" data-categoria="{escape(categoria)}">
                     <h3>{escape(noticia["titulo"])}</h3>
                     <p>{escape(noticia["resumen"]).replace(chr(10), "<br>")}</p>
                     <div class="sources">
@@ -146,7 +170,7 @@ def generar_html_noticias(noticias):
             nombre, clase = obtener_diario_y_clase(link)
             html_noticias += f"""
                         <a href="{escape(link, quote=True)}" target="_blank" rel="noopener noreferrer" class="chip {escape(clase)}">
-                            {escape(nombre)}
+                            Leer en {escape(nombre)}
                         </a>
             """
 
@@ -156,17 +180,18 @@ def generar_html_noticias(noticias):
         """
 
     if categoria_actual is not None:
-        html_noticias += "</section>"
+        html_noticias += "</div></section>"
 
     return html_noticias
 
 
-def generar_filtros(categorias):
+def generar_filtros(categorias, conteos):
+    total = sum(conteos.values())
     filtros_html = '<div class="filtros" aria-label="Filtros de categoría">'
-    filtros_html += '<button class="filtro-btn active" data-cat="TODAS" type="button">Todas</button>'
+    filtros_html += f'<button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>{total}</span></button>'
 
-    for cat in sorted(categorias):
-        filtros_html += f'<button class="filtro-btn" data-cat="{escape(cat)}" type="button">{escape(cat)}</button>'
+    for cat in ordenar_categorias(categorias):
+        filtros_html += f'<button class="filtro-btn" data-cat="{escape(cat)}" type="button">{escape(cat.title())} <span>{conteos.get(cat, 0)}</span></button>'
 
     filtros_html += "</div>"
     return filtros_html
@@ -178,10 +203,12 @@ def generar_web(contenido, output_path="index.html"):
     hora_formateada = fecha_actual.strftime("%H:%M")
 
     noticias = parsear_contenido(contenido)
+    noticias = sorted(noticias, key=lambda noticia: clave_categoria(noticia["categoria"]))
     categorias = {noticia["categoria"] for noticia in noticias}
+    conteos = {categoria: sum(1 for noticia in noticias if noticia["categoria"] == categoria) for categoria in categorias}
 
     html_noticias = generar_html_noticias(noticias)
-    filtros_html = generar_filtros(categorias)
+    filtros_html = generar_filtros(categorias, conteos)
 
     html = """
     <!doctype html>
@@ -337,37 +364,340 @@ def generar_web(contenido, output_path="index.html"):
             .pagina12 { background:#f1e8ff; color:#6d28d9; }
             .ambito { background:#e8f7ef; color:#047857; }
             .default { background:#edf2f7; color:#334155; }
+
+            :root {
+                color-scheme: light;
+                --text: #172033;
+                --muted: #637083;
+                --line: #d8dee8;
+                --surface: #ffffff;
+                --soft: #f4f7fb;
+                --accent: #0f766e;
+                --accent-strong: #115e59;
+            }
+
+            body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                color: var(--text);
+                background: #f6f8fb;
+                animation: none;
+            }
+
+            .header {
+                text-align: left;
+                padding: 34px 20px 24px;
+                background: linear-gradient(180deg, #ffffff 0%, #eef4f7 100%);
+                border-bottom: 1px solid var(--line);
+            }
+
+            .header-inner,
+            .toolbar,
+            .container {
+                max-width: 1120px;
+                margin: 0 auto;
+            }
+
+            .eyebrow {
+                margin: 0 0 10px;
+                color: var(--accent-strong);
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            .header h1 {
+                max-width: 760px;
+                margin: 0;
+                font-size: clamp(32px, 5vw, 54px);
+                letter-spacing: 0;
+            }
+
+            .header p {
+                max-width: 720px;
+                margin-top: 12px;
+                color: var(--muted);
+                font-size: 16px;
+            }
+
+            .header .eyebrow {
+                margin: 0 0 10px;
+                color: var(--accent-strong);
+                font-size: 12px;
+            }
+
+            .toolbar {
+                display: grid;
+                grid-template-columns: minmax(220px, 1fr) auto;
+                gap: 12px;
+                padding: 18px 20px 8px;
+            }
+
+            .search-input {
+                width: 100%;
+                min-height: 44px;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                padding: 10px 13px;
+                color: var(--text);
+                background: var(--surface);
+                font: inherit;
+            }
+
+            .search-input:focus,
+            .compact-btn:focus-visible {
+                border-color: var(--accent);
+                outline: 3px solid rgba(15, 118, 110, 0.16);
+            }
+
+            .compact-btn {
+                min-height: 44px;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                padding: 0 14px;
+                color: var(--text);
+                background: var(--surface);
+                cursor: pointer;
+                font: inherit;
+                font-weight: 700;
+            }
+
+            .filtros {
+                justify-content: flex-start;
+                max-width: 1120px;
+                margin: 0 auto;
+                padding: 8px 20px 16px;
+            }
+
+            .filtro-btn {
+                border-radius: 8px;
+                background: var(--surface);
+                font-weight: 700;
+            }
+
+            .filtro-btn span {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 22px;
+                min-height: 22px;
+                margin-left: 6px;
+                border-radius: 999px;
+                background: var(--soft);
+                color: var(--muted);
+                font-size: 12px;
+            }
+
+            .filtro-btn.active {
+                background: var(--text);
+                border-color: var(--text);
+            }
+
+            .filtro-btn.active span {
+                background: rgba(255, 255, 255, 0.18);
+                color: #ffffff;
+            }
+
+            .container {
+                padding: 10px 20px 46px;
+            }
+
+            .categoria-section {
+                margin-top: 30px;
+            }
+
+            .section-heading {
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                gap: 12px;
+                margin: 0 0 12px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .section-heading h2 {
+                margin: 0;
+                text-align: left;
+                font-size: 18px;
+            }
+
+            .section-heading span {
+                color: var(--muted);
+                font-size: 13px;
+                font-weight: 700;
+            }
+
+            .news-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                min-height: 100%;
+                margin: 0;
+                background: var(--surface);
+                border-color: var(--line);
+                box-shadow: none;
+                transition: border-color 160ms ease, transform 160ms ease;
+            }
+
+            .card:hover {
+                border-color: #aeb8c7;
+                transform: translateY(-1px);
+            }
+
+            .card.featured {
+                grid-column: 1 / -1;
+                padding: 22px;
+                border-top: 4px solid var(--accent);
+            }
+
+            .card h3 {
+                font-size: 19px;
+                letter-spacing: 0;
+            }
+
+            .card.featured h3 {
+                font-size: clamp(24px, 3vw, 32px);
+                line-height: 1.15;
+            }
+
+            .card p {
+                color: #39465a;
+            }
+
+            .sources {
+                margin-top: auto;
+            }
+
+            .chip {
+                border-radius: 8px;
+            }
+
+            .empty-state {
+                display: none;
+                max-width: 1120px;
+                margin: 24px auto 0;
+                padding: 18px 20px;
+                border: 1px dashed var(--line);
+                border-radius: 8px;
+                color: var(--muted);
+                background: var(--surface);
+                text-align: center;
+            }
+
+            body.compact .card p {
+                display: none;
+            }
+
+            body.compact .card,
+            body.compact .card.featured {
+                padding: 16px;
+            }
+
+            body.compact .card h3,
+            body.compact .card.featured h3 {
+                font-size: 18px;
+            }
+
+            @media (max-width: 720px) {
+                .toolbar {
+                    grid-template-columns: 1fr;
+                }
+
+                .news-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .section-heading {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+            }
         </style>
     </head>
 
     <body>
 
         <div class="header">
-            <h1>Resumen de Noticias</h1>
-            <p>Edición __FECHA__ · __HORA__ hs</p>
+            <div class="header-inner">
+                <p class="eyebrow">Panorama automático</p>
+                <h1>Resumen de Noticias</h1>
+                <p>Actualizado el __FECHA__ a las __HORA__ hs. Una vista rápida para leer, filtrar y abrir las fuentes principales.</p>
+            </div>
+        </div>
+
+        <div class="toolbar" aria-label="Herramientas de lectura">
+            <input class="search-input" type="search" placeholder="Buscar por título, resumen o fuente" aria-label="Buscar noticias">
+            <button class="compact-btn" type="button" aria-pressed="false">Modo compacto</button>
         </div>
 
         __FILTROS__
 
         <main class="container">
             __NOTICIAS__
+            <p class="empty-state">No hay noticias que coincidan con los filtros actuales.</p>
         </main>
 
         <script>
             const botonesFiltro = document.querySelectorAll(".filtro-btn");
             const secciones = document.querySelectorAll(".categoria-section");
+            const buscador = document.querySelector(".search-input");
+            const botonCompacto = document.querySelector(".compact-btn");
+            const estadoVacio = document.querySelector(".empty-state");
+            let categoriaActiva = "TODAS";
+
+            function normalizar(texto) {
+                return texto.toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g, "");
+            }
+
+            function aplicarFiltros() {
+                const busqueda = normalizar(buscador.value.trim());
+                let hayResultados = false;
+
+                secciones.forEach((seccion) => {
+                    const coincideCategoria = categoriaActiva === "TODAS" || seccion.dataset.categoria === categoriaActiva;
+                    let visiblesEnSeccion = 0;
+
+                    seccion.querySelectorAll(".card").forEach((card) => {
+                        const coincideBusqueda = !busqueda || normalizar(card.textContent).includes(busqueda);
+                        const visible = coincideCategoria && coincideBusqueda;
+
+                        card.hidden = !visible;
+
+                        if (visible) {
+                            visiblesEnSeccion += 1;
+                            hayResultados = true;
+                        }
+                    });
+
+                    seccion.hidden = visiblesEnSeccion === 0;
+                });
+
+                estadoVacio.style.display = hayResultados ? "none" : "block";
+            }
 
             botonesFiltro.forEach((boton) => {
                 boton.addEventListener("click", () => {
-                    const categoria = boton.dataset.cat;
+                    categoriaActiva = boton.dataset.cat;
 
                     botonesFiltro.forEach((item) => item.classList.remove("active"));
                     boton.classList.add("active");
 
-                    secciones.forEach((seccion) => {
-                        seccion.hidden = categoria !== "TODAS" && seccion.dataset.categoria !== categoria;
-                    });
+                    aplicarFiltros();
                 });
+            });
+
+            buscador.addEventListener("input", aplicarFiltros);
+
+            botonCompacto.addEventListener("click", () => {
+                const activo = document.body.classList.toggle("compact");
+                botonCompacto.setAttribute("aria-pressed", String(activo));
+                botonCompacto.textContent = activo ? "Modo lectura" : "Modo compacto";
             });
         </script>
 
