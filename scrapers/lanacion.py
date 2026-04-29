@@ -1,6 +1,5 @@
-import requests
 from bs4 import BeautifulSoup
-from scrapers.utils import es_reciente
+from scrapers.utils import es_reciente, limpiar_titulo, normalizar_url, obtener_html
 
 
 def get_lanacion():
@@ -11,24 +10,21 @@ def get_lanacion():
         "mundo": ("https://www.lanacion.com.ar/el-mundo/", 4)
     }
 
-    headers = {"User-Agent": "Mozilla/5.0"}
-
     noticias = []
     vistos = set()
 
     for categoria, (url, limite) in secciones.items():
         try:
-            response = requests.get(url, headers=headers, timeout=10)
-
-            if response.status_code != 200:
+            html = obtener_html(url, timeout=10)
+            if not html:
                 continue
 
-            soup = BeautifulSoup(response.text, "html.parser")
+            soup = BeautifulSoup(html, "html.parser")
             noticias_seccion = []
 
             for t in soup.find_all("a"):
 
-                titulo = t.get_text(strip=True)
+                titulo = limpiar_titulo(t.get_text(" ", strip=True))
                 link = t.get("href", "")
 
                 if not titulo or not link:
@@ -37,7 +33,7 @@ def get_lanacion():
                 if len(titulo) < 40:
                     continue
 
-                full_link = link if link.startswith("http") else "https://www.lanacion.com.ar" + link
+                full_link = normalizar_url("https://www.lanacion.com.ar", link)
 
                 # 🔴 NUEVO FILTRO
                 if not full_link.startswith("http"):
@@ -65,6 +61,7 @@ def get_lanacion():
                 })
 
             noticias += noticias_seccion[:limite]
+            print(f"La Nacion {categoria}: {len(noticias_seccion[:limite])} noticias")
 
         except Exception as e:
             print(f"⚠️ La Nación {categoria}: {e}")

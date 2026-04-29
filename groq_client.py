@@ -9,6 +9,7 @@ load_dotenv()
 
 URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+RETRY_STATUS_CODES = {429, 500, 502, 503, 504}
 
 
 def recortar_texto(texto, max_chars):
@@ -44,21 +45,27 @@ def pedir_groq(system_prompt, user_prompt, *, max_tokens=160, temperature=0, ret
         try:
             response = requests.post(URL, headers=headers, json=data, timeout=(5, 20))
 
-            if response.status_code == 429 and intento < retries:
-                espera = 6 * (intento + 1)
-                print(f"Rate limit. Esperando {espera}s...")
+            if response.status_code in RETRY_STATUS_CODES and intento < retries:
+                espera = min(30, 4 * (2 ** intento))
+                print(f"Groq {response.status_code}. Reintentando en {espera}s...")
                 time.sleep(espera)
                 continue
 
             if response.status_code != 200:
-                print("Error Groq:", response.text[:300])
+                print(f"Error Groq {response.status_code}:", response.text[:300])
                 return None
 
-            return response.json()["choices"][0]["message"]["content"].strip()
+            try:
+                return response.json()["choices"][0]["message"]["content"].strip()
+            except (KeyError, IndexError, ValueError) as e:
+                print(f"Respuesta inesperada de Groq: {e}")
+                return None
 
         except Exception as e:
             print(f"Error Groq: {e}")
             if intento < retries:
-                time.sleep(4)
+                espera = min(30, 4 * (2 ** intento))
+                print(f"Reintentando en {espera}s...")
+                time.sleep(espera)
 
     return None

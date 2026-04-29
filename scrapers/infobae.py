@@ -1,6 +1,5 @@
-import requests
 from bs4 import BeautifulSoup
-from scrapers.utils import es_reciente
+from scrapers.utils import es_reciente, limpiar_titulo, normalizar_url, obtener_html
 
 
 def get_infobae():
@@ -11,24 +10,21 @@ def get_infobae():
         "america": ("https://www.infobae.com/america/", 4)
     }
 
-    headers = {"User-Agent": "Mozilla/5.0"}
-
     noticias = []
     vistos = set()
 
     for categoria, (url, limite) in secciones.items():
         try:
-            response = requests.get(url, headers=headers, timeout=10)
-
-            if response.status_code != 200:
+            html = obtener_html(url, timeout=10)
+            if not html:
                 continue
 
-            soup = BeautifulSoup(response.text, "html.parser")
+            soup = BeautifulSoup(html, "html.parser")
             noticias_seccion = []
 
             for t in soup.find_all("a"):
 
-                titulo = t.get_text(strip=True)
+                titulo = limpiar_titulo(t.get_text(" ", strip=True))
                 link = t.get("href", "")
 
                 if not titulo or not link:
@@ -40,7 +36,7 @@ def get_infobae():
                 if "/tag/" in link or "/autor/" in link:
                     continue
 
-                full_link = link if link.startswith("http") else "https://www.infobae.com" + link
+                full_link = normalizar_url("https://www.infobae.com", link)
 
                 # 🔴 NUEVO FILTRO
                 if not full_link.startswith("http"):
@@ -68,6 +64,7 @@ def get_infobae():
                 })
 
             noticias += noticias_seccion[:limite]
+            print(f"Infobae {categoria}: {len(noticias_seccion[:limite])} noticias")
 
         except Exception as e:
             print(f"⚠️ Infobae {categoria}: {e}")

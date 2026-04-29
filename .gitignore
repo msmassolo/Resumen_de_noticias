@@ -8,5 +8,6 @@ __pycache__/
 # ignorar temporales
 *.log
 .cache_ai.json
+data/
 
 # permitir todo lo demás

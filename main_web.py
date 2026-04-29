@@ -1,20 +1,37 @@
 from scrapers import obtener_todo
-from scrapers.utils import obtener_contenido
+from scrapers.utils import limpiar_titulo, obtener_contenido_detalle
 from ai import procesar_noticia
 from analyzer import agrupar_noticias, depurar_grupos
 from analyzer_2 import unificar_bloques
 
 from web_generator import generar_web
+from groq_client import MODEL
 
+import argparse
 import json
 import os
+import sys
 import time
 import subprocess
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
 CACHE_IA_PATH = ".cache_ai.json"
+CACHE_IA_TTL_DIAS = int(os.getenv("CACHE_IA_TTL_DIAS", "3"))
+CACHE_IA_VERSION = "evento-resumen-v1"
+ARTIFACTS_DIR = Path("data")
+
+
+def configurar_salida_utf8():
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
+configurar_salida_utf8()
 
 
 def cargar_cache_ia():
@@ -38,6 +55,75 @@ def guardar_cache_ia(cache):
 
 
 # 🔥 NUEVO: función para subir a GitHub
+def _ahora_utc():
+    return datetime.now(timezone.utc)
+
+
+def _parsear_fecha_cache(valor):
+    if not valor:
+        return None
+
+    try:
+        return datetime.fromisoformat(valor.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def leer_cache_ia(cache, link):
+    entrada = cache.get(link)
+
+    if not isinstance(entrada, dict):
+        return None
+
+    if entrada.get("version") != CACHE_IA_VERSION:
+        return None
+
+    if entrada.get("model") != MODEL:
+        return None
+
+    creado = _parsear_fecha_cache(entrada.get("creado"))
+    if not creado:
+        return None
+
+    if _ahora_utc() - creado > timedelta(days=CACHE_IA_TTL_DIAS):
+        return None
+
+    data = entrada.get("data")
+    if isinstance(data, dict) and data.get("evento") and data.get("resumen"):
+        return data
+
+    return None
+
+
+def escribir_cache_ia(cache, link, data):
+    cache[link] = {
+        "version": CACHE_IA_VERSION,
+        "model": MODEL,
+        "creado": _ahora_utc().isoformat(),
+        "data": data,
+    }
+
+
+def guardar_json_intermedio(nombre, data):
+    try:
+        ARTIFACTS_DIR.mkdir(exist_ok=True)
+        path = ARTIFACTS_DIR / nombre
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"No se pudo guardar {nombre}: {e}")
+
+
+def guardar_texto_intermedio(nombre, texto):
+    try:
+        ARTIFACTS_DIR.mkdir(exist_ok=True)
+        path = ARTIFACTS_DIR / nombre
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(texto)
+    except Exception as e:
+        print(f"No se pudo guardar {nombre}: {e}")
+
+
 def subir_index_github():
     if os.getenv("GITHUB_ACTIONS") == "true":
         print("\nGitHub Actions se encarga del commit/push final.\n")
@@ -107,15 +193,43 @@ def parsear_grupos(texto):
     return grupos
 
 
-def ejecutar_proyecto():
+def normalizar_categoria(categoria):
+    cat = (categoria or "general").lower()
+
+    if "eco" in cat:
+        return "economia"
+    if "pol" in cat:
+        return "politica"
+    return "internacional"
+
+
+def normalizar_resultado_ia(data, titulo):
+    if not isinstance(data, dict):
+        data = {}
+
+    evento = str(data.get("evento") or "").strip()
+    resumen = str(data.get("resumen") or "").strip()
+
+    return {
+        "evento": limpiar_titulo(evento or titulo[:120]),
+        "resumen": limpiar_titulo(resumen or titulo[:150]),
+    }
+
+
+def ejecutar_proyecto(publicar=False):
     print("\n--- INICIANDO RECOLECCIÓN DE NOTICIAS ---")
 
     noticias = obtener_todo()
+    guardar_json_intermedio("raw_news.json", noticias)
     print(f"📰 Total noticias: {len(noticias)}")
 
     resultados = []
     cache_ia = cargar_cache_ia()
     cache_modificada = False
+    cache_hits = 0
+    cache_misses = 0
+    sin_contenido = 0
+    fallos_contenido = {}
 
     # 🔴 ETAPA 1: IA
     for i, n in enumerate(noticias, start=1):
@@ -123,20 +237,27 @@ def ejecutar_proyecto():
         print(f"📰 {n['titulo'][:80]}...")
 
         cache_key = n["link"]
-        if cache_key in cache_ia:
-            data = cache_ia[cache_key]
+        data = leer_cache_ia(cache_ia, cache_key)
+        if data:
+            cache_hits += 1
             print("✅ Cache IA")
         else:
-            contenido = obtener_contenido(n["link"])
+            cache_misses += 1
+            contenido, motivo_contenido = obtener_contenido_detalle(n["link"])
 
             if not contenido:
-                print("⚠️ Sin contenido")
+                sin_contenido += 1
+                fallos_contenido[motivo_contenido] = fallos_contenido.get(motivo_contenido, 0) + 1
+                print(f"⚠️ Sin contenido ({motivo_contenido})")
                 continue
 
             data = procesar_noticia(n["titulo"], contenido)
-            cache_ia[cache_key] = data
+            data = normalizar_resultado_ia(data, n["titulo"])
+            escribir_cache_ia(cache_ia, cache_key, data)
             cache_modificada = True
             time.sleep(1.2)
+
+        data = normalizar_resultado_ia(data, n["titulo"])
 
         resultados.append({
             "diario": n["diario"],
@@ -152,6 +273,15 @@ def ejecutar_proyecto():
     if cache_modificada:
         guardar_cache_ia(cache_ia)
 
+    guardar_json_intermedio("processed_news.json", resultados)
+
+    print(
+        f"\nIA: {len(resultados)} procesadas, {cache_hits} cache hits, "
+        f"{cache_misses} cache misses, {sin_contenido} sin contenido"
+    )
+    if fallos_contenido:
+        print(f"Fallos de contenido: {fallos_contenido}")
+
     if not resultados:
         print("❌ No hay resultados")
         return
@@ -160,18 +290,10 @@ def ejecutar_proyecto():
     categorias = {}
 
     for r in resultados:
-        cat = r["categoria"].lower()
-
-        if "eco" in cat:
-            cat = "economia"
-        elif "pol" in cat:
-            cat = "politica"
-        else:
-            cat = "internacional"
-
-        categorias.setdefault(cat, []).append(r)
+        categorias.setdefault(normalizar_categoria(r["categoria"]), []).append(r)
 
     salida_final = ""
+    diagnostico_grupos = []
 
     # 🔴 ETAPA 3 y 4
     for categoria, lista in categorias.items():
@@ -181,14 +303,24 @@ def ejecutar_proyecto():
         res = agrupar_noticias(lista)
 
         if not res:
-            continue
+            print("No se pudo agrupar con IA; se publican las noticias separadas.")
+            grupos = []
+        else:
+            grupos = parsear_grupos(res)
 
-        grupos = parsear_grupos(res)
         grupos = depurar_grupos(lista, grupos)
         usados = {idx for grupo in grupos for idx in grupo}
         for idx in range(1, len(lista) + 1):
             if idx not in usados:
                 grupos.append([idx])
+
+        diagnostico_grupos.append(
+            {
+                "categoria": categoria,
+                "cantidad_noticias": len(lista),
+                "grupos": grupos,
+            }
+        )
 
         for grupo in grupos:
             eventos = []
@@ -217,6 +349,9 @@ LINKS:
             if len(eventos) > 1:
                 time.sleep(3)
 
+    guardar_json_intermedio("groups.json", diagnostico_grupos)
+    guardar_texto_intermedio("site_input.txt", salida_final)
+
     print("\n--- GENERANDO WEB ---\n")
 
     generar_web(salida_final)
@@ -224,8 +359,18 @@ LINKS:
     print("🌐 Web generada: index.html")
 
     # 🔥 NUEVO: subida automática
-    subir_index_github()
+    if publicar:
+        subir_index_github()
+    else:
+        print("Publicacion omitida. Usa --publish para hacer git push desde local.")
 
 
 if __name__ == "__main__":
-    ejecutar_proyecto()
+    parser = argparse.ArgumentParser(description="Genera el resumen automatico de noticias.")
+    parser.add_argument(
+        "--publish",
+        action="store_true",
+        help="Despues de generar index.html, hace commit y push local.",
+    )
+    args = parser.parse_args()
+    ejecutar_proyecto(publicar=args.publish)
