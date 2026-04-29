@@ -21,9 +21,17 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Restaurar cache IA
+        uses: actions/cache@v4
+        with:
+          path: .cache_ai.json
+          key: groq-cache-${{ github.run_id }}
+          restore-keys: |
+            groq-cache-
+
       - name: Instalar dependencias
         run: |
-          pip install requests beautifulsoup4 python-dotenv
+          pip install -r requirements.txt
 
       - name: Ejecutar script
         env:
