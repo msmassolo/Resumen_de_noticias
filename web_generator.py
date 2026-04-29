@@ -1,6 +1,7 @@
 from datetime import datetime
 from html import escape
 from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 
 
 MEDIOS = {
@@ -172,7 +173,7 @@ def generar_filtros(categorias):
 
 
 def generar_web(contenido, output_path="index.html"):
-    fecha_actual = datetime.now()
+    fecha_actual = datetime.now(ZoneInfo("America/Argentina/Buenos_Aires"))
     fecha_formateada = formatear_fecha_es(fecha_actual)
     hora_formateada = fecha_actual.strftime("%H:%M")
 
