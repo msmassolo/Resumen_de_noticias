@@ -1,7 +1,7 @@
 from scrapers import obtener_todo
 from scrapers.utils import obtener_contenido
 from ai import procesar_noticia
-from analyzer import agrupar_noticias
+from analyzer import agrupar_noticias, depurar_grupos
 from analyzer_2 import unificar_bloques
 
 from web_generator import generar_web
@@ -184,6 +184,7 @@ def ejecutar_proyecto():
             continue
 
         grupos = parsear_grupos(res)
+        grupos = depurar_grupos(lista, grupos)
         usados = {idx for grupo in grupos for idx in grupo}
         for idx in range(1, len(lista) + 1):
             if idx not in usados:
