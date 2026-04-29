@@ -1,4 +1,5 @@
 import json
+import re
 
 from groq_client import pedir_groq, recortar_texto
 
@@ -6,9 +7,34 @@ from groq_client import pedir_groq, recortar_texto
 MAX_CONTENIDO_CHARS = 1100
 
 
-def _parsear_respuesta(texto, titulo):
+def _normalizar(texto):
+    return re.sub(r"\W+", " ", (texto or "").lower()).strip()
+
+
+def _resumen_fallback(titulo, contenido):
+    titulo_norm = _normalizar(titulo)
+    oraciones = re.split(r"(?<=[.!?])\s+", " ".join((contenido or "").split()))
+    candidatas = []
+
+    for oracion in oraciones:
+        oracion = oracion.strip()
+        if len(oracion) < 80:
+            continue
+        if _normalizar(oracion) == titulo_norm:
+            continue
+        candidatas.append(oracion)
+        if len(candidatas) == 2:
+            break
+
+    if candidatas:
+        return recortar_texto(" ".join(candidatas), 260)
+
+    return "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
+
+
+def _parsear_respuesta(texto, titulo, contenido):
     if not texto:
-        return {"evento": titulo[:120], "resumen": titulo[:150]}
+        return {"evento": titulo[:120], "resumen": _resumen_fallback(titulo, contenido)}
 
     try:
         data = json.loads(texto)
@@ -24,17 +50,20 @@ def _parsear_respuesta(texto, titulo):
             elif linea.startswith("RESUMEN:"):
                 resumen = linea.replace("RESUMEN:", "", 1).strip()
 
-    return {
-        "evento": evento or titulo[:120],
-        "resumen": resumen or titulo[:150],
-    }
+    evento = evento or titulo[:120]
+    if not resumen or _normalizar(resumen) in {_normalizar(evento), _normalizar(titulo)}:
+        resumen = _resumen_fallback(titulo, contenido)
+
+    return {"evento": evento, "resumen": resumen}
 
 
 def procesar_noticia(titulo, contenido):
     contenido = recortar_texto(contenido, MAX_CONTENIDO_CHARS)
     prompt = (
-        "Extrae el hecho central. No inventes. Si el texto no alcanza, usa el titulo. "
-        'Devuelve JSON minificado: {"evento":"max 14 palabras","resumen":"max 24 palabras"}\n'
+        "Extrae el hecho central y un resumen informativo. No inventes nombres, cifras, causas ni consecuencias. "
+        "El resumen debe explicar actor, accion, contexto o consecuencia solo si aparecen en el texto. "
+        "No copies el titulo como resumen. Si no hay detalles adicionales verificables, dilo explicitamente. "
+        'Devuelve JSON minificado: {"evento":"max 14 palabras","resumen":"1 frase, max 34 palabras"}\n'
         f"TITULO: {titulo}\nTEXTO: {contenido}"
     )
 
@@ -46,4 +75,4 @@ def procesar_noticia(titulo, contenido):
         temperature=0,
         retries=1,
     )
-    return _parsear_respuesta(texto, titulo)
+    return _parsear_respuesta(texto, titulo, contenido)

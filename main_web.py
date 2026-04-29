@@ -21,7 +21,7 @@ load_dotenv()
 
 CACHE_IA_PATH = ".cache_ai.json"
 CACHE_IA_TTL_DIAS = int(os.getenv("CACHE_IA_TTL_DIAS", "3"))
-CACHE_IA_VERSION = "evento-resumen-v1"
+CACHE_IA_VERSION = "evento-resumen-v2"
 ARTIFACTS_DIR = Path("data")
 
 
@@ -203,6 +203,10 @@ def normalizar_categoria(categoria):
     return "internacional"
 
 
+def _texto_equivalente(a, b):
+    return limpiar_titulo(a).lower() == limpiar_titulo(b).lower()
+
+
 def normalizar_resultado_ia(data, titulo):
     if not isinstance(data, dict):
         data = {}
@@ -210,10 +214,13 @@ def normalizar_resultado_ia(data, titulo):
     evento = str(data.get("evento") or "").strip()
     resumen = str(data.get("resumen") or "").strip()
 
-    return {
-        "evento": limpiar_titulo(evento or titulo[:120]),
-        "resumen": limpiar_titulo(resumen or titulo[:150]),
-    }
+    evento = limpiar_titulo(evento or titulo[:120])
+    resumen = limpiar_titulo(resumen or "")
+
+    if not resumen or _texto_equivalente(resumen, evento) or _texto_equivalente(resumen, titulo):
+        resumen = "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
+
+    return {"evento": evento, "resumen": resumen}
 
 
 def ejecutar_proyecto(publicar=False):
@@ -329,12 +336,22 @@ def ejecutar_proyecto(publicar=False):
             for idx in grupo:
                 if 1 <= idx <= len(lista):
                     item = lista[idx - 1]
-                    eventos.append(item["evento"])
+                    eventos.append(
+                        {
+                            "evento": item["evento"],
+                            "resumen": item.get("resumen", ""),
+                        }
+                    )
                     links.append(item["link"])
 
             texto = f"""
 EVENTOS:
-{" | ".join(eventos)}
+""" + "\n".join(
+                [
+                    f"- EVENTO: {item['evento']}\n  RESUMEN: {item['resumen']}"
+                    for item in eventos
+                ]
+            ) + """
 
 LINKS:
 """ + "\n".join([f"- {l}" for l in links])

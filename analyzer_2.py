@@ -1,19 +1,37 @@
 import json
+import re
 
 from groq_client import pedir_groq, recortar_texto
 
 
-def _extraer_eventos_y_links(texto):
-    eventos = []
+def _normalizar(texto):
+    return re.sub(r"\W+", " ", (texto or "").lower()).strip()
+
+
+def _resumen_util(evento, resumen):
+    resumen = (resumen or "").strip()
+    if not resumen:
+        return ""
+    if _normalizar(resumen) == _normalizar(evento):
+        return ""
+    return resumen
+
+
+def _extraer_items_y_links(texto):
+    items = []
     links = []
     leyendo_eventos = False
     leyendo_links = False
+    item_actual = None
 
     for linea in texto.splitlines():
         linea = linea.strip()
         if not linea:
             continue
         if linea == "LINKS:":
+            if item_actual:
+                items.append(item_actual)
+                item_actual = None
             leyendo_eventos = False
             leyendo_links = True
             continue
@@ -24,9 +42,22 @@ def _extraer_eventos_y_links(texto):
         if leyendo_links and linea.startswith("- http"):
             links.append(linea.replace("- ", "", 1).strip())
         elif leyendo_eventos:
-            eventos.extend(item.strip() for item in linea.split("|") if item.strip())
+            if linea.startswith("- EVENTO:"):
+                if item_actual:
+                    items.append(item_actual)
+                item_actual = {"evento": linea.replace("- EVENTO:", "", 1).strip(), "resumen": ""}
+            elif linea.startswith("RESUMEN:") and item_actual is not None:
+                item_actual["resumen"] = linea.replace("RESUMEN:", "", 1).strip()
+            elif "|" in linea:
+                for evento in linea.split("|"):
+                    evento = evento.strip()
+                    if evento:
+                        items.append({"evento": evento, "resumen": ""})
 
-    return eventos, list(dict.fromkeys(links))
+    if item_actual:
+        items.append(item_actual)
+
+    return items, list(dict.fromkeys(links))
 
 
 def _formatear(titulo, resumen, links):
@@ -35,23 +66,34 @@ def _formatear(titulo, resumen, links):
 
 
 def unificar_bloques(texto):
-    eventos, links = _extraer_eventos_y_links(texto)
+    items, links = _extraer_items_y_links(texto)
 
-    if not eventos or not links:
+    if not items or not links:
         return None
 
-    if len(eventos) == 1:
-        evento = recortar_texto(eventos[0], 140)
-        return _formatear(evento, evento, links)
+    if len(items) == 1:
+        evento = recortar_texto(items[0]["evento"], 140)
+        resumen = _resumen_util(evento, items[0].get("resumen")) or (
+            "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
+        )
+        return _formatear(evento, recortar_texto(resumen, 260), links)
 
-    eventos_txt = "\n".join(f"- {recortar_texto(evento, 90)}" for evento in eventos[:4])
+    eventos_txt = "\n".join(
+        (
+            f"- Evento: {recortar_texto(item['evento'], 90)}. "
+            f"Datos: {recortar_texto(_resumen_util(item['evento'], item.get('resumen')) or 'sin detalles adicionales verificables', 160)}"
+        )
+        for item in items[:5]
+    )
     prompt = (
-        "Redacta una noticia unica basada solo en estos eventos. "
-        'Devuelve JSON minificado: {"titulo":"max 16 palabras","resumen":"max 35 palabras"}\n'
+        "Redacta una noticia unica basada solo en los eventos y datos listados. "
+        "No agregues datos externos, causas, cifras ni consecuencias que no aparezcan. "
+        "El resumen debe aportar contexto verificable, no repetir el titulo. "
+        'Devuelve JSON minificado: {"titulo":"max 16 palabras","resumen":"1 frase, max 45 palabras"}\n'
         f"{eventos_txt}"
     )
 
-    print(f"Groq redaccion: {len(eventos)} eventos")
+    print(f"Groq redaccion: {len(items)} eventos")
     respuesta = pedir_groq(
         "Redactas sintesis breves sin inventar.",
         prompt,
@@ -75,8 +117,15 @@ def unificar_bloques(texto):
                 resumen = linea.replace("RESUMEN:", "", 1).strip()
 
     if not titulo:
-        titulo = recortar_texto(eventos[0], 140)
+        titulo = recortar_texto(items[0]["evento"], 140)
+    if not resumen or _normalizar(resumen) == _normalizar(titulo):
+        resumenes = [
+            _resumen_util(item["evento"], item.get("resumen"))
+            for item in items
+            if _resumen_util(item["evento"], item.get("resumen"))
+        ]
+        resumen = recortar_texto(" ".join(resumenes[:2]), 260)
     if not resumen:
-        resumen = recortar_texto(" ".join(eventos[:2]), 220)
+        resumen = "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
 
     return _formatear(titulo, resumen, links)
