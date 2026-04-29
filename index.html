@@ -152,97 +152,296 @@
             .pagina12 { background:#f1e8ff; color:#6d28d9; }
             .ambito { background:#e8f7ef; color:#047857; }
             .default { background:#edf2f7; color:#334155; }
+
+            :root {
+                color-scheme: light;
+                --text: #172033;
+                --muted: #637083;
+                --line: #d8dee8;
+                --surface: #ffffff;
+                --soft: #f4f7fb;
+                --accent: #0f766e;
+                --accent-strong: #115e59;
+            }
+
+            body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                color: var(--text);
+                background: #f6f8fb;
+                animation: none;
+            }
+
+            .header {
+                text-align: left;
+                padding: 34px 20px 24px;
+                background: linear-gradient(180deg, #ffffff 0%, #eef4f7 100%);
+                border-bottom: 1px solid var(--line);
+            }
+
+            .header-inner,
+            .toolbar,
+            .container {
+                max-width: 1120px;
+                margin: 0 auto;
+            }
+
+            .eyebrow {
+                margin: 0 0 10px;
+                color: var(--accent-strong);
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            .header h1 {
+                max-width: 760px;
+                margin: 0;
+                font-size: clamp(32px, 5vw, 54px);
+                letter-spacing: 0;
+            }
+
+            .header p {
+                max-width: 720px;
+                margin-top: 12px;
+                color: var(--muted);
+                font-size: 16px;
+            }
+
+            .header .eyebrow {
+                margin: 0 0 10px;
+                color: var(--accent-strong);
+                font-size: 12px;
+            }
+
+            .toolbar {
+                display: grid;
+                grid-template-columns: minmax(220px, 1fr) auto;
+                gap: 12px;
+                padding: 18px 20px 8px;
+            }
+
+            .search-input {
+                width: 100%;
+                min-height: 44px;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                padding: 10px 13px;
+                color: var(--text);
+                background: var(--surface);
+                font: inherit;
+            }
+
+            .search-input:focus,
+            .compact-btn:focus-visible {
+                border-color: var(--accent);
+                outline: 3px solid rgba(15, 118, 110, 0.16);
+            }
+
+            .compact-btn {
+                min-height: 44px;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                padding: 0 14px;
+                color: var(--text);
+                background: var(--surface);
+                cursor: pointer;
+                font: inherit;
+                font-weight: 700;
+            }
+
+            .filtros {
+                justify-content: flex-start;
+                max-width: 1120px;
+                margin: 0 auto;
+                padding: 8px 20px 16px;
+            }
+
+            .filtro-btn {
+                border-radius: 8px;
+                background: var(--surface);
+                font-weight: 700;
+            }
+
+            .filtro-btn span {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 22px;
+                min-height: 22px;
+                margin-left: 6px;
+                border-radius: 999px;
+                background: var(--soft);
+                color: var(--muted);
+                font-size: 12px;
+            }
+
+            .filtro-btn.active {
+                background: var(--text);
+                border-color: var(--text);
+            }
+
+            .filtro-btn.active span {
+                background: rgba(255, 255, 255, 0.18);
+                color: #ffffff;
+            }
+
+            .container {
+                padding: 10px 20px 46px;
+            }
+
+            .categoria-section {
+                margin-top: 30px;
+            }
+
+            .section-heading {
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                gap: 12px;
+                margin: 0 0 12px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .section-heading h2 {
+                margin: 0;
+                text-align: left;
+                font-size: 18px;
+            }
+
+            .section-heading span {
+                color: var(--muted);
+                font-size: 13px;
+                font-weight: 700;
+            }
+
+            .news-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                min-height: 100%;
+                margin: 0;
+                background: var(--surface);
+                border-color: var(--line);
+                box-shadow: none;
+                transition: border-color 160ms ease, transform 160ms ease;
+            }
+
+            .card:hover {
+                border-color: #aeb8c7;
+                transform: translateY(-1px);
+            }
+
+            .card.featured {
+                grid-column: 1 / -1;
+                padding: 22px;
+                border-top: 4px solid var(--accent);
+            }
+
+            .card h3 {
+                font-size: 19px;
+                letter-spacing: 0;
+            }
+
+            .card.featured h3 {
+                font-size: clamp(24px, 3vw, 32px);
+                line-height: 1.15;
+            }
+
+            .card p {
+                color: #39465a;
+            }
+
+            .sources {
+                margin-top: auto;
+            }
+
+            .chip {
+                border-radius: 8px;
+            }
+
+            .empty-state {
+                display: none;
+                max-width: 1120px;
+                margin: 24px auto 0;
+                padding: 18px 20px;
+                border: 1px dashed var(--line);
+                border-radius: 8px;
+                color: var(--muted);
+                background: var(--surface);
+                text-align: center;
+            }
+
+            body.compact .card p {
+                display: none;
+            }
+
+            body.compact .card,
+            body.compact .card.featured {
+                padding: 16px;
+            }
+
+            body.compact .card h3,
+            body.compact .card.featured h3 {
+                font-size: 18px;
+            }
+
+            @media (max-width: 720px) {
+                .toolbar {
+                    grid-template-columns: 1fr;
+                }
+
+                .news-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .section-heading {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+            }
         </style>
     </head>
 
     <body>
 
         <div class="header">
-            <h1>Resumen de Noticias</h1>
-            <p>Edición miercoles 29 de abril de 2026 · 09:16 hs</p>
+            <div class="header-inner">
+                <p class="eyebrow">Panorama automático</p>
+                <h1>Resumen de Noticias</h1>
+                <p>Actualizado el miércoles 29 de abril de 2026 a las 09:27 hs. Una vista rápida para leer, filtrar y abrir las fuentes principales.</p>
+            </div>
         </div>
 
-        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas</button><button class="filtro-btn" data-cat="ECONOMIA" type="button">ECONOMIA</button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">INTERNACIONAL</button><button class="filtro-btn" data-cat="POLITICA" type="button">POLITICA</button></div>
+        <div class="toolbar" aria-label="Herramientas de lectura">
+            <input class="search-input" type="search" placeholder="Buscar por título, resumen o fuente" aria-label="Buscar noticias">
+            <button class="compact-btn" type="button" aria-pressed="false">Modo compacto</button>
+        </div>
+
+        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>18</span></button><button class="filtro-btn" data-cat="POLITICA" type="button">Politica <span>8</span></button><button class="filtro-btn" data-cat="ECONOMIA" type="button">Economia <span>3</span></button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">Internacional <span>7</span></button></div>
 
         <main class="container">
             
-            <section class="categoria-section" data-categoria="ECONOMIA">
-                <h2>ECONOMIA</h2>
-            
-                <article class="card" data-categoria="ECONOMIA">
-                    <h3>Colectivos, subtes y peajes tendrán aumento en mayo: los nuevos valoresLa actualización tarifaria impactará en todo el A</h3>
-                    <p>Colectivos, subtes y peajes tendrán aumento en mayo: los nuevos valoresLa actualización tarifaria impactará en todo el A El gobierno porteño aumentó un 28% el costo de la VTV: cuánto deberán pagar autos y motos</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/economia/2026/04/29/colectivos-subtes-y-peajes-tendran-aumento-en-mayo-los-nuevos-valores/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
-                        </a>
-            
-                        <a href="https://www.infobae.com/economia/2026/04/29/el-gobierno-porteno-aumento-un-28-el-costo-de-la-vtv-cuanto-deberan-pagar-autos-y-motos/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="ECONOMIA">
-                    <h3>Las pretensiones salariales de los argentinos se ubicaron por debajo de la inflación por primera vez en dos años</h3>
-                    <p>Las pretensiones salariales de los argentinos se ubicaron por debajo de la inflación por primera vez en dos años ANSES paga jubilados, pensionados y beneficiarios de asignaciones</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/economia/2026/04/29/las-pretensiones-salariales-de-los-argentinos-se-ubicaron-por-debajo-de-la-inflacion-por-primera-vez-en-dos-anos/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
-                        </a>
-            
-                        <a href="https://www.infobae.com/economia/2026/04/29/anses-quienes-cobran-hoy-miercoles-29-de-abril-de-2026/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
-                        </a>
-            
-                        <a href="https://www.lanacion.com.ar/economia/negocios/impuestos-al-consumo-en-el-mundo-no-existe-la-superposicion-que-hay-en-la-argentina-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
-                        </a>
-            
-                        <a href="https://www.lanacion.com.ar/economia/el-gobierno-capto-otros-us700-millones-para-afrontar-el-pago-a-bonistas-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
-                        </a>
-            
-                        <a href="https://www.lanacion.com.ar/economia/abuchearon-al-ceo-de-cocos-capital-que-debio-abandonar-una-charla-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
-                        </a>
-            
-                        <a href="https://www.lanacion.com.ar/economia/la-uia-ve-rebote-industrial-en-marzo-pero-alerto-por-el-abastecimiento-de-gas-y-la-morosidad-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
-                        </a>
-            
-                        <a href="https://www.clarin.com/mundo/guerra-estados-unidos-israel-iran-vivo-buque-repleto-gas-natural-licuado-atraveso-estrecho-ormuz-trump-analiza-propuesta-teheran-reabrir-paso_0_UNV1MCwdWv.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Clarín
-                        </a>
-            
-                        <a href="https://www.clarin.com/politica/javier-milei-medidas-vivo-ir-congreso-adorni-presidente-realizara-exposicion-economica-palacio-libertad_0_9LJJUspXfG.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Clarín
-                        </a>
-            
-                        <a href="https://www.clarin.com/videos/neymar-puro-aplauso-nuevo-gasometro_3_JgLHEDiotC.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Clarín
-                        </a>
-            
-                        <a href="https://www.clarin.com/videos/agradecio-neymar-carino-gente_3_CuqYh3dEsH.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        </section>
             <section class="categoria-section" data-categoria="POLITICA">
-                <h2>POLITICA</h2>
+                <div class="section-heading">
+                    <h2>Politica</h2>
+                    <span>8 noticias</span>
+                </div>
+                <div class="news-grid">
             
-                <article class="card" data-categoria="POLITICA">
+                <article class="card featured" data-categoria="POLITICA">
                     <h3>Manuel Adorni en el Congreso, en vivo: las últimas noticias sobre el informe de gestión del jefe de GabineteEl funcionar</h3>
                     <p>Manuel Adorni en el Congreso, en vivo: las últimas noticias sobre el informe de gestión del jefe de GabineteEl funcionar</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/politica/2026/04/29/manuel-adorni-en-el-congreso-en-vivo-las-ultimas-noticias-sobre-el-informe-de-gestion-del-jefe-de-gabinete/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
+                            Leer en Infobae
                         </a>
             
                     </div>
@@ -254,19 +453,19 @@
                     <div class="sources">
         
                         <a href="https://www.infobae.com/politica/2026/04/28/fuerte-reclamo-de-la-corte-a-kicillof-por-las-vacantes-es-una-necesidad-institucional-impostergable/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
+                            Leer en Infobae
                         </a>
             
                     </div>
                 </article>
         
                 <article class="card" data-categoria="POLITICA">
-                    <h3>Las 4 preguntas clave que contestó Adorni al Congreso sobre su patrimonio, los viajes y el vínculo con Marcelo GrandioAn</h3>
-                    <p>Las 4 preguntas clave que contestó Adorni al Congreso sobre su patrimonio, los viajes y el vínculo con Marcelo GrandioAn</p>
+                    <h3>Manuel Adorni responde preguntas del Congreso sobre su patrimonio y viajes</h3>
+                    <p>Manuel Adorni responde preguntas del Congreso sobre su patrimonio y viajes</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/politica/2026/04/29/las-4-preguntas-clave-que-contesto-adorni-al-congreso-sobre-su-patrimonio-los-viajes-y-el-vinculo-con-marcelo-grandio/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
+                            Leer en Infobae
                         </a>
             
                     </div>
@@ -278,19 +477,7 @@
                     <div class="sources">
         
                         <a href="https://www.infobae.com/politica/2026/04/29/marcha-universitaria-el-12-de-mayo-reclaman-actualizacion-salarial-y-mas-presupuesto/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>Manuel Adorni en el Congreso</h3>
-                    <p>Manuel Adorni en el Congreso</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/politica/manuel-adorni-en-el-congreso-en-vivo-la-exposicion-en-diputados-minuto-a-minuto-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
+                            Leer en Infobae
                         </a>
             
                     </div>
@@ -302,7 +489,7 @@
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/politica/manuel-adorni-expone-en-el-congreso-todo-lo-que-hay-saber-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
+                            Leer en La Nación
                         </a>
             
                     </div>
@@ -314,7 +501,19 @@
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/politica/manuel-adorni-evito-responder-en-su-informe-escrito-sobre-su-patrimonio-y-se-escudo-en-su-caracter-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA">
+                    <h3>Manuel Adorni en el Congreso sobre su patrimonio</h3>
+                    <p>Manuel Adorni en el Congreso sobre su patrimonio</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/politica/manuel-adorni-en-el-congreso-en-vivo-la-exposicion-en-diputados-minuto-a-minuto-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
                         </a>
             
                     </div>
@@ -326,50 +525,121 @@
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/politica/marcha-de-la-cgt-cuando-es-la-movilizacion-por-el-dia-del-trabajador-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        </div></section>
+            <section class="categoria-section" data-categoria="ECONOMIA">
+                <div class="section-heading">
+                    <h2>Economia</h2>
+                    <span>3 noticias</span>
+                </div>
+                <div class="news-grid">
+            
+                <article class="card featured" data-categoria="ECONOMIA">
+                    <h3>Colectivos, subtes y peajes tendrán aumento en mayo: los nuevos valoresLa actualización tarifaria impactará en todo el A</h3>
+                    <p>Colectivos, subtes y peajes tendrán aumento en mayo: los nuevos valoresLa actualización tarifaria impactará en todo el A El gobierno porteño aumentó un 28% el costo de la VTV: cuánto deberán pagar autos y motos</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/economia/2026/04/29/colectivos-subtes-y-peajes-tendran-aumento-en-mayo-los-nuevos-valores/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.infobae.com/economia/2026/04/29/el-gobierno-porteno-aumento-un-28-el-costo-de-la-vtv-cuanto-deberan-pagar-autos-y-motos/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
                         </a>
             
                     </div>
                 </article>
         
-                <article class="card" data-categoria="POLITICA">
+                <article class="card" data-categoria="ECONOMIA">
+                    <h3>Las pretensiones salariales de los argentinos se ubicaron por debajo de la inflación por primera vez en dos años</h3>
+                    <p>Las pretensiones salariales de los argentinos se ubicaron por debajo de la inflación por primera vez en dos años ANSES paga jubilados, pensionados y beneficiarios de asignaciones</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/economia/2026/04/29/las-pretensiones-salariales-de-los-argentinos-se-ubicaron-por-debajo-de-la-inflacion-por-primera-vez-en-dos-anos/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.infobae.com/economia/2026/04/29/anses-quienes-cobran-hoy-miercoles-29-de-abril-de-2026/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.lanacion.com.ar/economia/negocios/impuestos-al-consumo-en-el-mundo-no-existe-la-superposicion-que-hay-en-la-argentina-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                        <a href="https://www.lanacion.com.ar/economia/el-gobierno-capto-otros-us700-millones-para-afrontar-el-pago-a-bonistas-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                        <a href="https://www.lanacion.com.ar/economia/abuchearon-al-ceo-de-cocos-capital-que-debio-abandonar-una-charla-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                        <a href="https://www.lanacion.com.ar/economia/la-uia-ve-rebote-industrial-en-marzo-pero-alerto-por-el-abastecimiento-de-gas-y-la-morosidad-nid28042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="ECONOMIA">
                     <h3>Guerra entre Estados Unidos, Israel e Irán</h3>
-                    <p>Guerra entre Estados Unidos, Israel e Irán</p>
+                    <p>Guerra entre Estados Unidos, Israel e Irán Detención de hincha de Boca en el Mineirao</p>
                     <div class="sources">
         
                         <a href="https://www.clarin.com/mundo/guerra-estados-unidos-israel-iran-vivo-trump-insiste-acabo-senor-bueno-fusil-mano-exige-teheran-espabilar-llegar-acuerdo_0_wxRR2PIwel.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Clarín
+                            Leer en Clarín
                         </a>
             
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>Manuel Adorni presenta su informe de gestión ante Diputados</h3>
-                    <p>Manuel Adorni presenta su informe de gestión ante Diputados</p>
-                    <div class="sources">
-        
+                        <a href="https://www.clarin.com/videos/gestos-detenido-hincha-boca-mineirao_3_W8KnTXvzrz.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                        <a href="https://www.clarin.com/videos/aluvion-camiones-puertos-rosario-cosecha-record_3_JM1lHI76R8.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
                         <a href="https://www.clarin.com/videos/adorni-congreso-presentara-informe-diputados_3_3iTwgW61cf.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Clarín
+                            Leer en Clarín
                         </a>
             
                     </div>
                 </article>
-        </section>
+        </div></section>
             <section class="categoria-section" data-categoria="INTERNACIONAL">
-                <h2>INTERNACIONAL</h2>
+                <div class="section-heading">
+                    <h2>Internacional</h2>
+                    <span>7 noticias</span>
+                </div>
+                <div class="news-grid">
             
-                <article class="card" data-categoria="INTERNACIONAL">
+                <article class="card featured" data-categoria="INTERNACIONAL">
                     <h3>Trump publicó una imagen en la que aparece armado y advirtió a Irán: “¡Más les vale espabilar pronto!”El presidente de E</h3>
                     <p>Trump publicó una imagen en la que aparece armado y advirtió a Irán: “¡Más les vale espabilar pronto!”El presidente de E Trump publica mensaje fuerte para Irán sobre plan nuclear</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/estados-unidos/2026/04/29/trump-publico-una-imagen-en-la-que-aparece-armado-y-advirtio-a-iran-mas-les-vale-espabilar-pronto/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
+                            Leer en Infobae
                         </a>
             
                         <a href="https://www.lanacion.com.ar/el-mundo/guerra-de-estados-unidos-e-israel-contra-iran-en-vivo-tension-en-medio-oriente-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL">
+                    <h3>Servicio Secreto dispara contra hombre que quería matar a Trump</h3>
+                    <p>Servicio Secreto dispara contra hombre que quería matar a Trump</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/wapo/2026/04/29/las-imagenes-del-momento-en-que-el-servicio-secreto-disparo-contra-el-hombre-que-queria-matar-a-trump/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
                         </a>
             
                     </div>
@@ -381,77 +651,122 @@
                     <div class="sources">
         
                         <a href="https://www.infobae.com/economist/2026/04/29/la-salida-de-los-emiratos-arabes-unidos-de-la-opep-podria-no-romper-el-cartel/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
+                            Leer en Infobae
                         </a>
             
                         <a href="https://www.lanacion.com.ar/el-mundo/dia-61-de-la-guerra-entre-estados-unidos-israel-e-iran-todo-lo-que-hay-que-saber-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
-                        </a>
-            
-                        <a href="https://www.lanacion.com.ar/el-mundo/artemis-iii-asi-sera-la-columna-vertebral-del-nuevo-cohete-que-la-nasa-enviara-al-espacio-nid25042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
-                        </a>
-            
-                        <a href="https://www.clarin.com/videos/aluvion-camiones-puertos-rosario-cosecha-record_3_JM1lHI76R8.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Clarín
+                            Leer en La Nación
                         </a>
             
                     </div>
                 </article>
         
                 <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Patti Smith galardonada con el Premio Princesa de Asturias de las Artes 2026</h3>
-                    <p>Patti Smith galardonada con el Premio Princesa de Asturias de las Artes 2026</p>
+                    <h3>Colapso del rial en Irán y nueva alza del petróleo mientras EEUU extiende el bloqueo en OrmuzEN VIVOPorAndrea Bonzo</h3>
+                    <p>Colapso del rial en Irán y nueva alza del petróleo mientras EEUU extiende el bloqueo en OrmuzEN VIVOPorAndrea Bonzo</p>
                     <div class="sources">
         
-                        <a href="https://www.infobae.com/espana/cultura/2026/04/29/la-cantante-patti-smith-premio-princesa-de-asturias-de-las-artes-2026/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
+                        <a href="https://www.infobae.com/america/mundo/2026/04/29/en-vivo-trump-lanzo-un-ultimatum-a-iran-ante-el-colapso-del-rial-y-el-alza-del-petroleo/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
                         </a>
             
                     </div>
                 </article>
         
                 <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Sexo libre, drogas y los Beatles como inspiración: la intimidad del rancho en el que Charles Manson planeó sus crímenesP</h3>
-                    <p>Sexo libre, drogas y los Beatles como inspiración: la intimidad del rancho en el que Charles Manson planeó sus crímenesP</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/historias/2026/04/29/sexo-libre-drogas-y-los-beatles-como-inspiracion-la-intimidad-del-rancho-hippie-en-el-que-charles-manson-planeo-sus-crimenes/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Infobae
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Detienen a 22 monjes budistas con 110 kg de cannabis en Sri Lanka</h3>
-                    <p>Detienen a 22 monjes budistas con 110 kg de cannabis en Sri Lanka</p>
+                    <h3>Detuvieron a 22 monjes budistas con 110 kilos de cannabis en Sri Lanka</h3>
+                    <p>Detuvieron a 22 monjes budistas con 110 kilos de cannabis en Sri Lanka</p>
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/el-mundo/detuvieron-a-22-monjes-budistas-con-mas-de-100-kilos-de-cannabis-en-un-aeropuerto-de-sri-lanka-nid29042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            La Nación
+                            Leer en La Nación
                         </a>
             
                     </div>
                 </article>
-        </section>
+        
+                <article class="card" data-categoria="INTERNACIONAL">
+                    <h3>La NASA presenta la etapa central del cohete SLS para la misión Artemis III</h3>
+                    <p>La NASA presenta la etapa central del cohete SLS para la misión Artemis III</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/el-mundo/artemis-iii-asi-sera-la-columna-vertebral-del-nuevo-cohete-que-la-nasa-enviara-al-espacio-nid25042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL">
+                    <h3>Neymar se fue a puro aplauso del Nuevo Gasómetro</h3>
+                    <p>Neymar se fue a puro aplauso del Nuevo Gasómetro</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/videos/neymar-puro-aplauso-nuevo-gasometro_3_JgLHEDiotC.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+                </article>
+        </div></section>
+            <p class="empty-state">No hay noticias que coincidan con los filtros actuales.</p>
         </main>
 
         <script>
             const botonesFiltro = document.querySelectorAll(".filtro-btn");
             const secciones = document.querySelectorAll(".categoria-section");
+            const buscador = document.querySelector(".search-input");
+            const botonCompacto = document.querySelector(".compact-btn");
+            const estadoVacio = document.querySelector(".empty-state");
+            let categoriaActiva = "TODAS";
+
+            function normalizar(texto) {
+                return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            }
+
+            function aplicarFiltros() {
+                const busqueda = normalizar(buscador.value.trim());
+                let hayResultados = false;
+
+                secciones.forEach((seccion) => {
+                    const coincideCategoria = categoriaActiva === "TODAS" || seccion.dataset.categoria === categoriaActiva;
+                    let visiblesEnSeccion = 0;
+
+                    seccion.querySelectorAll(".card").forEach((card) => {
+                        const coincideBusqueda = !busqueda || normalizar(card.textContent).includes(busqueda);
+                        const visible = coincideCategoria && coincideBusqueda;
+
+                        card.hidden = !visible;
+
+                        if (visible) {
+                            visiblesEnSeccion += 1;
+                            hayResultados = true;
+                        }
+                    });
+
+                    seccion.hidden = visiblesEnSeccion === 0;
+                });
+
+                estadoVacio.style.display = hayResultados ? "none" : "block";
+            }
 
             botonesFiltro.forEach((boton) => {
                 boton.addEventListener("click", () => {
-                    const categoria = boton.dataset.cat;
+                    categoriaActiva = boton.dataset.cat;
 
                     botonesFiltro.forEach((item) => item.classList.remove("active"));
                     boton.classList.add("active");
 
-                    secciones.forEach((seccion) => {
-                        seccion.hidden = categoria !== "TODAS" && seccion.dataset.categoria !== categoria;
-                    });
+                    aplicarFiltros();
                 });
+            });
+
+            buscador.addEventListener("input", aplicarFiltros);
+
+            botonCompacto.addEventListener("click", () => {
+                const activo = document.body.classList.toggle("compact");
+                botonCompacto.setAttribute("aria-pressed", String(activo));
+                botonCompacto.textContent = activo ? "Modo lectura" : "Modo compacto";
             });
         </script>
 
