@@ -157,11 +157,6 @@ def obtener_contenido_detalle(link):
         return "", "error_parseo"
 
 
-def obtener_contenido(link):
-    contenido, _motivo = obtener_contenido_detalle(link)
-    return contenido
-
-
 def es_reciente(texto_html):
     texto = texto_html.lower()
 

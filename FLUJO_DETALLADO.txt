@@ -1,0 +1,398 @@
+AGENTE DE NOTICIAS - FLUJO DETALLADO
+====================================
+
+Este archivo documenta el funcionamiento interno del proyecto. No reemplaza al
+README.md: el README queda como guia rapida publica, mientras que este archivo
+explica el pipeline completo para mantenimiento y evolucion del agente.
+
+
+1. Objetivo general
+-------------------
+
+El proyecto genera automaticamente un index.html con un resumen de noticias
+argentinas agrupadas por hecho, separadas por categoria y enriquecidas con datos
+financieros.
+
+El resultado final se publica en GitHub Pages:
+
+https://msmassolo.github.io/Resumen_de_noticias/
+
+
+2. Entrada principal
+--------------------
+
+El punto de entrada es main_web.py.
+
+Comando local:
+
+    python main_web.py
+
+Comando local con publicacion manual:
+
+    python main_web.py --publish
+
+En GitHub Actions, el workflow .github/workflows/run_noticias.yml ejecuta:
+
+    python main_web.py
+
+Luego commitea y pushea index.html.
+
+
+3. Variables y configuracion
+----------------------------
+
+El proyecto usa python-dotenv para cargar .env.
+
+Variables relevantes:
+
+- GROQ_API_KEY:
+  API key requerida para llamar a Groq.
+
+- GROQ_MODEL:
+  Modelo usado por groq_client.py. Si no se define, usa:
+  llama-3.1-8b-instant
+
+- CACHE_IA_TTL_DIAS:
+  Cantidad de dias de vigencia de la cache de IA. Si no se define, usa 3.
+
+Archivos ignorados por Git:
+
+- .env
+- .cache_ai.json
+- data/
+- venv/
+- __pycache__/
+
+
+4. Scraping de noticias
+-----------------------
+
+La funcion main_web.ejecutar_proyecto() llama a:
+
+    scrapers.obtener_todo()
+
+Ese metodo vive en scrapers/__init__.py y ejecuta los scrapers de:
+
+- scrapers/infobae.py
+- scrapers/lanacion.py
+- scrapers/clarin.py
+
+Cada scraper devuelve una lista de noticias con esta estructura:
+
+    {
+      "diario": "...",
+      "categoria": "...",
+      "titulo": "...",
+      "link": "..."
+    }
+
+Luego scrapers/__init__.py deduplica noticias por:
+
+- URL normalizada.
+- titulo normalizado dentro del mismo medio.
+
+La salida cruda se guarda en:
+
+    data/raw_news.json
+
+
+5. Utilidades de scraping
+-------------------------
+
+scrapers/utils.py contiene utilidades compartidas:
+
+- normalizar_url():
+  Resuelve URLs relativas y elimina parametros de tracking.
+
+- limpiar_titulo():
+  Normaliza espacios y corrige patrones frecuentes de titulos scrapeados.
+
+- obtener_html():
+  Descarga HTML con headers de navegador y manejo basico de errores.
+
+- obtener_contenido_detalle():
+  Descarga el detalle de una noticia. Primero intenta extraer contenido desde
+  JSON-LD y, si no alcanza, busca parrafos dentro de article/main.
+
+- es_reciente():
+  Filtro liviano para descartar enlaces viejos cuando el HTML trae textos como
+  "hace X horas" o "hace X dias".
+
+
+6. Procesamiento con IA por noticia
+-----------------------------------
+
+Por cada noticia, main_web.py intenta leer la cache de IA:
+
+    .cache_ai.json
+
+La cache se invalida si cambia:
+
+- CACHE_IA_VERSION
+- modelo de Groq
+- TTL configurado
+
+Si no hay cache valida, el sistema obtiene el contenido de detalle de la nota y
+llama a:
+
+    ai.procesar_noticia(titulo, contenido)
+
+ai.py pide a Groq que devuelva JSON minificado con:
+
+    {
+      "evento": "...",
+      "resumen": "...",
+      "enfoque": "..."
+    }
+
+El campo enfoque intenta capturar atribuciones, responsabilidad, causa,
+critica, defensa o contraste editorial si aparecen en el texto original. Si no
+hay enfoque verificable, queda vacio.
+
+main_web.normalizar_resultado_ia() valida y limpia el resultado. Si el resumen
+no aporta informacion adicional, usa un texto fallback:
+
+    El texto disponible no aporta detalles adicionales verificables sobre este hecho.
+
+La salida procesada se guarda en:
+
+    data/processed_news.json
+
+
+7. Normalizacion de categorias
+------------------------------
+
+main_web.normalizar_categoria() mapea las categorias de origen a:
+
+- economia
+- politica
+- internacional
+- general
+
+El orden visual final se define en web_generator.py:
+
+    ECONOMIA
+    POLITICA
+    INTERNACIONAL
+    GENERAL
+
+
+8. Agrupacion de noticias por mismo hecho
+-----------------------------------------
+
+Por cada categoria, main_web.py llama a:
+
+    analyzer.agrupar_noticias(lista)
+
+Ese modulo pide a Groq que agrupe noticias del mismo hecho exacto. El prompt
+indica que no debe agrupar noticias por tema general, rubro o consecuencias si
+no son el mismo evento.
+
+La respuesta esperada es JSON:
+
+    [[1, 3], [2], [4, 5]]
+
+main_web.parsear_grupos() tolera JSON o un formato textual de fallback.
+
+Despues, analyzer.depurar_grupos() aplica una validacion heuristica con tokens
+del evento, titulo y slug de URL para evitar agrupaciones demasiado amplias.
+
+Las noticias que no quedaron en ningun grupo se agregan como grupos unitarios.
+
+El diagnostico se guarda en:
+
+    data/groups.json
+
+
+9. Unificacion de noticias agrupadas
+------------------------------------
+
+Para cada grupo, main_web.py arma un bloque con:
+
+- MEDIO
+- EVENTO
+- RESUMEN
+- ENFOQUE
+- LINKS
+
+Ese bloque se pasa a:
+
+    analyzer_2.unificar_bloques(texto)
+
+Si hay una sola noticia, se formatea directamente.
+
+Si hay varias noticias del mismo hecho, analyzer_2.py pide a Groq una sintesis
+unica con:
+
+    {
+      "titulo": "...",
+      "resumen": "..."
+    }
+
+Cuando los medios presentan atribuciones o enfoques distintos, el prompt pide
+expresarlo comparando por medio, por ejemplo:
+
+    La Nacion atribuye X a Y, mientras Clarin lo vincula con Z.
+
+Si no hay diferencias verificables, se indica que no debe inventar contraste
+editorial.
+
+El texto intermedio usado para generar la web se guarda en:
+
+    data/site_input.txt
+
+
+10. Datos financieros
+---------------------
+
+main_web.py tambien llama a:
+
+    scrapers.finanzas_argy.get_datos_financieros()
+
+Ese scraper obtiene:
+
+- Dolar Blue
+- Dolar Oficial
+- Dolar MEP
+- Riesgo Pais
+
+Fuente:
+
+    https://finanzasargy.com/
+
+Los dolares se extraen desde el endpoint publico detectado en Finanzas Argy:
+
+    https://x2ozxj31bl.execute-api.sa-east-1.amazonaws.com/api/dolar/v2/general
+
+Riesgo Pais se extrae desde el HTML de la home, donde viene embebido en datos
+serializados de la pagina.
+
+La salida tiene esta forma:
+
+    {
+      "fuente": "Finanzas Argy",
+      "url": "https://finanzasargy.com/",
+      "indicadores": [
+        {
+          "nombre": "Dolar Blue",
+          "valor": "$ 1400",
+          "detalle": "Compra $ 1380",
+          "actualizado": "..."
+        }
+      ]
+    }
+
+La salida se guarda en:
+
+    data/financial_data.json
+
+
+11. Generacion del HTML
+-----------------------
+
+web_generator.generar_web() recibe:
+
+- noticias estructuradas
+- datos financieros
+- output_path, por defecto index.html
+
+La funcion tambien mantiene compatibilidad con el formato textual legado: si
+recibe un string, usa parsear_contenido() para convertirlo a noticias.
+
+El HTML final incluye:
+
+- Header con descripcion del agente.
+- Buscador.
+- Filtros por categoria.
+- Seccion "Datos financieros".
+- Secciones de noticias.
+- Footer de contacto.
+
+
+12. Busqueda y filtros en frontend
+----------------------------------
+
+Cada card de noticia tiene:
+
+    data-categoria="..."
+    data-search="..."
+
+data-search incluye titulo, resumen y fuentes. No incluye categoria para evitar
+falsos positivos masivos.
+
+La busqueda:
+
+- normaliza mayusculas/minusculas.
+- elimina acentos.
+- divide el texto buscado en terminos.
+- exige que todos los terminos aparezcan en la misma card.
+- al escribir en el buscador, fuerza el filtro activo a "Todas".
+
+Esto evita que una busqueda muestre toda una seccion por error.
+
+
+13. Publicacion
+---------------
+
+GitHub Actions ejecuta el pipeline, genera index.html, commitea el resultado y
+lo sube al repositorio.
+
+GitHub Pages sirve el index.html publicado desde:
+
+    https://msmassolo.github.io/Resumen_de_noticias/
+
+
+14. Tests
+---------
+
+Los tests estan en:
+
+    tests/test_core.py
+
+Comando:
+
+    .\venv\Scripts\python.exe -B -m unittest discover -s tests -v
+
+Cubren:
+
+- normalizacion de categorias.
+- parseo de grupos.
+- normalizacion de URLs.
+- limpieza de titulos.
+- generacion HTML desde texto legado y datos estructurados.
+- orden Economia, Politica, Internacional.
+- indice de busqueda sin categoria.
+- extraccion de datos financieros.
+- render de la seccion "Datos financieros".
+- prompt de contraste por medio.
+
+
+15. Archivos principales
+------------------------
+
+- main_web.py:
+  Orquestador completo del pipeline.
+
+- ai.py:
+  Extraccion por noticia con IA.
+
+- analyzer.py:
+  Agrupacion de noticias del mismo hecho.
+
+- analyzer_2.py:
+  Sintesis final de grupos.
+
+- groq_client.py:
+  Cliente HTTP para Groq.
+
+- web_generator.py:
+  Render final de index.html y logica frontend.
+
+- scrapers/:
+  Scrapers de medios y datos financieros.
+
+- index.html:
+  Artefacto publicado por GitHub Pages.
+
+- tests/test_core.py:
+  Tests unitarios del comportamiento principal.

@@ -161,7 +161,6 @@ def clave_categoria(categoria):
 def generar_html_noticias(noticias):
     html_noticias = ""
     categoria_actual = None
-    indice_en_categoria = 0
 
     for noticia in noticias:
         categoria = noticia["categoria"]
@@ -181,9 +180,7 @@ def generar_html_noticias(noticias):
                 <div class="news-grid">
             """
             categoria_actual = categoria
-            indice_en_categoria = 0
 
-        indice_en_categoria += 1
         texto_busqueda = " ".join(
             [
                 noticia["titulo"],
@@ -693,6 +690,50 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 text-align: center;
             }
 
+            .search-results {
+                display: none;
+                max-width: 1280px;
+                margin: 18px auto 0;
+                padding: 0 20px 42px;
+            }
+
+            .search-results.is-active {
+                display: block;
+            }
+
+            .search-results-heading {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 12px;
+                margin: 0 0 8px;
+                padding-bottom: 6px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .search-results-heading h2 {
+                margin: 0;
+                color: var(--text-primary);
+                font-family: var(--font-title), "Merriweather";
+                font-size: clamp(20px, 2vw, 28px);
+                font-weight: 700;
+                line-height: 1.15;
+            }
+
+            .search-results-heading span {
+                color: var(--text-secondary);
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            .search-results-grid {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 10px;
+            }
+
             body.compact .card p {
                 display: none;
             }
@@ -716,6 +757,10 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             @media (max-width: 1100px) {
                 .news-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .search-results-grid {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
             }
@@ -747,6 +792,15 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 }
 
                 .news-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .search-results {
+                    padding-left: 14px;
+                    padding-right: 14px;
+                }
+
+                .search-results-grid {
                     grid-template-columns: 1fr;
                 }
 
@@ -841,6 +895,14 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             <p class="empty-state">No hay noticias que coincidan con los filtros actuales.</p>
         </main>
 
+        <section class="search-results" aria-label="Resultados de busqueda">
+            <div class="search-results-heading">
+                <h2>Resultados</h2>
+                <span class="search-results-count"></span>
+            </div>
+            <div class="search-results-grid"></div>
+        </section>
+
         <footer class="footer">
             <div class="footer-inner">
                 <div>
@@ -861,12 +923,18 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             const buscador = document.querySelector(".search-input");
             const botonCompacto = document.querySelector(".compact-btn");
             const estadoVacio = document.querySelector(".empty-state");
+            const contenedorPrincipal = document.querySelector(".container");
+            const resultadosBusqueda = document.querySelector(".search-results");
+            const grillaResultados = document.querySelector(".search-results-grid");
+            const contadorResultados = document.querySelector(".search-results-count");
             let categoriaActiva = "TODAS";
             const cards = Array.from(document.querySelectorAll(".card")).map((card) => ({
                 element: card,
                 section: card.closest(".categoria-section"),
                 category: card.dataset.categoria,
                 search: normalizar(card.dataset.search || ""),
+                originalParent: card.parentElement,
+                placeholder: document.createComment("card-placeholder"),
             }));
 
             function normalizar(texto) {
@@ -882,8 +950,53 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             function aplicarFiltros() {
                 const terminos = terminosBusqueda(buscador.value);
+                const hayBusqueda = terminos.length > 0;
                 let hayResultados = false;
                 const visiblesPorSeccion = new Map();
+
+                if (hayBusqueda) {
+                    categoriaActiva = "TODAS";
+                    botonesFiltro.forEach((item) => item.classList.remove("active"));
+                    const todas = Array.from(botonesFiltro).find((item) => item.dataset.cat === "TODAS");
+                    if (todas) todas.classList.add("active");
+
+                    grillaResultados.innerHTML = "";
+                    contenedorPrincipal.hidden = true;
+                    resultadosBusqueda.classList.add("is-active");
+
+                    cards.forEach(({ element, search, originalParent, placeholder }) => {
+                        if (!placeholder.parentNode && element.parentNode === originalParent) {
+                            originalParent.insertBefore(placeholder, element);
+                        }
+
+                        const visible = terminos.every((termino) => search.includes(termino));
+                        element.hidden = !visible;
+
+                        if (visible) {
+                            grillaResultados.appendChild(element);
+                            hayResultados = true;
+                        } else if (placeholder.parentNode) {
+                            placeholder.parentNode.insertBefore(element, placeholder.nextSibling);
+                        }
+                    });
+
+                    contadorResultados.textContent = hayResultados
+                        ? `${grillaResultados.children.length} noticias`
+                        : "0 noticias";
+                    estadoVacio.style.display = hayResultados ? "none" : "block";
+                    return;
+                }
+
+                resultadosBusqueda.classList.remove("is-active");
+                grillaResultados.innerHTML = "";
+                contenedorPrincipal.hidden = false;
+
+                cards.forEach(({ element, originalParent, placeholder }) => {
+                    if (placeholder.parentNode) {
+                        originalParent.insertBefore(element, placeholder);
+                        placeholder.remove();
+                    }
+                });
 
                 cards.forEach(({ element, section, category, search }) => {
                     const coincideCategoria = categoriaActiva === "TODAS" || category === categoriaActiva;
@@ -917,13 +1030,6 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             });
 
             buscador.addEventListener("input", () => {
-                if (buscador.value.trim()) {
-                    categoriaActiva = "TODAS";
-                    botonesFiltro.forEach((item) => item.classList.remove("active"));
-                    const todas = Array.from(botonesFiltro).find((item) => item.dataset.cat === "TODAS");
-                    if (todas) todas.classList.add("active");
-                }
-
                 aplicarFiltros();
             });
 
