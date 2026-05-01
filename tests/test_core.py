@@ -144,7 +144,9 @@ class CoreHelpersTest(unittest.TestCase):
 
         self.assertIn("Datos financieros", html)
         self.assertIn("Dólar Blue", html)
-        self.assertIn("https://finanzasargy.com/", html)
+        self.assertIn("Fuente:", html)
+        self.assertIn('<a href="https://finanzasargy.com/"', html)
+        self.assertNotIn("Ver fuente en", html)
 
     def test_unificar_bloques_incluye_contraste_por_medio_en_prompt(self):
         texto = """

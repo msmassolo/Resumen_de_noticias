@@ -287,9 +287,10 @@ def generar_html_datos_financieros(datos):
             <div class="finance-grid">
                 {items_html}
             </div>
-            <a class="finance-source" href="{escape(datos["url"], quote=True)}" target="_blank" rel="noopener noreferrer">
-                Ver fuente en {escape(datos["fuente"])}
-            </a>
+            <p class="finance-source">
+                Fuente:
+                <a href="{escape(datos["url"], quote=True)}" target="_blank" rel="noopener noreferrer">{escape(datos["fuente"])}</a>
+            </p>
         </section>
     """
 
@@ -560,15 +561,19 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             }
 
             .finance-source {
-                display: inline-block;
                 margin-top: 8px;
-                color: #0b3a66;
+                color: var(--text-secondary);
                 font-size: 12px;
+                font-weight: 500;
+            }
+
+            .finance-source a {
+                color: #0b3a66;
                 font-weight: 600;
                 text-decoration: none;
             }
 
-            .finance-source:hover {
+            .finance-source a:hover {
                 text-decoration: underline;
             }
 
@@ -911,7 +916,16 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 });
             });
 
-            buscador.addEventListener("input", aplicarFiltros);
+            buscador.addEventListener("input", () => {
+                if (buscador.value.trim()) {
+                    categoriaActiva = "TODAS";
+                    botonesFiltro.forEach((item) => item.classList.remove("active"));
+                    const todas = Array.from(botonesFiltro).find((item) => item.dataset.cat === "TODAS");
+                    if (todas) todas.classList.add("active");
+                }
+
+                aplicarFiltros();
+            });
 
             botonCompacto.addEventListener("click", () => {
                 const activo = document.body.classList.toggle("compact");
