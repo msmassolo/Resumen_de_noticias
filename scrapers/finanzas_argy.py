@@ -74,13 +74,21 @@ def extraer_dolares(payload):
 
 
 def extraer_riesgo_pais(html_text):
-    texto = _limpiar_texto(html_text)
+    texto = html.unescape(str(html_text or ""))
 
     match = re.search(
-        r"Riesgo País\s+([\d.,]+)\s*([+-]?\d+(?:[.,]\d+)?%)",
+        r'"commoditie"\s*:\s*\[0\s*,\s*"Riesgo[^"]*"\].*?"valor"\s*:\s*\[0\s*,\s*"([^"]+)"\].*?"variacion"\s*:\s*\[0\s*,\s*"([^"]+)"\]',
         texto,
-        re.IGNORECASE,
+        re.IGNORECASE | re.DOTALL,
     )
+
+    if not match:
+        texto = _limpiar_texto(html_text)
+        match = re.search(
+            r"Riesgo Pa[ií]s\s+([\d.,]+)\s*([+-]?\d+(?:[.,]\d+)?%)",
+            texto,
+            re.IGNORECASE,
+        )
 
     if not match:
         match = re.search(
@@ -99,7 +107,7 @@ def extraer_riesgo_pais(html_text):
         return None
 
     return {
-        "nombre": "Riesgo País",
+        "nombre": "Riesgo Pa\u00eds",
         "valor": valor,
         "detalle": variacion,
         "actualizado": "",
@@ -120,7 +128,7 @@ def get_datos_financieros():
         response = requests.get(DATOS_ARGY_URL, timeout=TIMEOUT)
         response.raise_for_status()
 
-        riesgo_pais = extraer_riesgo_pais(response.text)
+        riesgo_pais = extraer_riesgo_pais(response.content.decode("utf-8", errors="replace"))
 
         if riesgo_pais:
             indicadores.append(riesgo_pais)
