@@ -52,15 +52,21 @@ def get_clarin():
 
             soup = BeautifulSoup(html, "html.parser")
             noticias_seccion = []
+            candidatos = 0
+            descartados = 0
 
             for titulo, full_link in _titulares_json_ld(soup, url):
+                candidatos += 1
                 if len(titulo) < 30:
+                    descartados += 1
                     continue
 
                 if ".html" not in full_link:
+                    descartados += 1
                     continue
 
                 if full_link in vistos:
+                    descartados += 1
                     continue
 
                 vistos.add(full_link)
@@ -88,23 +94,30 @@ def get_clarin():
                 if not titulo or not link:
                     continue
 
+                candidatos += 1
+
                 if len(titulo) < 30:
+                    descartados += 1
                     continue
 
                 # 🔴 evitar basura
                 if "/autor/" in link or "/tag/" in link:
+                    descartados += 1
                     continue
 
                 full_link = normalizar_url("https://www.clarin.com", link)
 
                 # 🔴 filtro mínimo (NO agresivo)
                 if not full_link.startswith("http"):
+                    descartados += 1
                     continue
 
                 if ".html" not in full_link:
+                    descartados += 1
                     continue
 
                 if full_link in vistos:
+                    descartados += 1
                     continue
 
                 vistos.add(full_link)
@@ -117,7 +130,10 @@ def get_clarin():
                 })
 
             noticias += noticias_seccion[:limite]
-            print(f"Clarin {categoria}: {len(noticias_seccion[:limite])} noticias")
+            print(
+                f"Clarin {categoria}: {len(noticias_seccion[:limite])} noticias "
+                f"({candidatos} candidatas, {descartados} descartadas)"
+            )
 
         except Exception as e:
             print(f"⚠️ Clarín {categoria}: {e}")

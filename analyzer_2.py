@@ -42,17 +42,35 @@ def _extraer_items_y_links(texto):
         if leyendo_links and linea.startswith("- http"):
             links.append(linea.replace("- ", "", 1).strip())
         elif leyendo_eventos:
-            if linea.startswith("- EVENTO:"):
+            if linea.startswith("- MEDIO:"):
                 if item_actual:
                     items.append(item_actual)
-                item_actual = {"evento": linea.replace("- EVENTO:", "", 1).strip(), "resumen": ""}
+                item_actual = {
+                    "medio": linea.replace("- MEDIO:", "", 1).strip(),
+                    "evento": "",
+                    "resumen": "",
+                    "enfoque": "",
+                }
+            elif linea.startswith("- EVENTO:"):
+                if item_actual:
+                    items.append(item_actual)
+                item_actual = {
+                    "medio": "",
+                    "evento": linea.replace("- EVENTO:", "", 1).strip(),
+                    "resumen": "",
+                    "enfoque": "",
+                }
+            elif linea.startswith("EVENTO:") and item_actual is not None:
+                item_actual["evento"] = linea.replace("EVENTO:", "", 1).strip()
             elif linea.startswith("RESUMEN:") and item_actual is not None:
                 item_actual["resumen"] = linea.replace("RESUMEN:", "", 1).strip()
+            elif linea.startswith("ENFOQUE:") and item_actual is not None:
+                item_actual["enfoque"] = linea.replace("ENFOQUE:", "", 1).strip()
             elif "|" in linea:
                 for evento in linea.split("|"):
                     evento = evento.strip()
                     if evento:
-                        items.append({"evento": evento, "resumen": ""})
+                        items.append({"medio": "", "evento": evento, "resumen": "", "enfoque": ""})
 
     if item_actual:
         items.append(item_actual)
@@ -80,8 +98,10 @@ def unificar_bloques(texto):
 
     eventos_txt = "\n".join(
         (
-            f"- Evento: {recortar_texto(item['evento'], 90)}. "
-            f"Datos: {recortar_texto(_resumen_util(item['evento'], item.get('resumen')) or 'sin detalles adicionales verificables', 160)}"
+            f"- Medio: {recortar_texto(item.get('medio') or 'Fuente', 24)}. "
+            f"Evento: {recortar_texto(item['evento'], 90)}. "
+            f"Datos: {recortar_texto(_resumen_util(item['evento'], item.get('resumen')) or 'sin detalles adicionales verificables', 150)}. "
+            f"Enfoque: {recortar_texto(item.get('enfoque') or 'sin enfoque editorial verificable', 130)}"
         )
         for item in items[:5]
     )
@@ -89,7 +109,10 @@ def unificar_bloques(texto):
         "Redacta una noticia unica basada solo en los eventos y datos listados. "
         "No agregues datos externos, causas, cifras ni consecuencias que no aparezcan. "
         "El resumen debe aportar contexto verificable, no repetir el titulo. "
-        'Devuelve JSON minificado: {"titulo":"max 16 palabras","resumen":"1 frase, max 45 palabras"}\n'
+        "Si los medios presentan atribuciones, responsabilidades, criticas o causas distintas, expresalo comparando por medio. "
+        "Ejemplo de estilo: La Nacion atribuye X a Y, mientras Clarin lo vincula con Z. "
+        "Si no hay diferencias de enfoque verificables, no inventes contraste editorial. "
+        'Devuelve JSON minificado: {"titulo":"max 16 palabras","resumen":"1 frase, max 60 palabras"}\n'
         f"{eventos_txt}"
     )
 
@@ -97,7 +120,7 @@ def unificar_bloques(texto):
     respuesta = pedir_groq(
         "Redactas sintesis breves sin inventar.",
         prompt,
-        max_tokens=95,
+        max_tokens=135,
         temperature=0,
         retries=2,
     )

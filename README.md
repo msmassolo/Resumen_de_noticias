@@ -13,6 +13,12 @@ python main_web.py
 
 Por defecto solo genera `index.html` y archivos de depuración en `data/`.
 
+## Verificación
+
+```powershell
+.\venv\Scripts\python.exe -B -m unittest discover -s tests -v
+```
+
 Para publicar desde local:
 
 ```powershell

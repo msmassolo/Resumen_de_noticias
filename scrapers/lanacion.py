@@ -21,6 +21,8 @@ def get_lanacion():
 
             soup = BeautifulSoup(html, "html.parser")
             noticias_seccion = []
+            candidatos = 0
+            descartados = 0
 
             for t in soup.find_all("a"):
 
@@ -30,25 +32,33 @@ def get_lanacion():
                 if not titulo or not link:
                     continue
 
+                candidatos += 1
+
                 if len(titulo) < 40:
+                    descartados += 1
                     continue
 
                 full_link = normalizar_url("https://www.lanacion.com.ar", link)
 
                 # 🔴 NUEVO FILTRO
                 if not full_link.startswith("http"):
+                    descartados += 1
                     continue
 
                 if len(full_link) < 60:
+                    descartados += 1
                     continue
 
                 if full_link.count("/") < 5:
+                    descartados += 1
                     continue
 
                 if full_link in vistos:
+                    descartados += 1
                     continue
 
                 if not es_reciente(str(t)):
+                    descartados += 1
                     continue
 
                 vistos.add(full_link)
@@ -61,7 +71,10 @@ def get_lanacion():
                 })
 
             noticias += noticias_seccion[:limite]
-            print(f"La Nacion {categoria}: {len(noticias_seccion[:limite])} noticias")
+            print(
+                f"La Nacion {categoria}: {len(noticias_seccion[:limite])} noticias "
+                f"({candidatos} candidatas, {descartados} descartadas)"
+            )
 
         except Exception as e:
             print(f"⚠️ La Nación {categoria}: {e}")

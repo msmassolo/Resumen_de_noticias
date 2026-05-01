@@ -21,7 +21,7 @@ load_dotenv()
 
 CACHE_IA_PATH = ".cache_ai.json"
 CACHE_IA_TTL_DIAS = int(os.getenv("CACHE_IA_TTL_DIAS", "3"))
-CACHE_IA_VERSION = "evento-resumen-v2"
+CACHE_IA_VERSION = "evento-resumen-enfoque-v3"
 ARTIFACTS_DIR = Path("data")
 
 
@@ -194,13 +194,54 @@ def parsear_grupos(texto):
 
 
 def normalizar_categoria(categoria):
-    cat = (categoria or "general").lower()
+    cat = limpiar_titulo(categoria or "general").lower()
 
-    if "eco" in cat:
+    if cat in {"economia", "economía"} or "eco" in cat:
         return "economia"
-    if "pol" in cat:
+    if cat in {"politica", "política"} or "pol" in cat:
         return "politica"
-    return "internacional"
+    if cat in {"america", "mundo", "el mundo", "internacional", "internacionales"}:
+        return "internacional"
+    return "general"
+
+
+def extraer_noticia_unificada(categoria, texto):
+    titulo = ""
+    resumen = ""
+    links = []
+    capturando_resumen = False
+
+    for linea in (texto or "").splitlines():
+        linea = linea.strip()
+
+        if not linea:
+            continue
+
+        if linea.startswith("TITULO:"):
+            titulo = linea.replace("TITULO:", "", 1).strip()
+            capturando_resumen = False
+        elif linea.startswith("RESUMEN:"):
+            resumen = linea.replace("RESUMEN:", "", 1).strip()
+            capturando_resumen = True
+        elif linea.startswith("LINKS:"):
+            capturando_resumen = False
+        elif linea.startswith("- http"):
+            links.append(linea.replace("- ", "", 1).strip())
+            capturando_resumen = False
+        elif capturando_resumen:
+            resumen = f"{resumen}\n{linea}".strip()
+
+    links = list(dict.fromkeys(link for link in links if link.startswith(("http://", "https://"))))
+
+    if not titulo and not resumen and not links:
+        return None
+
+    return {
+        "categoria": categoria.upper(),
+        "titulo": titulo,
+        "resumen": resumen,
+        "links": links,
+    }
 
 
 def _texto_equivalente(a, b):
@@ -213,14 +254,23 @@ def normalizar_resultado_ia(data, titulo):
 
     evento = str(data.get("evento") or "").strip()
     resumen = str(data.get("resumen") or "").strip()
+    enfoque = str(data.get("enfoque") or "").strip()
 
     evento = limpiar_titulo(evento or titulo[:120])
     resumen = limpiar_titulo(resumen or "")
+    enfoque = limpiar_titulo(enfoque or "")
 
     if not resumen or _texto_equivalente(resumen, evento) or _texto_equivalente(resumen, titulo):
         resumen = "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
 
-    return {"evento": evento, "resumen": resumen}
+    if enfoque and (
+        _texto_equivalente(enfoque, evento)
+        or _texto_equivalente(enfoque, resumen)
+        or _texto_equivalente(enfoque, titulo)
+    ):
+        enfoque = ""
+
+    return {"evento": evento, "resumen": resumen, "enfoque": enfoque}
 
 
 def ejecutar_proyecto(publicar=False):
@@ -271,6 +321,7 @@ def ejecutar_proyecto(publicar=False):
             "titulo": n["titulo"],
             "evento": data["evento"],
             "resumen": data["resumen"],
+            "enfoque": data.get("enfoque", ""),
             "link": n["link"],
             "categoria": n.get("categoria", "general")
         })
@@ -300,6 +351,7 @@ def ejecutar_proyecto(publicar=False):
         categorias.setdefault(normalizar_categoria(r["categoria"]), []).append(r)
 
     salida_final = ""
+    noticias_web = []
     diagnostico_grupos = []
 
     # 🔴 ETAPA 3 y 4
@@ -338,8 +390,10 @@ def ejecutar_proyecto(publicar=False):
                     item = lista[idx - 1]
                     eventos.append(
                         {
+                            "medio": item["diario"],
                             "evento": item["evento"],
                             "resumen": item.get("resumen", ""),
+                            "enfoque": item.get("enfoque", ""),
                         }
                     )
                     links.append(item["link"])
@@ -348,7 +402,12 @@ def ejecutar_proyecto(publicar=False):
 EVENTOS:
 """ + "\n".join(
                 [
-                    f"- EVENTO: {item['evento']}\n  RESUMEN: {item['resumen']}"
+                    (
+                        f"- MEDIO: {item['medio']}\n"
+                        f"  EVENTO: {item['evento']}\n"
+                        f"  RESUMEN: {item['resumen']}\n"
+                        f"  ENFOQUE: {item['enfoque']}"
+                    )
                     for item in eventos
                 ]
             ) + """
@@ -362,6 +421,9 @@ LINKS:
                 salida_final += f"\nCATEGORIA: {categoria.upper()}\n"
                 salida_final += final
                 salida_final += "\n-----------------------------\n"
+                noticia_web = extraer_noticia_unificada(categoria, final)
+                if noticia_web:
+                    noticias_web.append(noticia_web)
 
             if len(eventos) > 1:
                 time.sleep(3)
@@ -371,7 +433,7 @@ LINKS:
 
     print("\n--- GENERANDO WEB ---\n")
 
-    generar_web(salida_final)
+    generar_web(noticias_web)
 
     print("🌐 Web generada: index.html")
 

@@ -34,36 +34,44 @@ def _resumen_fallback(titulo, contenido):
 
 def _parsear_respuesta(texto, titulo, contenido):
     if not texto:
-        return {"evento": titulo[:120], "resumen": _resumen_fallback(titulo, contenido)}
+        return {"evento": titulo[:120], "resumen": _resumen_fallback(titulo, contenido), "enfoque": ""}
 
     try:
         data = json.loads(texto)
-        evento = str(data.get("evento", "")).strip()
-        resumen = str(data.get("resumen", "")).strip()
+        evento = str(data.get("evento") or "").strip()
+        resumen = str(data.get("resumen") or "").strip()
+        enfoque = str(data.get("enfoque") or "").strip()
     except json.JSONDecodeError:
         evento = ""
         resumen = ""
+        enfoque = ""
         for linea in texto.splitlines():
             linea = linea.strip()
             if linea.startswith("EVENTO:"):
                 evento = linea.replace("EVENTO:", "", 1).strip()
             elif linea.startswith("RESUMEN:"):
                 resumen = linea.replace("RESUMEN:", "", 1).strip()
+            elif linea.startswith("ENFOQUE:"):
+                enfoque = linea.replace("ENFOQUE:", "", 1).strip()
 
     evento = evento or titulo[:120]
     if not resumen or _normalizar(resumen) in {_normalizar(evento), _normalizar(titulo)}:
         resumen = _resumen_fallback(titulo, contenido)
 
-    return {"evento": evento, "resumen": resumen}
+    if enfoque and _normalizar(enfoque) in {_normalizar(evento), _normalizar(titulo), _normalizar(resumen)}:
+        enfoque = ""
+
+    return {"evento": evento, "resumen": resumen, "enfoque": enfoque}
 
 
 def procesar_noticia(titulo, contenido):
     contenido = recortar_texto(contenido, MAX_CONTENIDO_CHARS)
     prompt = (
-        "Extrae el hecho central y un resumen informativo. No inventes nombres, cifras, causas ni consecuencias. "
+        "Extrae el hecho central, un resumen informativo y el enfoque editorial verificable. No inventes nombres, cifras, causas ni consecuencias. "
         "El resumen debe explicar actor, accion, contexto o consecuencia solo si aparecen en el texto. "
+        "El enfoque debe indicar si el medio atribuye responsabilidad, culpa, causa, critica, defensa o contraste politico; si no aparece, dejalo vacio. "
         "No copies el titulo como resumen. Si no hay detalles adicionales verificables, dilo explicitamente. "
-        'Devuelve JSON minificado: {"evento":"max 14 palabras","resumen":"1 frase, max 34 palabras"}\n'
+        'Devuelve JSON minificado: {"evento":"max 14 palabras","resumen":"1 frase, max 34 palabras","enfoque":"max 24 palabras o vacio"}\n'
         f"TITULO: {titulo}\nTEXTO: {contenido}"
     )
 
@@ -71,7 +79,7 @@ def procesar_noticia(titulo, contenido):
     texto = pedir_groq(
         "Extraes hechos concretos de noticias.",
         prompt,
-        max_tokens=90,
+        max_tokens=125,
         temperature=0,
         retries=1,
     )

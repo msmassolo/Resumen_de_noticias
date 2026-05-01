@@ -118,6 +118,33 @@ def parsear_contenido(contenido):
     return noticias
 
 
+def normalizar_noticias(noticias):
+    normalizadas = []
+
+    for noticia in noticias or []:
+        if not isinstance(noticia, dict):
+            continue
+
+        categoria = str(noticia.get("categoria") or "GENERAL").strip().upper()
+        titulo = str(noticia.get("titulo") or "").strip()
+        resumen = str(noticia.get("resumen") or "").strip()
+        links = normalizar_links(noticia.get("links") or [])
+
+        if not titulo and not resumen and not links:
+            continue
+
+        normalizadas.append(
+            {
+                "categoria": categoria,
+                "titulo": titulo,
+                "resumen": resumen,
+                "links": links,
+            }
+        )
+
+    return normalizadas
+
+
 ORDEN_CATEGORIAS = ("POLITICA", "ECONOMIA", "INTERNACIONAL", "GENERAL")
 
 
@@ -202,7 +229,11 @@ def generar_web(contenido, output_path="index.html"):
     fecha_formateada = formatear_fecha_es(fecha_actual)
     hora_formateada = fecha_actual.strftime("%H:%M")
 
-    noticias = parsear_contenido(contenido)
+    if isinstance(contenido, str):
+        noticias = parsear_contenido(contenido)
+    else:
+        noticias = normalizar_noticias(contenido)
+
     noticias = sorted(noticias, key=lambda noticia: clave_categoria(noticia["categoria"]))
     categorias = {noticia["categoria"] for noticia in noticias}
     conteos = {categoria: sum(1 for noticia in noticias if noticia["categoria"] == categoria) for categoria in categorias}

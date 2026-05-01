@@ -52,6 +52,7 @@ def limpiar_titulo(texto):
     texto = " ".join((texto or "").split())
     texto = re.sub(r"([a-záéíóúñ])\.([A-ZÁÉÍÓÚÑ])", r"\1. \2", texto)
     texto = re.sub(r"([a-záéíóúñ])Por([A-ZÁÉÍÓÚÑ])", r"\1 Por \2", texto)
+    texto = re.sub(r"\bPor([A-ZÁÉÍÓÚÑ])", r"Por \1", texto)
     texto = re.sub(r"([a-záéíóúñ])EN VIVO", r"\1 EN VIVO", texto)
     return texto.strip()
 
