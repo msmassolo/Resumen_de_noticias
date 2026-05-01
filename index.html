@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 
         <style>
             * {
@@ -16,91 +16,88 @@
 
             :root {
                 color-scheme: light;
-                --background: #F4F1EC;
-                --surface: #E7DED1;
-                --surface-soft: #DDD4C7;
-                --primary: #B2A58A;
-                --secondary: #CBBBA5;
-                --accent: #8C7B6A;
-                --text-primary: #2F2A24;
-                --text-secondary: #5E564D;
-                --border: #D8CFC3;
+                --background: #f3f4f3;
+                --surface: #f8f8f6;
+                --surface-soft: #ececea;
+                --primary: #66706f;
+                --secondary: #d7d4ce;
+                --accent: #6f6258;
+                --text-primary: #202326;
+                --text-secondary: #575f63;
+                --border: #d6d8d6;
                 --infobae: #D8B08C;
                 --clarin: #C99999;
                 --lanacion: #AEBFCF;
-                --font-title: "Cormorant Garamond";
-                --font-body: "Manrope";
+                --font-title: "Merriweather";
+                --font-body: "IBM Plex Sans";
             }
 
             body {
                 min-height: 100vh;
                 margin: 0;
                 color: var(--text-primary);
-                background:
-                    radial-gradient(circle at 9% 8%, rgba(203, 187, 165, 0.26), transparent 28%),
-                    radial-gradient(circle at 88% 4%, rgba(174, 191, 207, 0.18), transparent 30%),
-                    var(--background);
-                font-family: var(--font-body), "Manrope";
+                background: var(--background);
+                font-family: var(--font-body), "IBM Plex Sans";
                 letter-spacing: 0;
             }
 
             .header {
                 text-align: left;
-                padding: clamp(34px, 5vw, 62px) 24px 16px;
+                padding: 24px 20px 10px;
                 background: transparent;
             }
 
             .header-inner,
             .toolbar,
             .container {
-                max-width: 1180px;
+                max-width: 1280px;
                 margin: 0 auto;
             }
 
             .eyebrow {
-                margin: 0 0 12px;
+                margin: 0 0 6px;
                 color: var(--accent);
-                font-size: 11px;
+                font-size: 10px;
                 font-weight: 700;
-                letter-spacing: 0.14em;
+                letter-spacing: 0.12em;
                 text-transform: uppercase;
             }
 
             .header h1 {
                 max-width: 820px;
                 margin: 0;
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(40px, 6vw, 76px);
-                font-weight: 600;
-                line-height: 0.98;
+                font-family: var(--font-title), "Merriweather";
+                font-size: clamp(26px, 3.4vw, 44px);
+                font-weight: 700;
+                line-height: 1.12;
                 letter-spacing: 0;
             }
 
             .header p {
-                max-width: 760px;
-                margin: 16px 0 0;
+                max-width: 900px;
+                margin: 8px 0 0;
                 color: var(--text-secondary);
-                font-size: 14px;
-                line-height: 1.72;
+                font-size: 13px;
+                line-height: 1.48;
             }
 
             .toolbar {
                 display: grid;
                 grid-template-columns: minmax(240px, 1fr) auto;
-                gap: 12px;
-                padding: 18px 24px 8px;
+                gap: 10px;
+                padding: 12px 20px 6px;
             }
 
             .search-input {
                 width: 100%;
-                min-height: 46px;
+                min-height: 36px;
                 border: 1px solid var(--border);
-                border-radius: 999px;
-                padding: 0 20px;
+                border-radius: 6px;
+                padding: 0 12px;
                 color: var(--text-primary);
-                background: rgba(231, 222, 209, 0.46);
-                font-family: var(--font-body), "Manrope";
-                font-size: 14px;
+                background: var(--surface);
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 13px;
                 transition: border-color 160ms ease, background 160ms ease;
             }
 
@@ -108,43 +105,43 @@
             .compact-btn:focus-visible {
                 border-color: var(--accent);
                 outline: 0;
-                background: rgba(231, 222, 209, 0.72);
+                background: #fff;
             }
 
             .compact-btn {
-                min-height: 46px;
+                min-height: 36px;
                 border: 1px solid var(--border);
-                border-radius: 999px;
-                padding: 0 20px;
+                border-radius: 6px;
+                padding: 0 12px;
                 color: var(--text-primary);
-                background: transparent;
+                background: var(--surface);
                 cursor: pointer;
-                font-family: var(--font-body), "Manrope";
-                font-size: 13px;
-                font-weight: 700;
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 12px;
+                font-weight: 600;
                 transition: border-color 160ms ease, background 160ms ease;
             }
 
             .filtros {
                 justify-content: flex-start;
-                max-width: 1180px;
+                max-width: 1280px;
                 margin: 0 auto;
-                padding: 12px 24px 20px;
+                padding: 8px 20px 12px;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 6px;
             }
 
             .filtro-btn {
-                min-height: 40px;
-                padding: 0 16px;
-                border: 1px solid transparent;
-                border-radius: 999px;
+                min-height: 30px;
+                padding: 0 10px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
                 color: var(--text-secondary);
-                background: transparent;
+                background: var(--surface);
                 cursor: pointer;
-                font-family: var(--font-body), "Manrope";
-                font-size: 12px;
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 10px;
                 font-weight: 700;
                 letter-spacing: 0.04em;
                 text-transform: uppercase;
@@ -161,55 +158,57 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                min-width: 24px;
-                min-height: 24px;
-                margin-left: 8px;
-                border-radius: 999px;
-                background: rgba(203, 187, 165, 0.26);
+                min-width: 19px;
+                min-height: 19px;
+                margin-left: 6px;
+                border-radius: 5px;
+                background: var(--surface-soft);
                 color: var(--accent);
-                font-size: 11px;
+                font-size: 10px;
             }
 
             .filtro-btn.active {
                 color: var(--text-primary);
-                background: rgba(231, 222, 209, 0.72);
+                background: var(--surface-soft);
                 border-color: var(--border);
             }
 
             .filtro-btn.active span {
-                background: rgba(178, 165, 138, 0.32);
+                background: var(--secondary);
                 color: var(--text-primary);
             }
 
             .container {
-                padding: 4px 24px 64px;
+                padding: 2px 20px 42px;
             }
 
             .categoria-section {
-                margin-top: clamp(28px, 5vw, 54px);
+                margin-top: 22px;
             }
 
             .section-heading {
                 display: flex;
                 align-items: flex-end;
                 justify-content: space-between;
-                gap: 18px;
-                margin: 0 0 16px;
+                gap: 12px;
+                margin: 0 0 8px;
+                padding-bottom: 6px;
+                border-bottom: 1px solid var(--border);
             }
 
             .section-heading h2 {
                 margin: 0;
                 text-align: left;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(28px, 3.4vw, 42px);
-                font-weight: 600;
-                line-height: 1;
+                font-family: var(--font-title), "Merriweather";
+                font-size: clamp(20px, 2vw, 28px);
+                font-weight: 700;
+                line-height: 1.15;
             }
 
             .section-heading span {
                 color: var(--text-secondary);
-                font-size: 12px;
+                font-size: 10px;
                 font-weight: 700;
                 letter-spacing: 0.08em;
                 text-transform: uppercase;
@@ -217,8 +216,8 @@
 
             .news-grid {
                 display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 14px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 10px;
             }
 
             .card {
@@ -226,69 +225,55 @@
                 flex-direction: column;
                 min-height: 100%;
                 margin: 0;
-                padding: 22px;
-                border: 1px solid rgba(216, 207, 195, 0.72);
-                border-radius: 24px;
-                background: rgba(231, 222, 209, 0.34);
-                box-shadow: 0 18px 46px rgba(47, 42, 36, 0.035);
+                padding: 14px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                box-shadow: 0 8px 22px rgba(28, 32, 34, 0.025);
                 transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
             }
 
             .card:hover {
-                border-color: rgba(140, 123, 106, 0.36);
-                background: rgba(231, 222, 209, 0.48);
-                transform: translateY(-2px);
-            }
-
-            .card.featured {
-                grid-column: 1 / -1;
-                min-height: 210px;
-                padding: clamp(28px, 4vw, 42px);
-                background: linear-gradient(135deg, rgba(231, 222, 209, 0.86), rgba(221, 212, 199, 0.48));
+                border-color: #bcc2c2;
+                background: #fbfbfa;
+                transform: translateY(-1px);
             }
 
             .card h3 {
-                max-width: 880px;
-                margin: 0 0 14px;
+                margin: 0 0 8px;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(23px, 2.35vw, 31px);
-                font-weight: 600;
-                line-height: 1.12;
+                font-family: var(--font-title), "Merriweather";
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 1.24;
                 letter-spacing: 0;
-                overflow-wrap: anywhere;
+                overflow-wrap: break-word;
                 hyphens: auto;
             }
 
-            .card.featured h3 {
-                font-size: clamp(32px, 4.2vw, 52px);
-                line-height: 1.03;
-            }
-
             .card p {
-                max-width: 820px;
-                margin: 0 0 20px;
+                margin: 0 0 12px;
                 color: var(--text-secondary);
-                font-size: 14px;
-                line-height: 1.72;
+                font-size: 12.5px;
+                line-height: 1.48;
             }
 
             .sources {
                 margin-top: auto;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 8px;
+                gap: 5px;
             }
 
             .chip {
                 display: inline-flex;
                 align-items: center;
-                min-height: 30px;
-                padding: 0 11px;
-                border-radius: 999px;
+                min-height: 22px;
+                padding: 0 7px;
+                border-radius: 5px;
                 color: var(--text-primary);
-                font-family: var(--font-body), "Manrope";
-                font-size: 10px;
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 9px;
                 font-weight: 700;
                 letter-spacing: 0.04em;
                 text-decoration: none;
@@ -303,13 +288,13 @@
 
             .empty-state {
                 display: none;
-                max-width: 1180px;
-                margin: 32px auto 0;
-                padding: 22px 20px;
+                max-width: 1280px;
+                margin: 24px auto 0;
+                padding: 14px 16px;
                 border: 1px solid var(--border);
-                border-radius: 24px;
+                border-radius: 8px;
                 color: var(--text-secondary);
-                background: rgba(231, 222, 209, 0.34);
+                background: var(--surface);
                 text-align: center;
             }
 
@@ -318,37 +303,47 @@
             }
 
             body.compact .card,
-            body.compact .card.featured {
-                padding: 20px;
+            body.compact .card {
+                padding: 12px;
             }
 
             body.compact .card h3,
-            body.compact .card.featured h3 {
-                font-size: clamp(22px, 2.6vw, 30px);
+            body.compact .card h3 {
+                font-size: 14px;
             }
 
-            .infobae { background: rgba(216, 176, 140, 0.62); }
-            .clarin { background: rgba(201, 153, 153, 0.58); }
-            .lanacion { background: rgba(174, 191, 207, 0.64); }
-            .pagina12 { background: rgba(203, 187, 165, 0.52); }
-            .ambito { background: rgba(178, 165, 138, 0.48); }
-            .default { background: rgba(221, 212, 199, 0.7); }
+            .infobae { background: rgba(216, 176, 140, 0.56); }
+            .clarin { background: rgba(201, 153, 153, 0.52); }
+            .lanacion { background: rgba(174, 191, 207, 0.58); }
+            .pagina12 { background: rgba(203, 187, 165, 0.46); }
+            .ambito { background: rgba(178, 165, 138, 0.42); }
+            .default { background: var(--surface-soft); }
 
-            @media (max-width: 820px) {
+            @media (max-width: 1100px) {
+                .news-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @media (max-width: 760px) {
                 .header {
-                    padding: 34px 18px 14px;
+                    padding: 22px 14px 10px;
+                }
+
+                .header h1 {
+                    font-size: 30px;
                 }
 
                 .toolbar {
                     grid-template-columns: 1fr;
-                    padding-left: 18px;
-                    padding-right: 18px;
+                    padding-left: 14px;
+                    padding-right: 14px;
                 }
 
                 .filtros,
                 .container {
-                    padding-left: 18px;
-                    padding-right: 18px;
+                    padding-left: 14px;
+                    padding-right: 14px;
                 }
 
                 .news-grid {
@@ -361,45 +356,39 @@
                     gap: 8px;
                 }
 
-                .card,
-                .card.featured {
+                .card {
                     min-height: auto;
-                    padding: 20px;
-                    border-radius: 20px;
-                }
-
-                .card.featured h3 {
-                    font-size: clamp(30px, 8vw, 44px);
+                    padding: 13px;
                 }
             }
 
             .footer {
-                max-width: 1180px;
-                margin: 18px auto 0;
-                padding: 0 24px 54px;
+                max-width: 1280px;
+                margin: 8px auto 0;
+                padding: 0 20px 34px;
             }
 
             .footer-inner {
                 display: grid;
                 grid-template-columns: minmax(0, 1fr) minmax(240px, 0.5fr);
-                gap: 24px;
-                padding-top: 28px;
-                border-top: 1px solid rgba(216, 207, 195, 0.86);
+                gap: 18px;
+                padding-top: 18px;
+                border-top: 1px solid var(--border);
             }
 
             .footer h2 {
                 margin: 0;
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(28px, 3.2vw, 42px);
-                font-weight: 600;
-                line-height: 1;
+                font-family: var(--font-title), "Merriweather";
+                font-size: 20px;
+                font-weight: 700;
+                line-height: 1.15;
             }
 
             .footer p,
             .footer a {
                 color: var(--text-secondary);
-                font-size: 13px;
-                line-height: 1.8;
+                font-size: 12px;
+                line-height: 1.55;
             }
 
             .footer p {
@@ -415,10 +404,10 @@
                 color: var(--text-primary);
             }
 
-            @media (max-width: 820px) {
+            @media (max-width: 760px) {
                 .footer {
-                    padding-left: 18px;
-                    padding-right: 18px;
+                    padding-left: 14px;
+                    padding-right: 14px;
                 }
 
                 .footer-inner {
@@ -434,7 +423,7 @@
             <div class="header-inner">
                 <p class="eyebrow">Agente</p>
                 <h1>Resumen de Noticias</h1>
-                <p>Actualizado el viernes 01 de mayo de 2026 a las 15:27 hs. Esta página permite una lectura rápida de los principales hechos de economía, política e internacionales, con la posibilidad de ingresar a cada noticia para acceder a los detalles si es requerido.</p>
+                <p>Actualizado el viernes 01 de mayo de 2026 a las 15:40 hs. Esta página permite una lectura rápida de los principales hechos de economía, política e internacionales, con la posibilidad de ingresar a cada noticia para acceder a los detalles si es requerido.</p>
             </div>
         </div>
 
@@ -443,129 +432,10 @@
             <button class="compact-btn" type="button" aria-pressed="false">Modo compacto</button>
         </div>
 
-        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>28</span></button><button class="filtro-btn" data-cat="POLITICA" type="button">Politica <span>8</span></button><button class="filtro-btn" data-cat="ECONOMIA" type="button">Economia <span>11</span></button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">Internacional <span>9</span></button></div>
+        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>26</span></button><button class="filtro-btn" data-cat="ECONOMIA" type="button">Economia <span>11</span></button><button class="filtro-btn" data-cat="POLITICA" type="button">Politica <span>8</span></button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">Internacional <span>7</span></button></div>
 
         <main class="container">
             
-            <section class="categoria-section" data-categoria="POLITICA">
-                <div class="section-heading">
-                    <h2>Politica</h2>
-                    <span>8 noticias</span>
-                </div>
-                <div class="news-grid">
-            
-                <article class="card featured" data-categoria="POLITICA">
-                    <h3>Javier Milei viaja a Estados Unidos para participar en la Conferencia Global del</h3>
-                    <p>El presidente argentino asistirá a la 29.ª edición del foro en Los Ángeles, donde disertará el 6 de mayo, además de difundir un video por el Día del Trabajador con un personaje que lo representa construyendo la Argentina con lemas de su gobierno.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/politica/2026/05/01/javier-milei-vuelve-a-viajar-a-estados-unidos-participara-de-la-conferencia-global-del-instituto-milken/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Leer en Infobae
-                        </a>
-            
-                        <a href="https://www.infobae.com/politica/2026/05/01/el-video-que-compartio-milei-por-el-dia-del-trabajador/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Leer en Infobae
-                        </a>
-            
-                        <a href="https://www.clarin.com/politica/legos-protagonista-llamativo-video-compartio-javier-milei-dia-trabajador_0_xZ40s2YWgJ.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                        <a href="https://www.lanacion.com.ar/politica/video-el-mensaje-de-javier-milei-por-el-dia-del-trabajador-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>El Gobierno destinará fondos de las privatizaciones para reequipar y modernizar a las Fuerzas Armadas La medida será ofi</h3>
-                    <p>El Gobierno de Javier Milei prepara una decisión de fuerte impacto político, presupuestario y estratégico: destinará parte de los fondos obtenidos por privatizaciones, ventas de activos, concesiones y licitaciones estatales al reequipamiento y modernización</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/politica/2026/05/01/el-gobierno-destinara-fondos-de-las-privatizaciones-para-reequipar-y-modernizar-a-las-fuerzas-armadas/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Leer en Infobae
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>Manuel Adorni niega acusaciones y rechaza renuncia, pero renunció a cargo en sindicato de delivery</h3>
-                    <p>El jefe de Gabinete negó ser titular de una sociedad en el exterior y rechazó renunciar, pero luego renunció a su cargo en un sindicato de delivery que no prosperó.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/politica/2026/05/01/manuel-adorni-jamas-voy-a-renunciar-jamas-voy-a-ceder-ante-las-presiones/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Leer en Infobae
-                        </a>
-            
-                        <a href="https://www.clarin.com/politica/dia-manuel-adorni-renuncio-cargo-frustrado-sindicato-delivery_0_il4KpfuzeO.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>&quot;Una amenaza&quot;. El Gobierno anunció que detuvo a un ciudadano ruso por la campaña de espionaje para desacreditar a Milei</h3>
-                    <p>El gobierno nacional anunció hoy que detuvo al ciudadano ruso Dmitrii Novikov, acusado por la campaña de espionaje para dar noticias falsas contra el presidente Javier Milei. A través de un comunicado, la ministra de Seguridad, Alejandra Monteoliva, informó</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/politica/el-gobierno-anuncio-que-detuvo-a-un-ciudadano-ruso-por-la-campana-de-espionaje-para-desacreditar-a-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>Condena a exintendente de Cervantes por defraudación y uso de documento falso</h3>
-                    <p>Gilberto Montanaro, exintendente de Cervantes, fue condenado a tres años de prisión en suspenso e inhabilitación especial perpetua por defraudación a la administración pública y uso de documento público falso.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/politica/javier-milei-y-sus-medidas-en-vivo-el-gobierno-reabre-la-sala-de-periodistas-y-el-avanza-la-causa-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>&quot;Vamos a ser perseguidos&quot;. Carrió criticó a Milei por sus ataques a la prensa y apuntó contra sus exsocios de Juntos por</h3>
-                    <p>La referente de la Coalición Cívica Elisa Carrió criticó este viernes al presidente Javier Milei por sus reiterados ataques a la prensa, anticipó el “inicio de un Estado autoritario” y apuntó contra sus exsocios de Juntos por el Cambio por apoyar el rumbo de</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/politica/carrio-critico-a-milei-por-sus-ataques-a-la-prensa-todos-vamos-a-ser-perseguidos-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>El gobierno de Argentina evitó firmar un texto contra China con aliados de EE.UU.</h3>
-                    <p>El gobierno de Argentina no acompañó un comunicado de Washington que acusó a China de socavar la soberanía de un país en la región.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/politica/gobierno-evito-firmar-texto-china-activado-aliados-regionales-eeuu-departamento-estado-gusto_0_sJllGdyNn9.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA">
-                    <h3>Gastos millonarios de la empresa estatal Nucleoeléctrica (NASA) revelados en informe de Adorni</h3>
-                    <p>El informe de Adorni reveló gastos millonarios de la empresa estatal NASA, incluyendo consumos en free shops, hoteles de lujo y extracciones en efectivo en el exterior y en el país por más de 50 millones de pesos.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/politica/free-shop-hoteles-lujo-millones-efectivo-informe-adorni-revelo-gastos-millonarios-empresa-estado_0_hRGFRtcXI0.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        </div></section>
             <section class="categoria-section" data-categoria="ECONOMIA">
                 <div class="section-heading">
                     <h2>Economia</h2>
@@ -573,19 +443,7 @@
                 </div>
                 <div class="news-grid">
             
-                <article class="card featured" data-categoria="ECONOMIA">
-                    <h3>La Argentina firma un acuerdo con Estados Unidos para desarrollar su potencial minero</h3>
-                    <p>La Argentina busca transformar su potencial minero en inversiones reales para mermar la dominancia de China en la cadena de suministros</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/economia/2026/05/01/mineria-el-plan-para-alcanzar-un-superavit-de-usd-60000-millones-para-2031-y-el-blindaje-frente-a-china/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Leer en Infobae
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="Luis Caputo expresa su opinión sobre la presidencia de Kicillof El ministro de Economía, Luis Caputo, dijo que es imposible que Kicillof sea presidente y que quien paga para medir sus chances está tirando la plata. Infobae">
                     <h3>Luis Caputo expresa su opinión sobre la presidencia de Kicillof</h3>
                     <p>El ministro de Economía, Luis Caputo, dijo que es imposible que Kicillof sea presidente y que quien paga para medir sus chances está tirando la plata.</p>
                     <div class="sources">
@@ -597,7 +455,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="El empresario Miguel Jacowasky expone la presión fiscal en las PYMEs argentinas El empresario Miguel Jacowasky creó un video que muestra la variedad de tasas y tributos que afectan a las PYMEs en Argentina Infobae">
                     <h3>El empresario Miguel Jacowasky expone la presión fiscal en las PYMEs argentinas</h3>
                     <p>El empresario Miguel Jacowasky creó un video que muestra la variedad de tasas y tributos que afectan a las PYMEs en Argentina</p>
                     <div class="sources">
@@ -609,7 +467,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="Wall Street marca nuevos máximos mientras caen las acciones argentinas y rebotan los bonos Los índices S&amp;P 500 y Nasdaq alcanzan máximos históricos en Wall Street, mientras las acciones argentinas caen y los bonos rebotan. Infobae">
                     <h3>Wall Street marca nuevos máximos mientras caen las acciones argentinas y rebotan los bonos</h3>
                     <p>Los índices S&amp;P 500 y Nasdaq alcanzan máximos históricos en Wall Street, mientras las acciones argentinas caen y los bonos rebotan.</p>
                     <div class="sources">
@@ -621,7 +479,19 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="Cuánto cobran en mayo 2026 los cajeros de supermercado tras las paritarias de Comercio Por Faustino Cuomo El Gobierno nacional homologó la paritaria de Comercio para el período abril-junio de 2026 sin modificaciones, confirmando así el acuerdo salarial entre la Federación Argentina de Empleados de Comercio y Servicios (FAECyS), la principal federación sindical Infobae">
+                    <h3>Cuánto cobran en mayo 2026 los cajeros de supermercado tras las paritarias de Comercio Por Faustino Cuomo</h3>
+                    <p>El Gobierno nacional homologó la paritaria de Comercio para el período abril-junio de 2026 sin modificaciones, confirmando así el acuerdo salarial entre la Federación Argentina de Empleados de Comercio y Servicios (FAECyS), la principal federación sindical</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/economia/2026/05/01/cuanto-cobran-en-mayo-2026-los-cajeros-de-supermercado-tras-las-paritarias-de-comercio/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="ECONOMIA" data-search="Ganancias. Tres claves que explican por qué hay devoluciones del impuesto con los salarios de abril Con el cobro de los salarios de abril, los empleados bajo relación de dependencia que tuvieron descuentos de sus ingresos por Ganancias el año pasado recibirán, en general, una devolución de montos correspondientes al impuesto de 2025. Esto ocurre por un La Nación">
                     <h3>Ganancias. Tres claves que explican por qué hay devoluciones del impuesto con los salarios de abril</h3>
                     <p>Con el cobro de los salarios de abril, los empleados bajo relación de dependencia que tuvieron descuentos de sus ingresos por Ganancias el año pasado recibirán, en general, una devolución de montos correspondientes al impuesto de 2025. Esto ocurre por un</p>
                     <div class="sources">
@@ -633,7 +503,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="Rasti desplegó una estrategia de diversificación para adaptarse a un mercado en declive La empresa de juguetes Rasti se diversificó para mantener su presencia en un mercado que enfrenta la caída de la natalidad, el avance de las pantallas y el desplome del consumo. La Nación">
                     <h3>Rasti desplegó una estrategia de diversificación para adaptarse a un mercado en declive</h3>
                     <p>La empresa de juguetes Rasti se diversificó para mantener su presencia en un mercado que enfrenta la caída de la natalidad, el avance de las pantallas y el desplome del consumo.</p>
                     <div class="sources">
@@ -645,7 +515,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="La cadena de pagos en el sector privado suma presiones con un aumento de cheques rechazados por falta de fondos Los cheques rechazados por falta de fondos volvieron a aumentar en marzo, duplicándose con respecto al último año, según el Informe de Pagos Minoristas del Banco Central. La Nación">
                     <h3>La cadena de pagos en el sector privado suma presiones con un aumento de cheques rechazados por falta de fondos</h3>
                     <p>Los cheques rechazados por falta de fondos volvieron a aumentar en marzo, duplicándose con respecto al último año, según el Informe de Pagos Minoristas del Banco Central.</p>
                     <div class="sources">
@@ -657,7 +527,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="La expropiación de Aerolíneas Argentinas sigue pasando factura Un fondo busca embargar activos argentinos en Estados Unidos por US$390,9 millones La Nación">
                     <h3>La expropiación de Aerolíneas Argentinas sigue pasando factura</h3>
                     <p>Un fondo busca embargar activos argentinos en Estados Unidos por US$390,9 millones</p>
                     <div class="sources">
@@ -669,7 +539,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="Gobierno analiza flexibilizar cumplimiento de reforma laboral para pymes El Gobierno estudia permitir a pequeñas empresas compartir un fondo para cumplir con la ley de reforma laboral, dos meses después de su aprobación. Clarín Clarín">
                     <h3>Gobierno analiza flexibilizar cumplimiento de reforma laboral para pymes</h3>
                     <p>El Gobierno estudia permitir a pequeñas empresas compartir un fondo para cumplir con la ley de reforma laboral, dos meses después de su aprobación.</p>
                     <div class="sources">
@@ -685,7 +555,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="Promociones y beneficios de Cuenta DNI en mayo de 2026 El Banco Provincia ofrece promociones y beneficios en su billetera digital Cuenta DNI para mayo de 2026, pero varían según el rubro y día. Clarín">
                     <h3>Promociones y beneficios de Cuenta DNI en mayo de 2026</h3>
                     <p>El Banco Provincia ofrece promociones y beneficios en su billetera digital Cuenta DNI para mayo de 2026, pero varían según el rubro y día.</p>
                     <div class="sources">
@@ -697,7 +567,7 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA">
+                <article class="card" data-categoria="ECONOMIA" data-search="Lumilagro contratará 60 personas para un nuevo negocio La empresa Lumilagro abrirá locales propios y contratará 60 empleados después de desactivar su planta de Tortuguitas. Clarín">
                     <h3>Lumilagro contratará 60 personas para un nuevo negocio</h3>
                     <p>La empresa Lumilagro abrirá locales propios y contratará 60 empleados después de desactivar su planta de Tortuguitas.</p>
                     <div class="sources">
@@ -709,16 +579,135 @@
                     </div>
                 </article>
         </div></section>
-            <section class="categoria-section" data-categoria="INTERNACIONAL">
+            <section class="categoria-section" data-categoria="POLITICA">
                 <div class="section-heading">
-                    <h2>Internacional</h2>
-                    <span>9 noticias</span>
+                    <h2>Politica</h2>
+                    <span>8 noticias</span>
                 </div>
                 <div class="news-grid">
             
-                <article class="card featured" data-categoria="INTERNACIONAL">
-                    <h3>Trump rechazó propuesta de diálogo con Irán y aumentó aranceles a autos europeos</h3>
-                    <p>El presidente estadounidense rechazó una propuesta de diálogo con Irán y anunció un aumento de aranceles a autos europeos.</p>
+                <article class="card" data-categoria="POLITICA" data-search="Presidente argentino asiste a conferencia en EE.UU. y difunde video por el Día del Trabajador El presidente argentino Javier Milei viajó a Los Ángeles para participar en la 29.ª edición de la Conferencia Global, donde disertará el 6 de mayo. Además, compartió un video animado en sus redes sociales para saludar a los trabajadores en su día, en el que se lo representa construyendo la Argentina con lemas de su gobierno. Infobae Infobae Clarín">
+                    <h3>Presidente argentino asiste a conferencia en EE.UU. y difunde video por el Día del Trabajador</h3>
+                    <p>El presidente argentino Javier Milei viajó a Los Ángeles para participar en la 29.ª edición de la Conferencia Global, donde disertará el 6 de mayo. Además, compartió un video animado en sus redes sociales para saludar a los trabajadores en su día, en el que se lo representa construyendo la Argentina con lemas de su gobierno.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/politica/2026/05/01/javier-milei-vuelve-a-viajar-a-estados-unidos-participara-de-la-conferencia-global-del-instituto-milken/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.infobae.com/politica/2026/05/01/el-video-que-compartio-milei-por-el-dia-del-trabajador/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.clarin.com/politica/legos-protagonista-llamativo-video-compartio-javier-milei-dia-trabajador_0_xZ40s2YWgJ.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="El Gobierno destinará fondos de las privatizaciones para reequipar y modernizar a las Fuerzas Armadas La medida será ofi El Gobierno de Javier Milei prepara una decisión de fuerte impacto político, presupuestario y estratégico: destinará parte de los fondos obtenidos por privatizaciones, ventas de activos, concesiones y licitaciones estatales al reequipamiento y modernización Infobae">
+                    <h3>El Gobierno destinará fondos de las privatizaciones para reequipar y modernizar a las Fuerzas Armadas La medida será ofi</h3>
+                    <p>El Gobierno de Javier Milei prepara una decisión de fuerte impacto político, presupuestario y estratégico: destinará parte de los fondos obtenidos por privatizaciones, ventas de activos, concesiones y licitaciones estatales al reequipamiento y modernización</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/politica/2026/05/01/el-gobierno-destinara-fondos-de-las-privatizaciones-para-reequipar-y-modernizar-a-las-fuerzas-armadas/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Manuel Adorni niega acusaciones y rechaza renuncia, pero renunció a cargo en sindicato de delivery El jefe de Gabinete negó ser titular de una sociedad en el exterior y rechazó renunciar, pero luego renunció a su cargo en un sindicato de delivery que no prosperó. Infobae Clarín">
+                    <h3>Manuel Adorni niega acusaciones y rechaza renuncia, pero renunció a cargo en sindicato de delivery</h3>
+                    <p>El jefe de Gabinete negó ser titular de una sociedad en el exterior y rechazó renunciar, pero luego renunció a su cargo en un sindicato de delivery que no prosperó.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/politica/2026/05/01/manuel-adorni-jamas-voy-a-renunciar-jamas-voy-a-ceder-ante-las-presiones/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.clarin.com/politica/dia-manuel-adorni-renuncio-cargo-frustrado-sindicato-delivery_0_il4KpfuzeO.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Gobierno detiene a ciudadano ruso por espionaje y noticias falsas, mientras Milei conmemora el Día del Trabajador con video El gobierno nacional detuvo a Dmitrii Novikov por una campaña de espionaje para difundir noticias falsas, mientras el presidente Javier Milei compartió un video conmemorativo por el Día del Trabajador. La Nación La Nación">
+                    <h3>Gobierno detiene a ciudadano ruso por espionaje y noticias falsas, mientras Milei conmemora el Día del Trabajador con video</h3>
+                    <p>El gobierno nacional detuvo a Dmitrii Novikov por una campaña de espionaje para difundir noticias falsas, mientras el presidente Javier Milei compartió un video conmemorativo por el Día del Trabajador.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/politica/el-gobierno-anuncio-que-detuvo-a-un-ciudadano-ruso-por-la-campana-de-espionaje-para-desacreditar-a-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                        <a href="https://www.lanacion.com.ar/politica/video-el-mensaje-de-javier-milei-por-el-dia-del-trabajador-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Condena a exintendente de Cervantes por defraudación y uso de documento falso Gilberto Montanaro, exintendente de Cervantes, fue condenado a tres años de prisión en suspenso e inhabilitación especial perpetua por defraudación a la administración pública y uso de documento público falso. La Nación">
+                    <h3>Condena a exintendente de Cervantes por defraudación y uso de documento falso</h3>
+                    <p>Gilberto Montanaro, exintendente de Cervantes, fue condenado a tres años de prisión en suspenso e inhabilitación especial perpetua por defraudación a la administración pública y uso de documento público falso.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/politica/javier-milei-y-sus-medidas-en-vivo-el-gobierno-reabre-la-sala-de-periodistas-y-el-avanza-la-causa-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="&quot;Vamos a ser perseguidos&quot;. Carrió criticó a Milei por sus ataques a la prensa y apuntó contra sus exsocios de Juntos por La referente de la Coalición Cívica Elisa Carrió criticó este viernes al presidente Javier Milei por sus reiterados ataques a la prensa, anticipó el “inicio de un Estado autoritario” y apuntó contra sus exsocios de Juntos por el Cambio por apoyar el rumbo de La Nación">
+                    <h3>&quot;Vamos a ser perseguidos&quot;. Carrió criticó a Milei por sus ataques a la prensa y apuntó contra sus exsocios de Juntos por</h3>
+                    <p>La referente de la Coalición Cívica Elisa Carrió criticó este viernes al presidente Javier Milei por sus reiterados ataques a la prensa, anticipó el “inicio de un Estado autoritario” y apuntó contra sus exsocios de Juntos por el Cambio por apoyar el rumbo de</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/politica/carrio-critico-a-milei-por-sus-ataques-a-la-prensa-todos-vamos-a-ser-perseguidos-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Gastos millonarios de la empresa estatal Nucleoeléctrica (NASA) revelados en informe de Adorni El informe de Adorni reveló gastos millonarios de la empresa estatal NASA, incluyendo consumos en free shops, hoteles de lujo y extracciones en efectivo en el exterior y en el país por más de 50 millones de pesos. Clarín">
+                    <h3>Gastos millonarios de la empresa estatal Nucleoeléctrica (NASA) revelados en informe de Adorni</h3>
+                    <p>El informe de Adorni reveló gastos millonarios de la empresa estatal NASA, incluyendo consumos en free shops, hoteles de lujo y extracciones en efectivo en el exterior y en el país por más de 50 millones de pesos.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/politica/free-shop-hoteles-lujo-millones-efectivo-informe-adorni-revelo-gastos-millonarios-empresa-estado_0_hRGFRtcXI0.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Tras su paso por el Congreso, Adorni denunciará a Tailhade por espionaje y reafirmó su inocencia: &quot;No conozco Disney, y Luego de su informe de gestión en el Congreso el jefe de Gabinete Manuel Adorni confirmó este viernes que denunciará al diputado Rodolfo Taihalde por espionaje ilegal y reafirmó su inocencia por el escándalo de sus viajes y propiedades. &quot;No conozco Disney y Clarín">
+                    <h3>Tras su paso por el Congreso, Adorni denunciará a Tailhade por espionaje y reafirmó su inocencia: &quot;No conozco Disney, y</h3>
+                    <p>Luego de su informe de gestión en el Congreso el jefe de Gabinete Manuel Adorni confirmó este viernes que denunciará al diputado Rodolfo Taihalde por espionaje ilegal y reafirmó su inocencia por el escándalo de sus viajes y propiedades. &quot;No conozco Disney y</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/politica/paso-congreso-adorni-denunciara-tailhade-espionaje-reafirmo-inocencia-conozco-disney-causa-viajes-propiedades-gollete_0_6rTAItiBg0.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+                </article>
+        </div></section>
+            <section class="categoria-section" data-categoria="INTERNACIONAL">
+                <div class="section-heading">
+                    <h2>Internacional</h2>
+                    <span>7 noticias</span>
+                </div>
+                <div class="news-grid">
+            
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Trump rechazó la nueva propuesta de Irán para dialogar con EEUU: “Quieren hacer un trato, pero no estoy satisfecho” El p El presidente Donald Trump dijo este viernes que no está satisfecho con la nueva propuesta de Irán para entablar negociaciones de paz con Estados Unidos, mientras las conversaciones entre ambas partes siguen estancadas en medio de un alto el fuego que ya El Infobae Infobae La Nación La Nación">
+                    <h3>Trump rechazó la nueva propuesta de Irán para dialogar con EEUU: “Quieren hacer un trato, pero no estoy satisfecho” El p</h3>
+                    <p>El presidente Donald Trump dijo este viernes que no está satisfecho con la nueva propuesta de Irán para entablar negociaciones de paz con Estados Unidos, mientras las conversaciones entre ambas partes siguen estancadas en medio de un alto el fuego que ya El</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/america/mundo/2026/05/01/donald-trump-rechazo-la-nueva-propuesta-de-iran-para-dialogar-con-eeuu-quieren-hacer-un-trato-pero-no-estoy-satisfecho/" target="_blank" rel="noopener noreferrer" class="chip infobae">
@@ -733,26 +722,14 @@
                             Leer en La Nación
                         </a>
             
-                        <a href="https://www.clarin.com/mundo/guerra-comercial-donald-trump-anuncio-aumentara-25-aranceles-autos-europeos_0_bx4YRFRHaV.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Escala la tensión. Trump redobla la presión sobre Europa con un arancel del 25% a los autos y camiones</h3>
-                    <p>WASHINGTON.- Pese a los intentos de Europa por eludir su complicada relación con el presidente norteamericano, Donald Trunp, la guerra en Medio Oriente no ha hecho más que poner de manifiesto las tensiones latentes entre los aliados transatlánticos. Prueba de</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/el-mundo/trump-redobla-sus-ataques-contra-los-lideres-europeos-y-recrudece-la-crisis-con-los-aliados-de-la-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                        <a href="https://www.lanacion.com.ar/el-mundo/que-se-sabe-sobre-el-tirador-del-atentado-contra-trump-y-como-sigue-la-investigacion-nid27042026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
                     </div>
                 </article>
         
-                <article class="card" data-categoria="INTERNACIONAL">
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Astronautas de Artemis II en el show de Jimmy Fallon Los astronautas de Artemis II participaron en el show de Jimmy Fallon, simulando la vida en la cápsula Orión. Infobae">
                     <h3>Astronautas de Artemis II en el show de Jimmy Fallon</h3>
                     <p>Los astronautas de Artemis II participaron en el show de Jimmy Fallon, simulando la vida en la cápsula Orión.</p>
                     <div class="sources">
@@ -764,55 +741,39 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Trump anunció que EEUU aumentará los aranceles a los automóviles y camiones de la Unión Europea al 25%</h3>
-                    <p>El presidente Donald Trump anunció este viernes que aumentará los aranceles estadounidenses a los automóviles y camiones provenientes de la Unión Europea la próxima semana, alegando que el bloque no está cumpliendo con un acuerdo comercial previo. “Dado que</p>
+                <article class="card" data-categoria="INTERNACIONAL" data-search="EEUU aumentará aranceles a automóviles y camiones de la Unión El presidente Donald Trump anunció que aumentará los aranceles estadounidenses a los automóviles y camiones provenientes de la Unión, según informaron Infobae y La Nación. Infobae La Nación">
+                    <h3>EEUU aumentará aranceles a automóviles y camiones de la Unión</h3>
+                    <p>El presidente Donald Trump anunció que aumentará los aranceles estadounidenses a los automóviles y camiones provenientes de la Unión, según informaron Infobae y La Nación.</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/estados-unidos/2026/05/01/donald-trump-anuncio-que-la-proxima-semana-eeuu-aumentara-los-aranceles-a-los-automoviles-y-camiones-de-la-union-europea-al-25/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Leer en Infobae
                         </a>
             
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>El papa León XIV designa a un inmigrante salvadoreño como obispo en Estados Unidos</h3>
-                    <p>El papa León XIV designó a Evelio Menjivar-Ayala, un inmigrante salvadoreño, como obispo de Wheeling-Charleston en Virginia Occidental</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/el-mundo/leon-xiv-designo-a-un-ex-inmigrante-salvadoreno-como-nuevo-obispo-en-un-bastion-trumpista-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                        <a href="https://www.lanacion.com.ar/el-mundo/trump-redobla-sus-ataques-contra-los-lideres-europeos-y-recrudece-la-crisis-con-los-aliados-de-la-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
                     </div>
                 </article>
         
-                <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Guerra entre Estados Unidos, Israel e Irán en Medio Oriente</h3>
-                    <p>El presidente Trump rechaza una propuesta de Irán para negociaciones de paz, mientras Israel ataca a una localidad libanesa.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/el-mundo/guerra-de-estados-unidos-e-israel-contra-iran-en-vivo-tension-en-medio-oriente-hoy-viernes-1-de-mayo-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL">
-                    <h3>Verano y turismo en Europa: ¿habrá aviones?</h3>
-                    <p>Los gobiernos europeos y las instituciones del bloque llevan semanas intentando tranquilizar al sector turístico y a los ciudadanos asegurando que la situación de las reservas de combustible de aviación no es tan grave como para que los viajes de este verano</p>
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Aviones y turismo en Europa: gobiernos y instituciones buscan tranquilizar al sector Los gobiernos europeos y las instituciones del bloque intentan tranquilizar al sector turístico y a los ciudadanos sobre la situación actual. Clarín Clarín">
+                    <h3>Aviones y turismo en Europa: gobiernos y instituciones buscan tranquilizar al sector</h3>
+                    <p>Los gobiernos europeos y las instituciones del bloque intentan tranquilizar al sector turístico y a los ciudadanos sobre la situación actual.</p>
                     <div class="sources">
         
                         <a href="https://www.clarin.com/mundo/verano-turismo-europa-aviones_0_o8Cn5sPo1T.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
                             Leer en Clarín
                         </a>
             
+                        <a href="https://www.clarin.com/mundo/broncas-alegrias-europa-entrada-vigor-acuerdo-mercosur-ue_0_5ypq3lW1HP.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
                     </div>
                 </article>
         
-                <article class="card" data-categoria="INTERNACIONAL">
+                <article class="card" data-categoria="INTERNACIONAL" data-search="¿Dónde diablos se guarda todo ese oro? LONDRES — La creciente popularidad del oro ha creado una tensión para los países que compran más cantidad como cobertura contra el riesgo global: su utilidad depende de dónde se encuentre almacenado. Dos de los depósitos de oro más grandes están en Nueva York Clarín">
                     <h3>¿Dónde diablos se guarda todo ese oro?</h3>
                     <p>LONDRES — La creciente popularidad del oro ha creado una tensión para los países que compran más cantidad como cobertura contra el riesgo global: su utilidad depende de dónde se encuentre almacenado. Dos de los depósitos de oro más grandes están en Nueva York</p>
                     <div class="sources">
@@ -824,13 +785,25 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="INTERNACIONAL">
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Arrancó el acuerdo UE-Mercosur: diez claves para entender lo que viene, quiénes ganan y quiénes pierden El Acuerdo de Asociación con su pata comercial entre el Mercosur y la Unión Europea entró en vigor este viernes. Veintiséis años después su comienzo cambiará la forma en la que los bloques comerciales interactúan y el volumen de sus intercambios. Clarín">
                     <h3>Arrancó el acuerdo UE-Mercosur: diez claves para entender lo que viene, quiénes ganan y quiénes pierden</h3>
                     <p>El Acuerdo de Asociación con su pata comercial entre el Mercosur y la Unión Europea entró en vigor este viernes. Veintiséis años después su comienzo cambiará la forma en la que los bloques comerciales interactúan y el volumen de sus intercambios.</p>
                     <div class="sources">
         
                         <a href="https://www.clarin.com/mundo/arranco-acuerdo-ue-mercosur-claves-entender-viene-ganan-pierden_0_Yie4M9Z0tm.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
                             Leer en Clarín
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Guerra entre Estados Unidos, Israel e Irán en Medio Oriente El presidente Trump rechaza una propuesta de Irán para negociaciones de paz, mientras Israel ataca a una localidad libanesa. La Nación">
+                    <h3>Guerra entre Estados Unidos, Israel e Irán en Medio Oriente</h3>
+                    <p>El presidente Trump rechaza una propuesta de Irán para negociaciones de paz, mientras Israel ataca a una localidad libanesa.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/el-mundo/guerra-de-estados-unidos-e-israel-contra-iran-en-vivo-tension-en-medio-oriente-hoy-viernes-1-de-mayo-nid01052026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
                         </a>
             
                     </div>
@@ -860,32 +833,44 @@
             const botonCompacto = document.querySelector(".compact-btn");
             const estadoVacio = document.querySelector(".empty-state");
             let categoriaActiva = "TODAS";
+            const cards = Array.from(document.querySelectorAll(".card")).map((card) => ({
+                element: card,
+                section: card.closest(".categoria-section"),
+                category: card.dataset.categoria,
+                search: normalizar(card.dataset.search || ""),
+            }));
 
             function normalizar(texto) {
                 return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             }
 
+            function terminosBusqueda(valor) {
+                return normalizar(valor)
+                    .split(/\s+/)
+                    .map((termino) => termino.trim())
+                    .filter((termino) => termino.length >= 2);
+            }
+
             function aplicarFiltros() {
-                const busqueda = normalizar(buscador.value.trim());
+                const terminos = terminosBusqueda(buscador.value);
                 let hayResultados = false;
+                const visiblesPorSeccion = new Map();
+
+                cards.forEach(({ element, section, category, search }) => {
+                    const coincideCategoria = categoriaActiva === "TODAS" || category === categoriaActiva;
+                    const coincideBusqueda = terminos.length === 0 || terminos.every((termino) => search.includes(termino));
+                    const visible = coincideCategoria && coincideBusqueda;
+
+                    element.hidden = !visible;
+
+                    if (visible) {
+                        visiblesPorSeccion.set(section, (visiblesPorSeccion.get(section) || 0) + 1);
+                        hayResultados = true;
+                    }
+                });
 
                 secciones.forEach((seccion) => {
-                    const coincideCategoria = categoriaActiva === "TODAS" || seccion.dataset.categoria === categoriaActiva;
-                    let visiblesEnSeccion = 0;
-
-                    seccion.querySelectorAll(".card").forEach((card) => {
-                        const coincideBusqueda = !busqueda || normalizar(card.textContent).includes(busqueda);
-                        const visible = coincideCategoria && coincideBusqueda;
-
-                        card.hidden = !visible;
-
-                        if (visible) {
-                            visiblesEnSeccion += 1;
-                            hayResultados = true;
-                        }
-                    });
-
-                    seccion.hidden = visiblesEnSeccion === 0;
+                    seccion.hidden = !visiblesPorSeccion.get(seccion);
                 });
 
                 estadoVacio.style.display = hayResultados ? "none" : "block";

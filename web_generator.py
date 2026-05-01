@@ -145,7 +145,7 @@ def normalizar_noticias(noticias):
     return normalizadas
 
 
-ORDEN_CATEGORIAS = ("POLITICA", "ECONOMIA", "INTERNACIONAL", "GENERAL")
+ORDEN_CATEGORIAS = ("ECONOMIA", "POLITICA", "INTERNACIONAL", "GENERAL")
 
 
 def ordenar_categorias(categorias):
@@ -184,10 +184,16 @@ def generar_html_noticias(noticias):
             indice_en_categoria = 0
 
         indice_en_categoria += 1
-        card_clase = "card featured" if indice_en_categoria == 1 else "card"
+        texto_busqueda = " ".join(
+            [
+                noticia["titulo"],
+                noticia["resumen"],
+                " ".join(obtener_diario_y_clase(link)[0] for link in noticia["links"]),
+            ]
+        )
 
         html_noticias += f"""
-                <article class="{card_clase}" data-categoria="{escape(categoria)}">
+                <article class="card" data-categoria="{escape(categoria)}" data-search="{escape(texto_busqueda, quote=True)}">
                     <h3>{escape(noticia["titulo"])}</h3>
                     <p>{escape(noticia["resumen"]).replace(chr(10), "<br>")}</p>
                     <div class="sources">
@@ -250,7 +256,7 @@ def generar_web(contenido, output_path="index.html"):
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 
         <style>
             * {
@@ -259,91 +265,88 @@ def generar_web(contenido, output_path="index.html"):
 
             :root {
                 color-scheme: light;
-                --background: #F4F1EC;
-                --surface: #E7DED1;
-                --surface-soft: #DDD4C7;
-                --primary: #B2A58A;
-                --secondary: #CBBBA5;
-                --accent: #8C7B6A;
-                --text-primary: #2F2A24;
-                --text-secondary: #5E564D;
-                --border: #D8CFC3;
+                --background: #f3f4f3;
+                --surface: #f8f8f6;
+                --surface-soft: #ececea;
+                --primary: #66706f;
+                --secondary: #d7d4ce;
+                --accent: #6f6258;
+                --text-primary: #202326;
+                --text-secondary: #575f63;
+                --border: #d6d8d6;
                 --infobae: #D8B08C;
                 --clarin: #C99999;
                 --lanacion: #AEBFCF;
-                --font-title: "Cormorant Garamond";
-                --font-body: "Manrope";
+                --font-title: "Merriweather";
+                --font-body: "IBM Plex Sans";
             }
 
             body {
                 min-height: 100vh;
                 margin: 0;
                 color: var(--text-primary);
-                background:
-                    radial-gradient(circle at 9% 8%, rgba(203, 187, 165, 0.26), transparent 28%),
-                    radial-gradient(circle at 88% 4%, rgba(174, 191, 207, 0.18), transparent 30%),
-                    var(--background);
-                font-family: var(--font-body), "Manrope";
+                background: var(--background);
+                font-family: var(--font-body), "IBM Plex Sans";
                 letter-spacing: 0;
             }
 
             .header {
                 text-align: left;
-                padding: clamp(34px, 5vw, 62px) 24px 16px;
+                padding: 24px 20px 10px;
                 background: transparent;
             }
 
             .header-inner,
             .toolbar,
             .container {
-                max-width: 1180px;
+                max-width: 1280px;
                 margin: 0 auto;
             }
 
             .eyebrow {
-                margin: 0 0 12px;
+                margin: 0 0 6px;
                 color: var(--accent);
-                font-size: 11px;
+                font-size: 10px;
                 font-weight: 700;
-                letter-spacing: 0.14em;
+                letter-spacing: 0.12em;
                 text-transform: uppercase;
             }
 
             .header h1 {
                 max-width: 820px;
                 margin: 0;
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(40px, 6vw, 76px);
-                font-weight: 600;
-                line-height: 0.98;
+                font-family: var(--font-title), "Merriweather";
+                font-size: clamp(26px, 3.4vw, 44px);
+                font-weight: 700;
+                line-height: 1.12;
                 letter-spacing: 0;
             }
 
             .header p {
-                max-width: 760px;
-                margin: 16px 0 0;
+                max-width: 900px;
+                margin: 8px 0 0;
                 color: var(--text-secondary);
-                font-size: 14px;
-                line-height: 1.72;
+                font-size: 13px;
+                line-height: 1.48;
             }
 
             .toolbar {
                 display: grid;
                 grid-template-columns: minmax(240px, 1fr) auto;
-                gap: 12px;
-                padding: 18px 24px 8px;
+                gap: 10px;
+                padding: 12px 20px 6px;
             }
 
             .search-input {
                 width: 100%;
-                min-height: 46px;
+                min-height: 36px;
                 border: 1px solid var(--border);
-                border-radius: 999px;
-                padding: 0 20px;
+                border-radius: 6px;
+                padding: 0 12px;
                 color: var(--text-primary);
-                background: rgba(231, 222, 209, 0.46);
-                font-family: var(--font-body), "Manrope";
-                font-size: 14px;
+                background: var(--surface);
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 13px;
                 transition: border-color 160ms ease, background 160ms ease;
             }
 
@@ -351,43 +354,43 @@ def generar_web(contenido, output_path="index.html"):
             .compact-btn:focus-visible {
                 border-color: var(--accent);
                 outline: 0;
-                background: rgba(231, 222, 209, 0.72);
+                background: #fff;
             }
 
             .compact-btn {
-                min-height: 46px;
+                min-height: 36px;
                 border: 1px solid var(--border);
-                border-radius: 999px;
-                padding: 0 20px;
+                border-radius: 6px;
+                padding: 0 12px;
                 color: var(--text-primary);
-                background: transparent;
+                background: var(--surface);
                 cursor: pointer;
-                font-family: var(--font-body), "Manrope";
-                font-size: 13px;
-                font-weight: 700;
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 12px;
+                font-weight: 600;
                 transition: border-color 160ms ease, background 160ms ease;
             }
 
             .filtros {
                 justify-content: flex-start;
-                max-width: 1180px;
+                max-width: 1280px;
                 margin: 0 auto;
-                padding: 12px 24px 20px;
+                padding: 8px 20px 12px;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 6px;
             }
 
             .filtro-btn {
-                min-height: 40px;
-                padding: 0 16px;
-                border: 1px solid transparent;
-                border-radius: 999px;
+                min-height: 30px;
+                padding: 0 10px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
                 color: var(--text-secondary);
-                background: transparent;
+                background: var(--surface);
                 cursor: pointer;
-                font-family: var(--font-body), "Manrope";
-                font-size: 12px;
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 10px;
                 font-weight: 700;
                 letter-spacing: 0.04em;
                 text-transform: uppercase;
@@ -404,55 +407,57 @@ def generar_web(contenido, output_path="index.html"):
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                min-width: 24px;
-                min-height: 24px;
-                margin-left: 8px;
-                border-radius: 999px;
-                background: rgba(203, 187, 165, 0.26);
+                min-width: 19px;
+                min-height: 19px;
+                margin-left: 6px;
+                border-radius: 5px;
+                background: var(--surface-soft);
                 color: var(--accent);
-                font-size: 11px;
+                font-size: 10px;
             }
 
             .filtro-btn.active {
                 color: var(--text-primary);
-                background: rgba(231, 222, 209, 0.72);
+                background: var(--surface-soft);
                 border-color: var(--border);
             }
 
             .filtro-btn.active span {
-                background: rgba(178, 165, 138, 0.32);
+                background: var(--secondary);
                 color: var(--text-primary);
             }
 
             .container {
-                padding: 4px 24px 64px;
+                padding: 2px 20px 42px;
             }
 
             .categoria-section {
-                margin-top: clamp(28px, 5vw, 54px);
+                margin-top: 22px;
             }
 
             .section-heading {
                 display: flex;
                 align-items: flex-end;
                 justify-content: space-between;
-                gap: 18px;
-                margin: 0 0 16px;
+                gap: 12px;
+                margin: 0 0 8px;
+                padding-bottom: 6px;
+                border-bottom: 1px solid var(--border);
             }
 
             .section-heading h2 {
                 margin: 0;
                 text-align: left;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(28px, 3.4vw, 42px);
-                font-weight: 600;
-                line-height: 1;
+                font-family: var(--font-title), "Merriweather";
+                font-size: clamp(20px, 2vw, 28px);
+                font-weight: 700;
+                line-height: 1.15;
             }
 
             .section-heading span {
                 color: var(--text-secondary);
-                font-size: 12px;
+                font-size: 10px;
                 font-weight: 700;
                 letter-spacing: 0.08em;
                 text-transform: uppercase;
@@ -460,8 +465,8 @@ def generar_web(contenido, output_path="index.html"):
 
             .news-grid {
                 display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 14px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 10px;
             }
 
             .card {
@@ -469,69 +474,55 @@ def generar_web(contenido, output_path="index.html"):
                 flex-direction: column;
                 min-height: 100%;
                 margin: 0;
-                padding: 22px;
-                border: 1px solid rgba(216, 207, 195, 0.72);
-                border-radius: 24px;
-                background: rgba(231, 222, 209, 0.34);
-                box-shadow: 0 18px 46px rgba(47, 42, 36, 0.035);
+                padding: 14px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                box-shadow: 0 8px 22px rgba(28, 32, 34, 0.025);
                 transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
             }
 
             .card:hover {
-                border-color: rgba(140, 123, 106, 0.36);
-                background: rgba(231, 222, 209, 0.48);
-                transform: translateY(-2px);
-            }
-
-            .card.featured {
-                grid-column: 1 / -1;
-                min-height: 210px;
-                padding: clamp(28px, 4vw, 42px);
-                background: linear-gradient(135deg, rgba(231, 222, 209, 0.86), rgba(221, 212, 199, 0.48));
+                border-color: #bcc2c2;
+                background: #fbfbfa;
+                transform: translateY(-1px);
             }
 
             .card h3 {
-                max-width: 880px;
-                margin: 0 0 14px;
+                margin: 0 0 8px;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(23px, 2.35vw, 31px);
-                font-weight: 600;
-                line-height: 1.12;
+                font-family: var(--font-title), "Merriweather";
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 1.24;
                 letter-spacing: 0;
-                overflow-wrap: anywhere;
+                overflow-wrap: break-word;
                 hyphens: auto;
             }
 
-            .card.featured h3 {
-                font-size: clamp(32px, 4.2vw, 52px);
-                line-height: 1.03;
-            }
-
             .card p {
-                max-width: 820px;
-                margin: 0 0 20px;
+                margin: 0 0 12px;
                 color: var(--text-secondary);
-                font-size: 14px;
-                line-height: 1.72;
+                font-size: 12.5px;
+                line-height: 1.48;
             }
 
             .sources {
                 margin-top: auto;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 8px;
+                gap: 5px;
             }
 
             .chip {
                 display: inline-flex;
                 align-items: center;
-                min-height: 30px;
-                padding: 0 11px;
-                border-radius: 999px;
+                min-height: 22px;
+                padding: 0 7px;
+                border-radius: 5px;
                 color: var(--text-primary);
-                font-family: var(--font-body), "Manrope";
-                font-size: 10px;
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 9px;
                 font-weight: 700;
                 letter-spacing: 0.04em;
                 text-decoration: none;
@@ -546,13 +537,13 @@ def generar_web(contenido, output_path="index.html"):
 
             .empty-state {
                 display: none;
-                max-width: 1180px;
-                margin: 32px auto 0;
-                padding: 22px 20px;
+                max-width: 1280px;
+                margin: 24px auto 0;
+                padding: 14px 16px;
                 border: 1px solid var(--border);
-                border-radius: 24px;
+                border-radius: 8px;
                 color: var(--text-secondary);
-                background: rgba(231, 222, 209, 0.34);
+                background: var(--surface);
                 text-align: center;
             }
 
@@ -561,37 +552,47 @@ def generar_web(contenido, output_path="index.html"):
             }
 
             body.compact .card,
-            body.compact .card.featured {
-                padding: 20px;
+            body.compact .card {
+                padding: 12px;
             }
 
             body.compact .card h3,
-            body.compact .card.featured h3 {
-                font-size: clamp(22px, 2.6vw, 30px);
+            body.compact .card h3 {
+                font-size: 14px;
             }
 
-            .infobae { background: rgba(216, 176, 140, 0.62); }
-            .clarin { background: rgba(201, 153, 153, 0.58); }
-            .lanacion { background: rgba(174, 191, 207, 0.64); }
-            .pagina12 { background: rgba(203, 187, 165, 0.52); }
-            .ambito { background: rgba(178, 165, 138, 0.48); }
-            .default { background: rgba(221, 212, 199, 0.7); }
+            .infobae { background: rgba(216, 176, 140, 0.56); }
+            .clarin { background: rgba(201, 153, 153, 0.52); }
+            .lanacion { background: rgba(174, 191, 207, 0.58); }
+            .pagina12 { background: rgba(203, 187, 165, 0.46); }
+            .ambito { background: rgba(178, 165, 138, 0.42); }
+            .default { background: var(--surface-soft); }
 
-            @media (max-width: 820px) {
+            @media (max-width: 1100px) {
+                .news-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @media (max-width: 760px) {
                 .header {
-                    padding: 34px 18px 14px;
+                    padding: 22px 14px 10px;
+                }
+
+                .header h1 {
+                    font-size: 30px;
                 }
 
                 .toolbar {
                     grid-template-columns: 1fr;
-                    padding-left: 18px;
-                    padding-right: 18px;
+                    padding-left: 14px;
+                    padding-right: 14px;
                 }
 
                 .filtros,
                 .container {
-                    padding-left: 18px;
-                    padding-right: 18px;
+                    padding-left: 14px;
+                    padding-right: 14px;
                 }
 
                 .news-grid {
@@ -604,45 +605,39 @@ def generar_web(contenido, output_path="index.html"):
                     gap: 8px;
                 }
 
-                .card,
-                .card.featured {
+                .card {
                     min-height: auto;
-                    padding: 20px;
-                    border-radius: 20px;
-                }
-
-                .card.featured h3 {
-                    font-size: clamp(30px, 8vw, 44px);
+                    padding: 13px;
                 }
             }
 
             .footer {
-                max-width: 1180px;
-                margin: 18px auto 0;
-                padding: 0 24px 54px;
+                max-width: 1280px;
+                margin: 8px auto 0;
+                padding: 0 20px 34px;
             }
 
             .footer-inner {
                 display: grid;
                 grid-template-columns: minmax(0, 1fr) minmax(240px, 0.5fr);
-                gap: 24px;
-                padding-top: 28px;
-                border-top: 1px solid rgba(216, 207, 195, 0.86);
+                gap: 18px;
+                padding-top: 18px;
+                border-top: 1px solid var(--border);
             }
 
             .footer h2 {
                 margin: 0;
-                font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(28px, 3.2vw, 42px);
-                font-weight: 600;
-                line-height: 1;
+                font-family: var(--font-title), "Merriweather";
+                font-size: 20px;
+                font-weight: 700;
+                line-height: 1.15;
             }
 
             .footer p,
             .footer a {
                 color: var(--text-secondary);
-                font-size: 13px;
-                line-height: 1.8;
+                font-size: 12px;
+                line-height: 1.55;
             }
 
             .footer p {
@@ -658,10 +653,10 @@ def generar_web(contenido, output_path="index.html"):
                 color: var(--text-primary);
             }
 
-            @media (max-width: 820px) {
+            @media (max-width: 760px) {
                 .footer {
-                    padding-left: 18px;
-                    padding-right: 18px;
+                    padding-left: 14px;
+                    padding-right: 14px;
                 }
 
                 .footer-inner {
@@ -714,32 +709,44 @@ def generar_web(contenido, output_path="index.html"):
             const botonCompacto = document.querySelector(".compact-btn");
             const estadoVacio = document.querySelector(".empty-state");
             let categoriaActiva = "TODAS";
+            const cards = Array.from(document.querySelectorAll(".card")).map((card) => ({
+                element: card,
+                section: card.closest(".categoria-section"),
+                category: card.dataset.categoria,
+                search: normalizar(card.dataset.search || ""),
+            }));
 
             function normalizar(texto) {
                 return texto.toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g, "");
             }
 
+            function terminosBusqueda(valor) {
+                return normalizar(valor)
+                    .split(/\\s+/)
+                    .map((termino) => termino.trim())
+                    .filter((termino) => termino.length >= 2);
+            }
+
             function aplicarFiltros() {
-                const busqueda = normalizar(buscador.value.trim());
+                const terminos = terminosBusqueda(buscador.value);
                 let hayResultados = false;
+                const visiblesPorSeccion = new Map();
+
+                cards.forEach(({ element, section, category, search }) => {
+                    const coincideCategoria = categoriaActiva === "TODAS" || category === categoriaActiva;
+                    const coincideBusqueda = terminos.length === 0 || terminos.every((termino) => search.includes(termino));
+                    const visible = coincideCategoria && coincideBusqueda;
+
+                    element.hidden = !visible;
+
+                    if (visible) {
+                        visiblesPorSeccion.set(section, (visiblesPorSeccion.get(section) || 0) + 1);
+                        hayResultados = true;
+                    }
+                });
 
                 secciones.forEach((seccion) => {
-                    const coincideCategoria = categoriaActiva === "TODAS" || seccion.dataset.categoria === categoriaActiva;
-                    let visiblesEnSeccion = 0;
-
-                    seccion.querySelectorAll(".card").forEach((card) => {
-                        const coincideBusqueda = !busqueda || normalizar(card.textContent).includes(busqueda);
-                        const visible = coincideCategoria && coincideBusqueda;
-
-                        card.hidden = !visible;
-
-                        if (visible) {
-                            visiblesEnSeccion += 1;
-                            hayResultados = true;
-                        }
-                    });
-
-                    seccion.hidden = visiblesEnSeccion === 0;
+                    seccion.hidden = !visiblesPorSeccion.get(seccion);
                 });
 
                 estadoVacio.style.display = hayResultados ? "none" : "block";

@@ -4,7 +4,7 @@ from unittest.mock import patch
 import analyzer_2
 from main_web import extraer_noticia_unificada, normalizar_categoria, parsear_grupos
 from scrapers.utils import limpiar_titulo, normalizar_url
-from web_generator import normalizar_noticias, parsear_contenido
+from web_generator import clave_categoria, generar_html_noticias, normalizar_noticias, parsear_contenido
 
 
 class CoreHelpersTest(unittest.TestCase):
@@ -92,6 +92,24 @@ class CoreHelpersTest(unittest.TestCase):
                 }
             ],
         )
+
+    def test_orden_categorias_prioriza_economia_politica_internacional(self):
+        categorias = ["INTERNACIONAL", "POLITICA", "ECONOMIA"]
+        self.assertEqual(sorted(categorias, key=clave_categoria), ["ECONOMIA", "POLITICA", "INTERNACIONAL"])
+
+    def test_indice_busqueda_no_incluye_categoria(self):
+        html = generar_html_noticias(
+            [
+                {
+                    "categoria": "ECONOMIA",
+                    "titulo": "Dolar financiero estable",
+                    "resumen": "El mercado opero con bajo volumen.",
+                    "links": ["https://www.infobae.com/economia/nota"],
+                }
+            ]
+        )
+        self.assertIn('data-search="Dolar financiero estable El mercado opero con bajo volumen. Infobae"', html)
+        self.assertNotIn('data-search="ECONOMIA', html)
 
     def test_unificar_bloques_incluye_contraste_por_medio_en_prompt(self):
         texto = """
