@@ -406,6 +406,145 @@
                     flex-direction: column;
                 }
             }
+
+            :root {
+                --text: #2f3440;
+                --muted: #71798a;
+                --line: #eadfea;
+                --surface: #ffffff;
+                --soft: #f7eef8;
+                --page: #fff7fb;
+                --accent: #b8dccc;
+                --accent-strong: #5f8d80;
+                --pink: #ffe3ec;
+                --mint: #ddf4e8;
+                --blue: #dfefff;
+                --lavender: #ece5ff;
+                --peach: #ffe8d6;
+                --butter: #fff5c9;
+            }
+
+            body {
+                color: var(--text);
+                background:
+                    radial-gradient(circle at top left, rgba(255, 227, 236, 0.72), transparent 34%),
+                    radial-gradient(circle at top right, rgba(223, 239, 255, 0.74), transparent 32%),
+                    linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0)),
+                    var(--page);
+            }
+
+            .header {
+                padding: 30px 20px 18px;
+                background: transparent;
+                border-bottom: 0;
+            }
+
+            .eyebrow {
+                color: var(--accent-strong);
+                font-size: 11px;
+                letter-spacing: 0.06em;
+            }
+
+            .header h1 {
+                font-size: clamp(30px, 4vw, 46px);
+                font-weight: 760;
+            }
+
+            .header p {
+                color: var(--muted);
+            }
+
+            .toolbar {
+                padding-top: 10px;
+            }
+
+            .search-input,
+            .compact-btn,
+            .filtro-btn,
+            .card,
+            .empty-state {
+                border-color: var(--line);
+                box-shadow: none;
+            }
+
+            .search-input,
+            .compact-btn,
+            .filtro-btn {
+                background: rgba(255, 255, 255, 0.78);
+            }
+
+            .search-input:focus,
+            .compact-btn:focus-visible,
+            .filtro-btn:focus-visible {
+                border-color: var(--accent);
+                outline: 3px solid rgba(138, 182, 169, 0.22);
+            }
+
+            .compact-btn,
+            .filtro-btn {
+                font-weight: 650;
+            }
+
+            .filtro-btn.active {
+                color: #4d7168;
+                background: linear-gradient(180deg, #e2f4eb 0%, #f7eef8 100%);
+                border-color: #c6e4d8;
+            }
+
+            .filtro-btn span,
+            .filtro-btn.active span {
+                color: var(--muted);
+                background: rgba(255, 255, 255, 0.66);
+            }
+
+            .section-heading {
+                border-bottom-color: rgba(225, 229, 238, 0.8);
+            }
+
+            .section-heading h2 {
+                font-weight: 720;
+            }
+
+            .card {
+                background: rgba(255, 255, 255, 0.76);
+                border-radius: 8px;
+            }
+
+            .card:hover {
+                border-color: #ccd6e3;
+                transform: none;
+            }
+
+            .card.featured {
+                border-top: 0;
+                background: linear-gradient(135deg, #fff9e8 0%, #f3ecff 48%, #e9f7f1 100%);
+            }
+
+            .card h3 {
+                color: #303642;
+                font-weight: 730;
+            }
+
+            .card.featured h3 {
+                font-size: clamp(23px, 3vw, 30px);
+            }
+
+            .card p {
+                color: #555e6f;
+            }
+
+            .chip {
+                color: #3b4452;
+                border-radius: 8px;
+                font-weight: 650;
+            }
+
+            .infobae { background: var(--peach); color: #9a5b2f; }
+            .lanacion { background: var(--blue); color: #476b97; }
+            .clarin { background: var(--pink); color: #9a5360; }
+            .pagina12 { background: var(--lavender); color: #68558f; }
+            .ambito { background: var(--mint); color: #4e7d62; }
+            .default { background: #f1f3f6; color: #5e6876; }
         </style>
     </head>
 

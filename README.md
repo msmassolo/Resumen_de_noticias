@@ -43,3 +43,9 @@ Cada corrida deja datos intermedios en `data/`:
 - `processed_news.json`: noticias procesadas por IA o caché.
 - `groups.json`: grupos calculados por categoría.
 - `site_input.txt`: texto usado para generar la web.
+
+## Link público
+
+El resumen publicado se visualiza en:
+
+https://msmassolo.github.io/Resumen_de_noticias/
