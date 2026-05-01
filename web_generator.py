@@ -289,7 +289,7 @@ def generar_web(contenido, output_path="index.html"):
 
             .header {
                 text-align: left;
-                padding: clamp(46px, 8vw, 96px) 24px 26px;
+                padding: clamp(34px, 5vw, 62px) 24px 16px;
                 background: transparent;
             }
 
@@ -301,7 +301,7 @@ def generar_web(contenido, output_path="index.html"):
             }
 
             .eyebrow {
-                margin: 0 0 18px;
+                margin: 0 0 12px;
                 color: var(--accent);
                 font-size: 11px;
                 font-weight: 700;
@@ -313,30 +313,30 @@ def generar_web(contenido, output_path="index.html"):
                 max-width: 820px;
                 margin: 0;
                 font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(48px, 9vw, 112px);
+                font-size: clamp(40px, 6vw, 76px);
                 font-weight: 600;
-                line-height: 0.92;
+                line-height: 0.98;
                 letter-spacing: 0;
             }
 
             .header p {
-                max-width: 620px;
-                margin: 22px 0 0;
+                max-width: 760px;
+                margin: 16px 0 0;
                 color: var(--text-secondary);
-                font-size: 15px;
-                line-height: 1.8;
+                font-size: 14px;
+                line-height: 1.72;
             }
 
             .toolbar {
                 display: grid;
                 grid-template-columns: minmax(240px, 1fr) auto;
-                gap: 14px;
-                padding: 22px 24px 10px;
+                gap: 12px;
+                padding: 18px 24px 8px;
             }
 
             .search-input {
                 width: 100%;
-                min-height: 52px;
+                min-height: 46px;
                 border: 1px solid var(--border);
                 border-radius: 999px;
                 padding: 0 20px;
@@ -355,7 +355,7 @@ def generar_web(contenido, output_path="index.html"):
             }
 
             .compact-btn {
-                min-height: 52px;
+                min-height: 46px;
                 border: 1px solid var(--border);
                 border-radius: 999px;
                 padding: 0 20px;
@@ -372,7 +372,7 @@ def generar_web(contenido, output_path="index.html"):
                 justify-content: flex-start;
                 max-width: 1180px;
                 margin: 0 auto;
-                padding: 14px 24px 28px;
+                padding: 12px 24px 20px;
                 display: flex;
                 flex-wrap: wrap;
                 gap: 10px;
@@ -425,19 +425,19 @@ def generar_web(contenido, output_path="index.html"):
             }
 
             .container {
-                padding: 8px 24px 88px;
+                padding: 4px 24px 64px;
             }
 
             .categoria-section {
-                margin-top: clamp(38px, 7vw, 78px);
+                margin-top: clamp(28px, 5vw, 54px);
             }
 
             .section-heading {
                 display: flex;
                 align-items: flex-end;
                 justify-content: space-between;
-                gap: 24px;
-                margin: 0 0 22px;
+                gap: 18px;
+                margin: 0 0 16px;
             }
 
             .section-heading h2 {
@@ -445,7 +445,7 @@ def generar_web(contenido, output_path="index.html"):
                 text-align: left;
                 color: var(--text-primary);
                 font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(31px, 4.4vw, 54px);
+                font-size: clamp(28px, 3.4vw, 42px);
                 font-weight: 600;
                 line-height: 1;
             }
@@ -461,7 +461,7 @@ def generar_web(contenido, output_path="index.html"):
             .news-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 18px;
+                gap: 14px;
             }
 
             .card {
@@ -469,7 +469,7 @@ def generar_web(contenido, output_path="index.html"):
                 flex-direction: column;
                 min-height: 100%;
                 margin: 0;
-                padding: 28px;
+                padding: 22px;
                 border: 1px solid rgba(216, 207, 195, 0.72);
                 border-radius: 24px;
                 background: rgba(231, 222, 209, 0.34);
@@ -485,51 +485,53 @@ def generar_web(contenido, output_path="index.html"):
 
             .card.featured {
                 grid-column: 1 / -1;
-                min-height: 250px;
-                padding: clamp(32px, 5vw, 56px);
+                min-height: 210px;
+                padding: clamp(28px, 4vw, 42px);
                 background: linear-gradient(135deg, rgba(231, 222, 209, 0.86), rgba(221, 212, 199, 0.48));
             }
 
             .card h3 {
                 max-width: 880px;
-                margin: 0 0 18px;
+                margin: 0 0 14px;
                 color: var(--text-primary);
                 font-family: var(--font-title), "Cormorant Garamond";
-                font-size: clamp(26px, 3vw, 38px);
+                font-size: clamp(23px, 2.35vw, 31px);
                 font-weight: 600;
-                line-height: 1.04;
+                line-height: 1.12;
                 letter-spacing: 0;
+                overflow-wrap: anywhere;
+                hyphens: auto;
             }
 
             .card.featured h3 {
-                font-size: clamp(38px, 5.4vw, 70px);
-                line-height: 0.96;
+                font-size: clamp(32px, 4.2vw, 52px);
+                line-height: 1.03;
             }
 
             .card p {
                 max-width: 820px;
-                margin: 0 0 26px;
+                margin: 0 0 20px;
                 color: var(--text-secondary);
-                font-size: 15px;
-                line-height: 1.82;
+                font-size: 14px;
+                line-height: 1.72;
             }
 
             .sources {
                 margin-top: auto;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 8px;
             }
 
             .chip {
                 display: inline-flex;
                 align-items: center;
-                min-height: 34px;
-                padding: 0 13px;
+                min-height: 30px;
+                padding: 0 11px;
                 border-radius: 999px;
                 color: var(--text-primary);
                 font-family: var(--font-body), "Manrope";
-                font-size: 11px;
+                font-size: 10px;
                 font-weight: 700;
                 letter-spacing: 0.04em;
                 text-decoration: none;
@@ -545,8 +547,8 @@ def generar_web(contenido, output_path="index.html"):
             .empty-state {
                 display: none;
                 max-width: 1180px;
-                margin: 42px auto 0;
-                padding: 28px 24px;
+                margin: 32px auto 0;
+                padding: 22px 20px;
                 border: 1px solid var(--border);
                 border-radius: 24px;
                 color: var(--text-secondary);
@@ -560,12 +562,12 @@ def generar_web(contenido, output_path="index.html"):
 
             body.compact .card,
             body.compact .card.featured {
-                padding: 24px;
+                padding: 20px;
             }
 
             body.compact .card h3,
             body.compact .card.featured h3 {
-                font-size: clamp(24px, 3vw, 34px);
+                font-size: clamp(22px, 2.6vw, 30px);
             }
 
             .infobae { background: rgba(216, 176, 140, 0.62); }
@@ -577,7 +579,7 @@ def generar_web(contenido, output_path="index.html"):
 
             @media (max-width: 820px) {
                 .header {
-                    padding: 42px 18px 18px;
+                    padding: 34px 18px 14px;
                 }
 
                 .toolbar {
@@ -605,12 +607,65 @@ def generar_web(contenido, output_path="index.html"):
                 .card,
                 .card.featured {
                     min-height: auto;
-                    padding: 24px;
-                    border-radius: 22px;
+                    padding: 20px;
+                    border-radius: 20px;
                 }
 
                 .card.featured h3 {
-                    font-size: clamp(34px, 10vw, 54px);
+                    font-size: clamp(30px, 8vw, 44px);
+                }
+            }
+
+            .footer {
+                max-width: 1180px;
+                margin: 18px auto 0;
+                padding: 0 24px 54px;
+            }
+
+            .footer-inner {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(240px, 0.5fr);
+                gap: 24px;
+                padding-top: 28px;
+                border-top: 1px solid rgba(216, 207, 195, 0.86);
+            }
+
+            .footer h2 {
+                margin: 0;
+                font-family: var(--font-title), "Cormorant Garamond";
+                font-size: clamp(28px, 3.2vw, 42px);
+                font-weight: 600;
+                line-height: 1;
+            }
+
+            .footer p,
+            .footer a {
+                color: var(--text-secondary);
+                font-size: 13px;
+                line-height: 1.8;
+            }
+
+            .footer p {
+                margin: 10px 0 0;
+            }
+
+            .footer a {
+                display: block;
+                text-decoration: none;
+            }
+
+            .footer a:hover {
+                color: var(--text-primary);
+            }
+
+            @media (max-width: 820px) {
+                .footer {
+                    padding-left: 18px;
+                    padding-right: 18px;
+                }
+
+                .footer-inner {
+                    grid-template-columns: 1fr;
                 }
             }
         </style>
@@ -620,9 +675,9 @@ def generar_web(contenido, output_path="index.html"):
 
         <div class="header">
             <div class="header-inner">
-                <p class="eyebrow">Panorama editorial</p>
+                <p class="eyebrow">Agente</p>
                 <h1>Resumen de Noticias</h1>
-                <p>Actualizado el __FECHA__ a las __HORA__ hs. Una lectura serena de los hechos principales, con fuentes agrupadas y contrastes cuando los enfoques difieren.</p>
+                <p>Actualizado el __FECHA__ a las __HORA__ hs. Esta página permite una lectura rápida de los principales hechos de economía, política e internacionales, con la posibilidad de ingresar a cada noticia para acceder a los detalles si es requerido.</p>
             </div>
         </div>
 
@@ -637,6 +692,20 @@ def generar_web(contenido, output_path="index.html"):
             __NOTICIAS__
             <p class="empty-state">No hay noticias que coincidan con los filtros actuales.</p>
         </main>
+
+        <footer class="footer">
+            <div class="footer-inner">
+                <div>
+                    <p class="eyebrow">Contacto</p>
+                    <h2>Massolo Sebastian.</h2>
+                </div>
+                <div>
+                    <a href="mailto:msmassolo@gmail.com">msmassolo@gmail.com</a>
+                    <a href="mailto:sebastian.massolo@grupocepas.com">sebastian.massolo@grupocepas.com</a>
+                    <a href="https://www.linkedin.com/in/msmassolo/" target="_blank" rel="noopener noreferrer">linkedin.com/in/msmassolo</a>
+                </div>
+            </div>
+        </footer>
 
         <script>
             const botonesFiltro = document.querySelectorAll(".filtro-btn");
