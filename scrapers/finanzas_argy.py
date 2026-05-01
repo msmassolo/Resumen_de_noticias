@@ -6,22 +6,32 @@ import requests
 
 FUENTE_NOMBRE = "Finanzas Argy"
 FUENTE_URL = "https://finanzasargy.com/"
-DATOS_ARGY_URL = "https://finanzasargy.com/datos-argy"
+DATOS_ARGY_URL = "https://www.finanzasargy.com/datos-argy"
 API_DOLAR_URL = "https://x2ozxj31bl.execute-api.sa-east-1.amazonaws.com/api/dolar/v2/general"
 TIMEOUT = (5, 15)
 
 
 def _limpiar_texto(valor):
     texto = html.unescape(str(valor or ""))
-    texto = texto.replace("Ã³", "ó").replace("Ã­", "í").replace("PaÃ­s", "País")
+
+    reemplazos = {
+        "Ã³": "ó",
+        "Ã­": "í",
+        "Ã¡": "á",
+        "Ã©": "é",
+        "Ãº": "ú",
+        "PaÃ­s": "País",
+    }
+
+    for viejo, nuevo in reemplazos.items():
+        texto = texto.replace(viejo, nuevo)
+
     return " ".join(texto.split())
 
 
 def _formatear_pesos(valor):
     valor = _limpiar_texto(valor)
-    if not valor:
-        return ""
-    return f"$ {valor}"
+    return f"$ {valor}" if valor else ""
 
 
 def _buscar_panel(panel, titulo_objetivo):
@@ -47,12 +57,10 @@ def _indicador_dolar(panel, titulo, etiqueta):
     if not venta:
         return None
 
-    detalle = f"Compra {compra}" if compra else ""
-
     return {
         "nombre": etiqueta,
         "valor": venta,
-        "detalle": detalle,
+        "detalle": f"Compra {compra}" if compra else "",
         "actualizado": fecha,
     }
 
@@ -73,45 +81,58 @@ def extraer_dolares(payload):
     return indicadores
 
 
+def _html_a_texto(html_text):
+    texto = html.unescape(html_text or "")
+    texto = re.sub(r"<script.*?</script>", " ", texto, flags=re.IGNORECASE | re.DOTALL)
+    texto = re.sub(r"<style.*?</style>", " ", texto, flags=re.IGNORECASE | re.DOTALL)
+    texto = re.sub(r"<[^>]+>", " ", texto)
+    return _limpiar_texto(texto)
+
+
 def extraer_riesgo_pais(html_text):
-    texto = html.unescape(str(html_text or ""))
+    texto = _html_a_texto(html_text)
 
     match = re.search(
-        r'"commoditie"\s*:\s*\[0\s*,\s*"Riesgo[^"]*"\].*?"valor"\s*:\s*\[0\s*,\s*"([^"]+)"\].*?"variacion"\s*:\s*\[0\s*,\s*"([^"]+)"\]',
+        r"Riesgo\s+Pa(?:í|i)s\s+.*?(\d{1,5}(?:[.,]\d{2})?)\s*([+-]?\d+(?:[.,]\d+)?%)?",
         texto,
-        re.IGNORECASE | re.DOTALL,
+        re.IGNORECASE,
     )
-
-    if not match:
-        texto = _limpiar_texto(html_text)
-        match = re.search(
-            r"Riesgo Pa[ií]s\s+([\d.,]+)\s*([+-]?\d+(?:[.,]\d+)?%)",
-            texto,
-            re.IGNORECASE,
-        )
-
-    if not match:
-        match = re.search(
-            r"Riesgo Pais\s+([\d.,]+)\s*([+-]?\d+(?:[.,]\d+)?%)",
-            texto,
-            re.IGNORECASE,
-        )
 
     if not match:
         return None
 
     valor = _limpiar_texto(match.group(1))
-    variacion = _limpiar_texto(match.group(2))
+    variacion = _limpiar_texto(match.group(2)) if match.group(2) else ""
 
     if not valor:
         return None
 
     return {
-        "nombre": "Riesgo Pa\u00eds",
+        "nombre": "Riesgo País",
         "valor": valor,
         "detalle": variacion,
         "actualizado": "",
     }
+
+
+def obtener_riesgo_pais():
+    urls = [DATOS_ARGY_URL, FUENTE_URL]
+
+    for url in urls:
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            response.raise_for_status()
+
+            riesgo_pais = extraer_riesgo_pais(response.text)
+
+            if riesgo_pais:
+                return riesgo_pais
+
+        except Exception as e:
+            print(f"No se pudo obtener Riesgo País desde {url}: {e}")
+
+    print("No se pudo encontrar el dato de Riesgo País en Finanzas Argy")
+    return None
 
 
 def get_datos_financieros():
@@ -124,19 +145,9 @@ def get_datos_financieros():
     except Exception as e:
         print(f"No se pudieron obtener cotizaciones de dólar desde Finanzas Argy: {e}")
 
-    try:
-        response = requests.get(DATOS_ARGY_URL, timeout=TIMEOUT)
-        response.raise_for_status()
-
-        riesgo_pais = extraer_riesgo_pais(response.content.decode("utf-8", errors="replace"))
-
-        if riesgo_pais:
-            indicadores.append(riesgo_pais)
-        else:
-            print("No se pudo encontrar el dato de Riesgo País en Datos Argy")
-
-    except Exception as e:
-        print(f"No se pudo obtener Riesgo País desde Datos Argy: {e}")
+    riesgo_pais = obtener_riesgo_pais()
+    if riesgo_pais:
+        indicadores.append(riesgo_pais)
 
     return {
         "fuente": FUENTE_NOMBRE,
