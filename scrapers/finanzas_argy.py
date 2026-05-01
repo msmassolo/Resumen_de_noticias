@@ -2,13 +2,23 @@ import html
 import re
 
 import requests
+from bs4 import BeautifulSoup
 
 
 FUENTE_NOMBRE = "Finanzas Argy"
 FUENTE_URL = "https://finanzasargy.com/"
 DATOS_ARGY_URL = "https://www.finanzasargy.com/datos-argy"
 API_DOLAR_URL = "https://x2ozxj31bl.execute-api.sa-east-1.amazonaws.com/api/dolar/v2/general"
+
 TIMEOUT = (5, 15)
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0 Safari/537.36"
+    )
+}
 
 
 def _limpiar_texto(valor):
@@ -20,6 +30,7 @@ def _limpiar_texto(valor):
         "Ã¡": "á",
         "Ã©": "é",
         "Ãº": "ú",
+        "Ã±": "ñ",
         "PaÃ­s": "País",
     }
 
@@ -31,7 +42,9 @@ def _limpiar_texto(valor):
 
 def _formatear_pesos(valor):
     valor = _limpiar_texto(valor)
-    return f"$ {valor}" if valor else ""
+    if not valor:
+        return ""
+    return f"$ {valor}"
 
 
 def _buscar_panel(panel, titulo_objetivo):
@@ -57,10 +70,12 @@ def _indicador_dolar(panel, titulo, etiqueta):
     if not venta:
         return None
 
+    detalle = f"Compra {compra}" if compra else ""
+
     return {
         "nombre": etiqueta,
         "valor": venta,
-        "detalle": f"Compra {compra}" if compra else "",
+        "detalle": detalle,
         "actualizado": fecha,
     }
 
@@ -81,38 +96,49 @@ def extraer_dolares(payload):
     return indicadores
 
 
-def _html_a_texto(html_text):
-    texto = html.unescape(html_text or "")
-    texto = re.sub(r"<script.*?</script>", " ", texto, flags=re.IGNORECASE | re.DOTALL)
-    texto = re.sub(r"<style.*?</style>", " ", texto, flags=re.IGNORECASE | re.DOTALL)
-    texto = re.sub(r"<[^>]+>", " ", texto)
-    return _limpiar_texto(texto)
+def _normalizar_html_a_lineas(html_text):
+    soup = BeautifulSoup(html_text or "", "html.parser")
+
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+
+    texto = soup.get_text("\n")
+    lineas = []
+
+    for linea in texto.splitlines():
+        linea = _limpiar_texto(linea)
+        if linea:
+            lineas.append(linea)
+
+    return lineas
 
 
 def extraer_riesgo_pais(html_text):
-    texto = _html_a_texto(html_text)
+    lineas = _normalizar_html_a_lineas(html_text)
 
-    match = re.search(
-        r"Riesgo\s+Pa(?:í|i)s\s+.*?(\d{1,5}(?:[.,]\d{2})?)\s*([+-]?\d+(?:[.,]\d+)?%)?",
-        texto,
-        re.IGNORECASE,
-    )
+    for i, linea in enumerate(lineas):
+        if re.search(r"Riesgo\s+Pa(?:í|i)s", linea, re.IGNORECASE):
+            bloque = " ".join(lineas[i:i + 8])
 
-    if not match:
-        return None
+            match = re.search(
+                r"(\d{3,5}(?:[.,]\d{2})?)\s*([+-]?\d+(?:[.,]\d+)?%)?",
+                bloque
+            )
 
-    valor = _limpiar_texto(match.group(1))
-    variacion = _limpiar_texto(match.group(2)) if match.group(2) else ""
+            if not match:
+                continue
 
-    if not valor:
-        return None
+            valor = _limpiar_texto(match.group(1))
+            variacion = _limpiar_texto(match.group(2)) if match.group(2) else ""
 
-    return {
-        "nombre": "Riesgo País",
-        "valor": valor,
-        "detalle": variacion,
-        "actualizado": "",
-    }
+            return {
+                "nombre": "Riesgo País",
+                "valor": valor,
+                "detalle": variacion,
+                "actualizado": "",
+            }
+
+    return None
 
 
 def obtener_riesgo_pais():
@@ -120,7 +146,7 @@ def obtener_riesgo_pais():
 
     for url in urls:
         try:
-            response = requests.get(url, timeout=TIMEOUT)
+            response = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
             response.raise_for_status()
 
             riesgo_pais = extraer_riesgo_pais(response.text)
@@ -139,7 +165,7 @@ def get_datos_financieros():
     indicadores = []
 
     try:
-        response = requests.get(API_DOLAR_URL, timeout=TIMEOUT)
+        response = requests.get(API_DOLAR_URL, headers=HEADERS, timeout=TIMEOUT)
         response.raise_for_status()
         indicadores.extend(extraer_dolares(response.json()))
     except Exception as e:
