@@ -230,7 +230,71 @@ def generar_filtros(categorias, conteos):
     return filtros_html
 
 
-def generar_web(contenido, output_path="index.html"):
+def normalizar_datos_financieros(datos):
+    if not isinstance(datos, dict):
+        return {"fuente": "Finanzas Argy", "url": "https://finanzasargy.com/", "indicadores": []}
+
+    indicadores = []
+    for item in datos.get("indicadores") or []:
+        if not isinstance(item, dict):
+            continue
+
+        nombre = str(item.get("nombre") or "").strip()
+        valor = str(item.get("valor") or "").strip()
+        detalle = str(item.get("detalle") or "").strip()
+
+        if not nombre or not valor:
+            continue
+
+        indicadores.append(
+            {
+                "nombre": nombre,
+                "valor": valor,
+                "detalle": detalle,
+            }
+        )
+
+    return {
+        "fuente": str(datos.get("fuente") or "Finanzas Argy").strip(),
+        "url": str(datos.get("url") or "https://finanzasargy.com/").strip(),
+        "indicadores": indicadores,
+    }
+
+
+def generar_html_datos_financieros(datos):
+    datos = normalizar_datos_financieros(datos)
+    indicadores = datos["indicadores"]
+
+    if not indicadores:
+        return ""
+
+    items_html = ""
+    for item in indicadores:
+        detalle = f'<span>{escape(item["detalle"])}</span>' if item["detalle"] else ""
+        items_html += f"""
+                <article class="finance-card">
+                    <span>{escape(item["nombre"])}</span>
+                    <strong>{escape(item["valor"])}</strong>
+                    {detalle}
+                </article>
+        """
+
+    return f"""
+        <section class="finance-section" aria-label="Datos financieros">
+            <div class="finance-heading">
+                <h2>Datos financieros</h2>
+            </div>
+            <div class="finance-grid">
+                {items_html}
+            </div>
+            <a class="finance-source" href="{escape(datos["url"], quote=True)}" target="_blank" rel="noopener noreferrer">
+                Ver fuente en {escape(datos["fuente"])}
+            </a>
+        </section>
+    """
+
+
+def generar_web(contenido, output_path="index.html", datos_financieros=None):
     fecha_actual = datetime.now(ZoneInfo("America/Argentina/Buenos_Aires"))
     fecha_formateada = formatear_fecha_es(fecha_actual)
     hora_formateada = fecha_actual.strftime("%H:%M")
@@ -246,6 +310,7 @@ def generar_web(contenido, output_path="index.html"):
 
     html_noticias = generar_html_noticias(noticias)
     filtros_html = generar_filtros(categorias, conteos)
+    datos_financieros_html = generar_html_datos_financieros(datos_financieros)
 
     html = """
     <!doctype html>
@@ -431,6 +496,82 @@ def generar_web(contenido, output_path="index.html"):
                 padding: 2px 20px 42px;
             }
 
+            .finance-section {
+                max-width: 1280px;
+                margin: 2px auto 8px;
+                padding: 0 20px;
+            }
+
+            .finance-heading {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 8px;
+                padding-bottom: 6px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .finance-heading h2 {
+                margin: 0;
+                color: var(--text-primary);
+                font-family: var(--font-title), "Merriweather";
+                font-size: clamp(18px, 1.7vw, 24px);
+                font-weight: 700;
+                line-height: 1.15;
+            }
+
+            .finance-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .finance-card {
+                padding: 11px 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+            }
+
+            .finance-card span {
+                display: block;
+                color: var(--text-secondary);
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+
+            .finance-card strong {
+                display: block;
+                margin-top: 4px;
+                color: var(--text-primary);
+                font-size: 18px;
+                line-height: 1.15;
+            }
+
+            .finance-card strong + span {
+                margin-top: 4px;
+                color: var(--text-secondary);
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0;
+                text-transform: none;
+            }
+
+            .finance-source {
+                display: inline-block;
+                margin-top: 8px;
+                color: #0b3a66;
+                font-size: 12px;
+                font-weight: 600;
+                text-decoration: none;
+            }
+
+            .finance-source:hover {
+                text-decoration: underline;
+            }
+
             .categoria-section {
                 margin-top: 22px;
             }
@@ -590,9 +731,14 @@ def generar_web(contenido, output_path="index.html"):
                 }
 
                 .filtros,
+                .finance-section,
                 .container {
                     padding-left: 14px;
                     padding-right: 14px;
+                }
+
+                .finance-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
 
                 .news-grid {
@@ -682,6 +828,8 @@ def generar_web(contenido, output_path="index.html"):
         </div>
 
         __FILTROS__
+
+        __DATOS_FINANCIEROS__
 
         <main class="container">
             __NOTICIAS__
@@ -779,6 +927,7 @@ def generar_web(contenido, output_path="index.html"):
     html = html.replace("__FECHA__", escape(fecha_formateada))
     html = html.replace("__HORA__", escape(hora_formateada))
     html = html.replace("__FILTROS__", filtros_html)
+    html = html.replace("__DATOS_FINANCIEROS__", datos_financieros_html)
     html = html.replace("__NOTICIAS__", html_noticias)
 
     with open(output_path, "w", encoding="utf-8") as f:

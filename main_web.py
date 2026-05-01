@@ -1,4 +1,5 @@
 from scrapers import obtener_todo
+from scrapers.finanzas_argy import get_datos_financieros
 from scrapers.utils import limpiar_titulo, obtener_contenido_detalle
 from ai import procesar_noticia
 from analyzer import agrupar_noticias, depurar_grupos
@@ -431,9 +432,14 @@ LINKS:
     guardar_json_intermedio("groups.json", diagnostico_grupos)
     guardar_texto_intermedio("site_input.txt", salida_final)
 
+    print("\n--- OBTENIENDO DATOS FINANCIEROS ---\n")
+    datos_financieros = get_datos_financieros()
+    guardar_json_intermedio("financial_data.json", datos_financieros)
+    print(f"Datos financieros: {len(datos_financieros.get('indicadores', []))} indicadores")
+
     print("\n--- GENERANDO WEB ---\n")
 
-    generar_web(noticias_web)
+    generar_web(noticias_web, datos_financieros=datos_financieros)
 
     print("🌐 Web generada: index.html")
 

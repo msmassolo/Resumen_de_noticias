@@ -3,8 +3,15 @@ from unittest.mock import patch
 
 import analyzer_2
 from main_web import extraer_noticia_unificada, normalizar_categoria, parsear_grupos
+from scrapers.finanzas_argy import extraer_dolares, extraer_riesgo_pais
 from scrapers.utils import limpiar_titulo, normalizar_url
-from web_generator import clave_categoria, generar_html_noticias, normalizar_noticias, parsear_contenido
+from web_generator import (
+    clave_categoria,
+    generar_html_datos_financieros,
+    generar_html_noticias,
+    normalizar_noticias,
+    parsear_contenido,
+)
 
 
 class CoreHelpersTest(unittest.TestCase):
@@ -110,6 +117,34 @@ class CoreHelpersTest(unittest.TestCase):
         )
         self.assertIn('data-search="Dolar financiero estable El mercado opero con bajo volumen. Infobae"', html)
         self.assertNotIn('data-search="ECONOMIA', html)
+
+    def test_extraer_datos_financieros_desde_payloads(self):
+        payload = {
+            "data": {
+                "panel": [
+                    {"titulo": "Dólar Blue", "venta": "1400", "compra": "1380"},
+                    {"titulo": "Dólar Oficial", "venta": "1415,80", "compra": "1363,46"},
+                    {"titulo": "Dólar MEP", "venta": "1442,43", "compra": "1442,43"},
+                ]
+            }
+        }
+        html = 'commoditie&quot;:[0,&quot;Riesgo País&quot;],&quot;data&quot;:[0,{&quot;valor&quot;:[0,&quot;545&quot;],&quot;variacion&quot;:[0,&quot;-3,88%&quot;]}]'
+
+        self.assertEqual([item["nombre"] for item in extraer_dolares(payload)], ["Dólar Blue", "Dólar Oficial", "Dólar MEP"])
+        self.assertEqual(extraer_riesgo_pais(html)["valor"], "545")
+
+    def test_generar_html_datos_financieros(self):
+        html = generar_html_datos_financieros(
+            {
+                "fuente": "Finanzas Argy",
+                "url": "https://finanzasargy.com/",
+                "indicadores": [{"nombre": "Dólar Blue", "valor": "$ 1400", "detalle": "Compra $ 1380"}],
+            }
+        )
+
+        self.assertIn("Datos financieros", html)
+        self.assertIn("Dólar Blue", html)
+        self.assertIn("https://finanzasargy.com/", html)
 
     def test_unificar_bloques_incluye_contraste_por_medio_en_prompt(self):
         texto = """
