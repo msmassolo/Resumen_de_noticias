@@ -248,321 +248,220 @@ def generar_web(contenido, output_path="index.html"):
         <meta charset="utf-8">
         <title>Resumen de Noticias</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <style>
             * {
                 box-sizing: border-box;
             }
 
-            body {
-                margin: 0;
-                font-family: Arial, Helvetica, sans-serif;
-                color: #1f2933;
-                background: linear-gradient(-45deg, #fdf6f0, #f7f7fb, #eef7f2, #fafafa);
-                background-size: 400% 400%;
-                animation: gradientBG 18s ease infinite;
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-                body {
-                    animation: none;
-                }
-            }
-
-            @keyframes gradientBG {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-
-            .header {
-                text-align: center;
-                padding: 36px 20px 22px;
-            }
-
-            .header h1 {
-                margin: 0 0 8px;
-                font-size: clamp(28px, 5vw, 44px);
-                line-height: 1.1;
-            }
-
-            .header p {
-                margin: 0;
-                color: #52616b;
-            }
-
-            .filtros {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px;
-                max-width: 900px;
-                margin: 0 auto 18px;
-                padding: 0 20px;
-            }
-
-            .filtro-btn {
-                min-height: 36px;
-                padding: 8px 13px;
-                border-radius: 999px;
-                border: 1px solid #d3d8de;
-                cursor: pointer;
-                background: white;
-                color: #1f2933;
-                font: inherit;
-                font-size: 14px;
-            }
-
-            .filtro-btn:hover,
-            .filtro-btn:focus-visible {
-                border-color: #111827;
-                outline: none;
-            }
-
-            .filtro-btn.active {
-                background: #111827;
-                border-color: #111827;
-                color: white;
-            }
-
-            .container {
-                max-width: 900px;
-                margin: auto;
-                padding: 12px 20px 36px;
-            }
-
-            .categoria-section {
-                margin-top: 20px;
-            }
-
-            .categoria-section[hidden],
-            .card[hidden] {
-                display: none;
-            }
-
-            .categoria-section h2 {
-                text-align: center;
-                margin: 22px 0 14px;
-                font-size: 18px;
-                letter-spacing: 0;
-            }
-
-            .card {
-                background: rgba(255, 255, 255, 0.92);
-                padding: 18px;
-                margin-bottom: 14px;
-                border: 1px solid rgba(214, 221, 230, 0.8);
-                border-radius: 8px;
-                box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
-            }
-
-            .card h3 {
-                margin: 0 0 10px;
-                font-size: 20px;
-                line-height: 1.25;
-            }
-
-            .card p {
-                margin: 0 0 14px;
-                line-height: 1.55;
-                color: #374151;
-            }
-
-            .sources {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .chip {
-                display: inline-flex;
-                align-items: center;
-                min-height: 28px;
-                padding: 5px 10px;
-                border-radius: 999px;
-                font-size: 12px;
-                font-weight: 700;
-                text-decoration: none;
-            }
-
-            .chip:hover {
-                text-decoration: underline;
-            }
-
-            .infobae { background:#fff3e6; color:#b84c00; }
-            .lanacion { background:#e6f0ff; color:#1a4ed8; }
-            .clarin { background:#ffeaea; color:#b42318; }
-            .pagina12 { background:#f1e8ff; color:#6d28d9; }
-            .ambito { background:#e8f7ef; color:#047857; }
-            .default { background:#edf2f7; color:#334155; }
-
             :root {
                 color-scheme: light;
-                --text: #172033;
-                --muted: #637083;
-                --line: #d8dee8;
-                --surface: #ffffff;
-                --soft: #f4f7fb;
-                --accent: #0f766e;
-                --accent-strong: #115e59;
+                --background: #F4F1EC;
+                --surface: #E7DED1;
+                --surface-soft: #DDD4C7;
+                --primary: #B2A58A;
+                --secondary: #CBBBA5;
+                --accent: #8C7B6A;
+                --text-primary: #2F2A24;
+                --text-secondary: #5E564D;
+                --border: #D8CFC3;
+                --infobae: #D8B08C;
+                --clarin: #C99999;
+                --lanacion: #AEBFCF;
+                --font-title: "Cormorant Garamond";
+                --font-body: "Manrope";
             }
 
             body {
-                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-                color: var(--text);
-                background: #f6f8fb;
-                animation: none;
+                min-height: 100vh;
+                margin: 0;
+                color: var(--text-primary);
+                background:
+                    radial-gradient(circle at 9% 8%, rgba(203, 187, 165, 0.26), transparent 28%),
+                    radial-gradient(circle at 88% 4%, rgba(174, 191, 207, 0.18), transparent 30%),
+                    var(--background);
+                font-family: var(--font-body), "Manrope";
+                letter-spacing: 0;
             }
 
             .header {
                 text-align: left;
-                padding: 34px 20px 24px;
-                background: linear-gradient(180deg, #ffffff 0%, #eef4f7 100%);
-                border-bottom: 1px solid var(--line);
+                padding: clamp(46px, 8vw, 96px) 24px 26px;
+                background: transparent;
             }
 
             .header-inner,
             .toolbar,
             .container {
-                max-width: 1120px;
+                max-width: 1180px;
                 margin: 0 auto;
             }
 
             .eyebrow {
-                margin: 0 0 10px;
-                color: var(--accent-strong);
-                font-size: 12px;
-                font-weight: 800;
-                letter-spacing: 0.08em;
+                margin: 0 0 18px;
+                color: var(--accent);
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.14em;
                 text-transform: uppercase;
             }
 
             .header h1 {
-                max-width: 760px;
+                max-width: 820px;
                 margin: 0;
-                font-size: clamp(32px, 5vw, 54px);
+                font-family: var(--font-title), "Cormorant Garamond";
+                font-size: clamp(48px, 9vw, 112px);
+                font-weight: 600;
+                line-height: 0.92;
                 letter-spacing: 0;
             }
 
             .header p {
-                max-width: 720px;
-                margin-top: 12px;
-                color: var(--muted);
-                font-size: 16px;
-            }
-
-            .header .eyebrow {
-                margin: 0 0 10px;
-                color: var(--accent-strong);
-                font-size: 12px;
+                max-width: 620px;
+                margin: 22px 0 0;
+                color: var(--text-secondary);
+                font-size: 15px;
+                line-height: 1.8;
             }
 
             .toolbar {
                 display: grid;
-                grid-template-columns: minmax(220px, 1fr) auto;
-                gap: 12px;
-                padding: 18px 20px 8px;
+                grid-template-columns: minmax(240px, 1fr) auto;
+                gap: 14px;
+                padding: 22px 24px 10px;
             }
 
             .search-input {
                 width: 100%;
-                min-height: 44px;
-                border: 1px solid var(--line);
-                border-radius: 8px;
-                padding: 10px 13px;
-                color: var(--text);
-                background: var(--surface);
-                font: inherit;
+                min-height: 52px;
+                border: 1px solid var(--border);
+                border-radius: 999px;
+                padding: 0 20px;
+                color: var(--text-primary);
+                background: rgba(231, 222, 209, 0.46);
+                font-family: var(--font-body), "Manrope";
+                font-size: 14px;
+                transition: border-color 160ms ease, background 160ms ease;
             }
 
             .search-input:focus,
             .compact-btn:focus-visible {
                 border-color: var(--accent);
-                outline: 3px solid rgba(15, 118, 110, 0.16);
+                outline: 0;
+                background: rgba(231, 222, 209, 0.72);
             }
 
             .compact-btn {
-                min-height: 44px;
-                border: 1px solid var(--line);
-                border-radius: 8px;
-                padding: 0 14px;
-                color: var(--text);
-                background: var(--surface);
+                min-height: 52px;
+                border: 1px solid var(--border);
+                border-radius: 999px;
+                padding: 0 20px;
+                color: var(--text-primary);
+                background: transparent;
                 cursor: pointer;
-                font: inherit;
+                font-family: var(--font-body), "Manrope";
+                font-size: 13px;
                 font-weight: 700;
+                transition: border-color 160ms ease, background 160ms ease;
             }
 
             .filtros {
                 justify-content: flex-start;
-                max-width: 1120px;
+                max-width: 1180px;
                 margin: 0 auto;
-                padding: 8px 20px 16px;
+                padding: 14px 24px 28px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
             }
 
             .filtro-btn {
-                border-radius: 8px;
-                background: var(--surface);
+                min-height: 40px;
+                padding: 0 16px;
+                border: 1px solid transparent;
+                border-radius: 999px;
+                color: var(--text-secondary);
+                background: transparent;
+                cursor: pointer;
+                font-family: var(--font-body), "Manrope";
+                font-size: 12px;
                 font-weight: 700;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+            }
+
+            .filtro-btn:hover,
+            .filtro-btn:focus-visible {
+                border-color: var(--border);
+                outline: 0;
             }
 
             .filtro-btn span {
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                min-width: 22px;
-                min-height: 22px;
-                margin-left: 6px;
+                min-width: 24px;
+                min-height: 24px;
+                margin-left: 8px;
                 border-radius: 999px;
-                background: var(--soft);
-                color: var(--muted);
-                font-size: 12px;
+                background: rgba(203, 187, 165, 0.26);
+                color: var(--accent);
+                font-size: 11px;
             }
 
             .filtro-btn.active {
-                background: var(--text);
-                border-color: var(--text);
+                color: var(--text-primary);
+                background: rgba(231, 222, 209, 0.72);
+                border-color: var(--border);
             }
 
             .filtro-btn.active span {
-                background: rgba(255, 255, 255, 0.18);
-                color: #ffffff;
+                background: rgba(178, 165, 138, 0.32);
+                color: var(--text-primary);
             }
 
             .container {
-                padding: 10px 20px 46px;
+                padding: 8px 24px 88px;
             }
 
             .categoria-section {
-                margin-top: 30px;
+                margin-top: clamp(38px, 7vw, 78px);
             }
 
             .section-heading {
                 display: flex;
-                align-items: end;
+                align-items: flex-end;
                 justify-content: space-between;
-                gap: 12px;
-                margin: 0 0 12px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid var(--line);
+                gap: 24px;
+                margin: 0 0 22px;
             }
 
             .section-heading h2 {
                 margin: 0;
                 text-align: left;
-                font-size: 18px;
+                color: var(--text-primary);
+                font-family: var(--font-title), "Cormorant Garamond";
+                font-size: clamp(31px, 4.4vw, 54px);
+                font-weight: 600;
+                line-height: 1;
             }
 
             .section-heading span {
-                color: var(--muted);
-                font-size: 13px;
+                color: var(--text-secondary);
+                font-size: 12px;
                 font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
             }
 
             .news-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 14px;
+                gap: 18px;
             }
 
             .card {
@@ -570,54 +469,88 @@ def generar_web(contenido, output_path="index.html"):
                 flex-direction: column;
                 min-height: 100%;
                 margin: 0;
-                background: var(--surface);
-                border-color: var(--line);
-                box-shadow: none;
-                transition: border-color 160ms ease, transform 160ms ease;
+                padding: 28px;
+                border: 1px solid rgba(216, 207, 195, 0.72);
+                border-radius: 24px;
+                background: rgba(231, 222, 209, 0.34);
+                box-shadow: 0 18px 46px rgba(47, 42, 36, 0.035);
+                transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
             }
 
             .card:hover {
-                border-color: #aeb8c7;
-                transform: translateY(-1px);
+                border-color: rgba(140, 123, 106, 0.36);
+                background: rgba(231, 222, 209, 0.48);
+                transform: translateY(-2px);
             }
 
             .card.featured {
                 grid-column: 1 / -1;
-                padding: 22px;
-                border-top: 4px solid var(--accent);
+                min-height: 250px;
+                padding: clamp(32px, 5vw, 56px);
+                background: linear-gradient(135deg, rgba(231, 222, 209, 0.86), rgba(221, 212, 199, 0.48));
             }
 
             .card h3 {
-                font-size: 19px;
+                max-width: 880px;
+                margin: 0 0 18px;
+                color: var(--text-primary);
+                font-family: var(--font-title), "Cormorant Garamond";
+                font-size: clamp(26px, 3vw, 38px);
+                font-weight: 600;
+                line-height: 1.04;
                 letter-spacing: 0;
             }
 
             .card.featured h3 {
-                font-size: clamp(24px, 3vw, 32px);
-                line-height: 1.15;
+                font-size: clamp(38px, 5.4vw, 70px);
+                line-height: 0.96;
             }
 
             .card p {
-                color: #39465a;
+                max-width: 820px;
+                margin: 0 0 26px;
+                color: var(--text-secondary);
+                font-size: 15px;
+                line-height: 1.82;
             }
 
             .sources {
                 margin-top: auto;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
             }
 
             .chip {
-                border-radius: 8px;
+                display: inline-flex;
+                align-items: center;
+                min-height: 34px;
+                padding: 0 13px;
+                border-radius: 999px;
+                color: var(--text-primary);
+                font-family: var(--font-body), "Manrope";
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                text-decoration: none;
+                text-transform: uppercase;
+                transition: filter 160ms ease, transform 160ms ease;
+            }
+
+            .chip:hover {
+                filter: saturate(1.04) brightness(0.98);
+                transform: translateY(-1px);
             }
 
             .empty-state {
                 display: none;
-                max-width: 1120px;
-                margin: 24px auto 0;
-                padding: 18px 20px;
-                border: 1px dashed var(--line);
-                border-radius: 8px;
-                color: var(--muted);
-                background: var(--surface);
+                max-width: 1180px;
+                margin: 42px auto 0;
+                padding: 28px 24px;
+                border: 1px solid var(--border);
+                border-radius: 24px;
+                color: var(--text-secondary);
+                background: rgba(231, 222, 209, 0.34);
                 text-align: center;
             }
 
@@ -627,17 +560,36 @@ def generar_web(contenido, output_path="index.html"):
 
             body.compact .card,
             body.compact .card.featured {
-                padding: 16px;
+                padding: 24px;
             }
 
             body.compact .card h3,
             body.compact .card.featured h3 {
-                font-size: 18px;
+                font-size: clamp(24px, 3vw, 34px);
             }
 
-            @media (max-width: 720px) {
+            .infobae { background: rgba(216, 176, 140, 0.62); }
+            .clarin { background: rgba(201, 153, 153, 0.58); }
+            .lanacion { background: rgba(174, 191, 207, 0.64); }
+            .pagina12 { background: rgba(203, 187, 165, 0.52); }
+            .ambito { background: rgba(178, 165, 138, 0.48); }
+            .default { background: rgba(221, 212, 199, 0.7); }
+
+            @media (max-width: 820px) {
+                .header {
+                    padding: 42px 18px 18px;
+                }
+
                 .toolbar {
                     grid-template-columns: 1fr;
+                    padding-left: 18px;
+                    padding-right: 18px;
+                }
+
+                .filtros,
+                .container {
+                    padding-left: 18px;
+                    padding-right: 18px;
                 }
 
                 .news-grid {
@@ -647,147 +599,20 @@ def generar_web(contenido, output_path="index.html"):
                 .section-heading {
                     align-items: flex-start;
                     flex-direction: column;
+                    gap: 8px;
+                }
+
+                .card,
+                .card.featured {
+                    min-height: auto;
+                    padding: 24px;
+                    border-radius: 22px;
+                }
+
+                .card.featured h3 {
+                    font-size: clamp(34px, 10vw, 54px);
                 }
             }
-
-            :root {
-                --text: #2f3440;
-                --muted: #71798a;
-                --line: #eadfea;
-                --surface: #ffffff;
-                --soft: #f7eef8;
-                --page: #fff7fb;
-                --accent: #b8dccc;
-                --accent-strong: #5f8d80;
-                --pink: #ffe3ec;
-                --mint: #ddf4e8;
-                --blue: #dfefff;
-                --lavender: #ece5ff;
-                --peach: #ffe8d6;
-                --butter: #fff5c9;
-            }
-
-            body {
-                color: var(--text);
-                background:
-                    radial-gradient(circle at top left, rgba(255, 227, 236, 0.72), transparent 34%),
-                    radial-gradient(circle at top right, rgba(223, 239, 255, 0.74), transparent 32%),
-                    linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0)),
-                    var(--page);
-            }
-
-            .header {
-                padding: 30px 20px 18px;
-                background: transparent;
-                border-bottom: 0;
-            }
-
-            .eyebrow {
-                color: var(--accent-strong);
-                font-size: 11px;
-                letter-spacing: 0.06em;
-            }
-
-            .header h1 {
-                font-size: clamp(30px, 4vw, 46px);
-                font-weight: 760;
-            }
-
-            .header p {
-                color: var(--muted);
-            }
-
-            .toolbar {
-                padding-top: 10px;
-            }
-
-            .search-input,
-            .compact-btn,
-            .filtro-btn,
-            .card,
-            .empty-state {
-                border-color: var(--line);
-                box-shadow: none;
-            }
-
-            .search-input,
-            .compact-btn,
-            .filtro-btn {
-                background: rgba(255, 255, 255, 0.78);
-            }
-
-            .search-input:focus,
-            .compact-btn:focus-visible,
-            .filtro-btn:focus-visible {
-                border-color: var(--accent);
-                outline: 3px solid rgba(138, 182, 169, 0.22);
-            }
-
-            .compact-btn,
-            .filtro-btn {
-                font-weight: 650;
-            }
-
-            .filtro-btn.active {
-                color: #4d7168;
-                background: linear-gradient(180deg, #e2f4eb 0%, #f7eef8 100%);
-                border-color: #c6e4d8;
-            }
-
-            .filtro-btn span,
-            .filtro-btn.active span {
-                color: var(--muted);
-                background: rgba(255, 255, 255, 0.66);
-            }
-
-            .section-heading {
-                border-bottom-color: rgba(225, 229, 238, 0.8);
-            }
-
-            .section-heading h2 {
-                font-weight: 720;
-            }
-
-            .card {
-                background: rgba(255, 255, 255, 0.76);
-                border-radius: 8px;
-            }
-
-            .card:hover {
-                border-color: #ccd6e3;
-                transform: none;
-            }
-
-            .card.featured {
-                border-top: 0;
-                background: linear-gradient(135deg, #fff9e8 0%, #f3ecff 48%, #e9f7f1 100%);
-            }
-
-            .card h3 {
-                color: #303642;
-                font-weight: 730;
-            }
-
-            .card.featured h3 {
-                font-size: clamp(23px, 3vw, 30px);
-            }
-
-            .card p {
-                color: #555e6f;
-            }
-
-            .chip {
-                color: #3b4452;
-                border-radius: 8px;
-                font-weight: 650;
-            }
-
-            .infobae { background: var(--peach); color: #9a5b2f; }
-            .lanacion { background: var(--blue); color: #476b97; }
-            .clarin { background: var(--pink); color: #9a5360; }
-            .pagina12 { background: var(--lavender); color: #68558f; }
-            .ambito { background: var(--mint); color: #4e7d62; }
-            .default { background: #f1f3f6; color: #5e6876; }
         </style>
     </head>
 
@@ -795,14 +620,14 @@ def generar_web(contenido, output_path="index.html"):
 
         <div class="header">
             <div class="header-inner">
-                <p class="eyebrow">Panorama automático</p>
+                <p class="eyebrow">Panorama editorial</p>
                 <h1>Resumen de Noticias</h1>
-                <p>Actualizado el __FECHA__ a las __HORA__ hs. Una vista rápida para leer, filtrar y abrir las fuentes principales.</p>
+                <p>Actualizado el __FECHA__ a las __HORA__ hs. Una lectura serena de los hechos principales, con fuentes agrupadas y contrastes cuando los enfoques difieren.</p>
             </div>
         </div>
 
         <div class="toolbar" aria-label="Herramientas de lectura">
-            <input class="search-input" type="search" placeholder="Buscar por título, resumen o fuente" aria-label="Buscar noticias">
+            <input class="search-input" type="search" placeholder="Buscar en la edición" aria-label="Buscar noticias">
             <button class="compact-btn" type="button" aria-pressed="false">Modo compacto</button>
         </div>
 
