@@ -1,5 +1,4 @@
 import html
-import json
 import re
 
 import requests
@@ -15,6 +14,7 @@ def _limpiar_texto(valor):
     texto = html.unescape(str(valor or ""))
     texto = (
         texto.replace("Ã³", "ó")
+        .replace("Ãí", "í")
         .replace("Ã­", "í")
         .replace("Ã¡", "á")
         .replace("Ã©", "é")
@@ -80,110 +80,30 @@ def extraer_dolares(payload):
     return indicadores
 
 
-def _normalizar_numero(valor):
-    valor = _limpiar_texto(valor)
-
-    # elimina caracteres raros
-    valor = re.sub(r"[^\d,.\-+%]", "", valor)
-
-    return valor.strip()
-
-
 def extraer_riesgo_pais(html_text):
-    """
-    Estrategia robusta:
-    1. Busca JSON embebido
-    2. Busca bloques cercanos a 'Riesgo País'
-    3. Busca patrones flexibles
-    """
-
     texto = html.unescape(html_text or "")
+    texto = _limpiar_texto(texto)
 
-    # ------------------------------------------------------------------
-    # OPCION 1: Buscar estructura tipo JSON
-    # ------------------------------------------------------------------
+    patrones = [
+        # Caso actual: Riesgo País 545,00 -3.88%
+        r"Riesgo\s*Pa(?:ís|is)\s+(\d{2,5}(?:[.,]\d{1,2})?)\s*([+-]?\d+(?:[.,]\d+)?%)?",
 
-    patrones_json = [
-        r'Riesgo\s*Pa(?:ís|is).*?valor"\s*:\s*\[0,\s*"([^"]+)"\].*?variacion"\s*:\s*\[0,\s*"([^"]+)"\]',
-        r'Riesgo\s*Pa(?:ís|is).*?"valor"\s*:\s*"([^"]+)".*?"variacion"\s*:\s*"([^"]+)"',
+        # Fallback si hay texto, tags o caracteres intermedios
+        r"Riesgo\s*Pa(?:ís|is).*?(\d{2,5}(?:[.,]\d{1,2})?).{0,50}?([+-]?\d+(?:[.,]\d+)?%)?",
     ]
 
-    for patron in patrones_json:
-        match = re.search(
-            patron,
-            texto,
-            re.IGNORECASE | re.DOTALL,
-        )
+    for patron in patrones:
+        match = re.search(patron, texto, re.IGNORECASE | re.DOTALL)
 
         if match:
-            valor = _normalizar_numero(match.group(1))
-            variacion = _normalizar_numero(match.group(2))
+            valor = _limpiar_texto(match.group(1))
+            variacion = _limpiar_texto(match.group(2)) if match.lastindex and match.lastindex >= 2 else ""
 
             if valor:
                 return {
                     "nombre": "Riesgo País",
                     "valor": valor,
                     "detalle": variacion,
-                    "actualizado": "",
-                }
-
-    # ------------------------------------------------------------------
-    # OPCION 2: Buscar cerca del texto "Riesgo País"
-    # ------------------------------------------------------------------
-
-    match_bloque = re.search(
-        r'Riesgo\s*Pa(?:ís|is)(.{0,600})',
-        texto,
-        re.IGNORECASE | re.DOTALL,
-    )
-
-    if match_bloque:
-        bloque = match_bloque.group(1)
-
-        # busca numeros tipo 741 / 1.245
-        numeros = re.findall(r'\b\d{2,5}(?:[.,]\d{1,2})?\b', bloque)
-
-        # busca variacion tipo +1,2% / -0,8%
-        variaciones = re.findall(
-            r'[+-]?\d+(?:[.,]\d+)?%',
-            bloque,
-        )
-
-        valor = numeros[0] if numeros else ""
-        variacion = variaciones[0] if variaciones else ""
-
-        if valor:
-            return {
-                "nombre": "Riesgo País",
-                "valor": _normalizar_numero(valor),
-                "detalle": _normalizar_numero(variacion),
-                "actualizado": "",
-            }
-
-    # ------------------------------------------------------------------
-    # OPCION 3: Buscar cualquier referencia global
-    # ------------------------------------------------------------------
-
-    patrones_generales = [
-        r'Riesgo\s*Pa(?:ís|is).*?(\d{2,5})',
-        r'EMBI.*?Argentina.*?(\d{2,5})',
-    ]
-
-    for patron in patrones_generales:
-        match = re.search(
-            patron,
-            texto,
-            re.IGNORECASE | re.DOTALL,
-        )
-
-        if match:
-            valor = _normalizar_numero(match.group(1))
-
-            if valor:
-                return {
-                    "nombre": "Riesgo País",
-                    "valor": valor,
-                    "detalle": "",
                     "actualizado": "",
                 }
 
@@ -196,9 +116,7 @@ def get_datos_financieros():
     try:
         response = requests.get(API_DOLAR_URL, timeout=TIMEOUT)
         response.raise_for_status()
-
         indicadores.extend(extraer_dolares(response.json()))
-
     except Exception as e:
         print(f"No se pudieron obtener cotizaciones de dólar desde Finanzas Argy: {e}")
 
@@ -206,8 +124,6 @@ def get_datos_financieros():
         response = requests.get(FUENTE_URL, timeout=TIMEOUT)
         response.raise_for_status()
 
-        # MUY IMPORTANTE:
-        # fuerza encoding correcto
         response.encoding = response.apparent_encoding
 
         riesgo_pais = extraer_riesgo_pais(response.text)
@@ -215,7 +131,7 @@ def get_datos_financieros():
         if riesgo_pais:
             indicadores.append(riesgo_pais)
         else:
-            print("No se pudo detectar Riesgo País en el HTML")
+            print("No se pudo detectar Riesgo País en Finanzas Argy")
 
     except Exception as e:
         print(f"No se pudo obtener Riesgo País desde Finanzas Argy: {e}")
