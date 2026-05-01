@@ -12,15 +12,7 @@ TIMEOUT = (5, 15)
 
 def _limpiar_texto(valor):
     texto = html.unescape(str(valor or ""))
-    texto = (
-        texto.replace("Ã³", "ó")
-        .replace("Ãí", "í")
-        .replace("Ã­", "í")
-        .replace("Ã¡", "á")
-        .replace("Ã©", "é")
-        .replace("Ãº", "ú")
-        .replace("Ã±", "ñ")
-    )
+    texto = texto.replace("Ã³", "ó").replace("Ã­", "í").replace("Ã¡", "á").replace("Ã©", "é").replace("Ãº", "ú")
     return " ".join(texto.split())
 
 
@@ -55,7 +47,6 @@ def _indicador_dolar(panel, titulo, etiqueta):
         return None
 
     detalle = f"Compra {compra}" if compra else ""
-
     return {
         "nombre": etiqueta,
         "valor": venta,
@@ -80,34 +71,62 @@ def extraer_dolares(payload):
     return indicadores
 
 
-def extraer_riesgo_pais(html_text):
-    texto = html.unescape(html_text or "")
-    texto = _limpiar_texto(texto)
+def _extraer_riesgo_pais_estructura(texto):
+    match = re.search(
+        r'Riesgo Pa(?:ís|Ã­s).*?valor"\s*:\s*\[0,\s*"([^"]+)"\].*?variacion"\s*:\s*\[0,\s*"([^"]+)"\]',
+        texto,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if not match:
+        return None
 
-    patrones = [
-        # Caso actual: Riesgo País 545,00 -3.88%
-        r"Riesgo\s*Pa(?:ís|is)\s+(\d{2,5}(?:[.,]\d{1,2})?)\s*([+-]?\d+(?:[.,]\d+)?%)?",
+    return _limpiar_texto(match.group(1)), _limpiar_texto(match.group(2))
 
-        # Fallback si hay texto, tags o caracteres intermedios
-        r"Riesgo\s*Pa(?:ís|is).*?(\d{2,5}(?:[.,]\d{1,2})?).{0,50}?([+-]?\d+(?:[.,]\d+)?%)?",
+
+def _extraer_riesgo_pais_texto(texto):
+    texto = texto.replace("Ã³", "ó").replace("Ã­", "í").replace("Ã¡", "á").replace("Ã©", "é").replace("Ãº", "ú")
+
+    patterns = [
+        r'(\d[\d\.,]*)\s*([+-]?\d[\d\.,]*%)\s*RIESGO\s*PA[IÍ]S',
+        r'RIESGO\s*PA[IÍ]S.*?(\d[\d\.,]*)\s*([+-]?\d[\d\.,]*%)',
+        r'(\d[\d\.,]*)\s*RIESGO\s*PA[IÍ]S',
     ]
 
-    for patron in patrones:
-        match = re.search(patron, texto, re.IGNORECASE | re.DOTALL)
+    for pattern in patterns:
+        match = re.search(pattern, texto, re.IGNORECASE | re.DOTALL)
+        if not match:
+            continue
 
-        if match:
-            valor = _limpiar_texto(match.group(1))
-            variacion = _limpiar_texto(match.group(2)) if match.lastindex and match.lastindex >= 2 else ""
+        if len(match.groups()) >= 2 and match.group(2):
+            return _limpiar_texto(match.group(1)), _limpiar_texto(match.group(2))
 
-            if valor:
-                return {
-                    "nombre": "Riesgo País",
-                    "valor": valor,
-                    "detalle": variacion,
-                    "actualizado": "",
-                }
+        if len(match.groups()) >= 1:
+            return _limpiar_texto(match.group(1)), ""
 
     return None
+
+
+def extraer_riesgo_pais(html_text):
+    texto = html.unescape(html_text or "")
+
+    resultado = _extraer_riesgo_pais_estructura(texto)
+    if resultado:
+        valor, variacion = resultado
+    else:
+        resultado = _extraer_riesgo_pais_texto(texto)
+        if not resultado:
+            return None
+        valor, variacion = resultado
+
+    if not valor:
+        return None
+
+    return {
+        "nombre": "Riesgo País",
+        "valor": valor,
+        "detalle": variacion,
+        "actualizado": "",
+    }
 
 
 def get_datos_financieros():
@@ -123,16 +142,9 @@ def get_datos_financieros():
     try:
         response = requests.get(FUENTE_URL, timeout=TIMEOUT)
         response.raise_for_status()
-
-        response.encoding = response.apparent_encoding
-
         riesgo_pais = extraer_riesgo_pais(response.text)
-
         if riesgo_pais:
             indicadores.append(riesgo_pais)
-        else:
-            print("No se pudo detectar Riesgo País en Finanzas Argy")
-
     except Exception as e:
         print(f"No se pudo obtener Riesgo País desde Finanzas Argy: {e}")
 
