@@ -9,6 +9,7 @@ FUENTE_NOMBRE = "Finanzas Argy"
 FUENTE_URL = "https://finanzasargy.com/"
 DATOS_ARGY_URL = "https://www.finanzasargy.com/datos-argy"
 API_DOLAR_URL = "https://x2ozxj31bl.execute-api.sa-east-1.amazonaws.com/api/dolar/v2/general"
+API_RIESGO_PAIS_FALLBACK_URL = "https://api.argentinadatos.com/v1/finanzas/indices/riesgo-pais"
 
 TIMEOUT = (5, 15)
 
@@ -146,6 +147,30 @@ def extraer_riesgo_pais(html_text):
     return None
 
 
+def extraer_riesgo_pais_argentinadatos(payload):
+    datos = payload if isinstance(payload, list) else []
+
+    for item in reversed(datos):
+        if not isinstance(item, dict):
+            continue
+
+        valor = item.get("valor")
+        if valor is None:
+            continue
+
+        fecha = _limpiar_texto(item.get("fecha"))
+        detalle = f"ArgentinaDatos {fecha}" if fecha else "ArgentinaDatos"
+
+        return {
+            "nombre": "Riesgo País",
+            "valor": _limpiar_texto(valor),
+            "detalle": detalle,
+            "actualizado": fecha,
+        }
+
+    return None
+
+
 def obtener_riesgo_pais():
     urls = [DATOS_ARGY_URL, FUENTE_URL]
 
@@ -161,6 +186,16 @@ def obtener_riesgo_pais():
 
         except Exception as e:
             print(f"No se pudo obtener Riesgo País desde {url}: {e}")
+
+    try:
+        response = requests.get(API_RIESGO_PAIS_FALLBACK_URL, headers=HEADERS, timeout=TIMEOUT)
+        response.raise_for_status()
+
+        riesgo_pais = extraer_riesgo_pais_argentinadatos(response.json())
+        if riesgo_pais:
+            return riesgo_pais
+    except Exception as e:
+        print(f"No se pudo obtener Riesgo País desde ArgentinaDatos: {e}")
 
     print("No se pudo encontrar el dato de Riesgo País en Finanzas Argy")
     return None

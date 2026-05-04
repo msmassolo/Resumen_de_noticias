@@ -264,8 +264,11 @@ Los dolares se extraen desde el endpoint publico detectado en Finanzas Argy:
 
     https://x2ozxj31bl.execute-api.sa-east-1.amazonaws.com/api/dolar/v2/general
 
-Riesgo Pais se extrae desde el HTML de la home, donde viene embebido en datos
-serializados de la pagina.
+Riesgo Pais se extrae desde el HTML de Finanzas Argy. Si el entorno de
+ejecucion no puede leer ese HTML, usa como fallback el endpoint publico de
+ArgentinaDatos:
+
+    https://api.argentinadatos.com/v1/finanzas/indices/riesgo-pais
 
 La salida tiene esta forma:
 

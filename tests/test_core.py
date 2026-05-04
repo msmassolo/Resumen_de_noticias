@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import analyzer_2
 from main_web import extraer_noticia_unificada, normalizar_categoria, parsear_grupos
-from scrapers.finanzas_argy import extraer_dolares, extraer_riesgo_pais
+from scrapers.finanzas_argy import extraer_dolares, extraer_riesgo_pais, extraer_riesgo_pais_argentinadatos
 from scrapers.utils import limpiar_titulo, normalizar_url
 from web_generator import (
     clave_categoria,
@@ -151,6 +151,22 @@ class CoreHelpersTest(unittest.TestCase):
                 "valor": "539,00",
                 "detalle": "-4.94%",
                 "actualizado": "",
+            },
+        )
+
+    def test_extraer_riesgo_pais_desde_argentinadatos(self):
+        payload = [
+            {"valor": 567, "fecha": "2026-04-30"},
+            {"valor": 539, "fecha": "2026-05-01"},
+        ]
+
+        self.assertEqual(
+            extraer_riesgo_pais_argentinadatos(payload),
+            {
+                "nombre": "Riesgo País",
+                "valor": "539",
+                "detalle": "ArgentinaDatos 2026-05-01",
+                "actualizado": "2026-05-01",
             },
         )
 
