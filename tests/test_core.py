@@ -1,9 +1,12 @@
 import unittest
 from unittest.mock import patch
 
+from bs4 import BeautifulSoup
+
 import analyzer_2
-from main_web import extraer_noticia_unificada, normalizar_categoria, parsear_grupos
+from main_web import extraer_noticia_unificada, normalizar_categoria, normalizar_resultado_ia, parsear_grupos
 from scrapers.finanzas_argy import extraer_dolares, extraer_riesgo_pais, extraer_riesgo_pais_argentinadatos
+from scrapers.infobae import _extraer_titulo_link
 from scrapers.utils import limpiar_titulo, normalizar_url
 from web_generator import (
     clave_categoria,
@@ -78,6 +81,29 @@ class CoreHelpersTest(unittest.TestCase):
             limpiar_titulo("Texto.PorAutor EN VIVO"),
             "Texto. Por Autor EN VIVO",
         )
+
+    def test_infobae_prioriza_heading_para_no_pegar_bajada(self):
+        html = """
+        <a href="/economia/nota">
+            <h2>Desde mañana las tarifas de colectivos aumentan 11,6 por ciento</h2>
+            <h3>El gobierno provincial decidió un aumento superior</h3>
+        </a>
+        """
+        link = BeautifulSoup(html, "html.parser").find("a")
+
+        self.assertEqual(
+            _extraer_titulo_link(link),
+            "Desde mañana las tarifas de colectivos aumentan 11,6 por ciento",
+        )
+
+    def test_normalizar_resultado_ia_recorta_evento_con_bajada_pegada(self):
+        titulo = "Desde mañana las tarifas de colectivos aumentan 11,6 por ciento"
+        data = {
+            "evento": f"{titulo} El gobierno provincial decidió un aumento superior",
+            "resumen": "La provincia aplicará desde el lunes un aumento adicional.",
+        }
+
+        self.assertEqual(normalizar_resultado_ia(data, titulo)["evento"], titulo)
 
     def test_web_generator_acepta_texto_legado_y_datos_estructurados(self):
         texto = """

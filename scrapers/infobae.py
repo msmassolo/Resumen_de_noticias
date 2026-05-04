@@ -2,6 +2,17 @@ from bs4 import BeautifulSoup
 from scrapers.utils import es_reciente, limpiar_titulo, normalizar_url, obtener_html
 
 
+def _extraer_titulo_link(link_tag):
+    for selector in ("h1", "h2", "h3", "h4"):
+        heading = link_tag.find(selector)
+        if heading:
+            titulo = limpiar_titulo(heading.get_text(" ", strip=True))
+            if titulo:
+                return titulo
+
+    return limpiar_titulo(link_tag.get_text(" ", strip=True))
+
+
 def get_infobae():
 
     secciones = {
@@ -26,7 +37,7 @@ def get_infobae():
 
             for t in soup.find_all("a"):
 
-                titulo = limpiar_titulo(t.get_text(" ", strip=True))
+                titulo = _extraer_titulo_link(t)
                 link = t.get("href", "")
 
                 if not titulo or not link:

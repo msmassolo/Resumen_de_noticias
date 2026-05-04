@@ -249,6 +249,20 @@ def _texto_equivalente(a, b):
     return limpiar_titulo(a).lower() == limpiar_titulo(b).lower()
 
 
+def _normalizar_para_comparar(texto):
+    return limpiar_titulo(texto).lower()
+
+
+def _recortar_evento_pegado_a_titulo(evento, titulo):
+    evento_normalizado = _normalizar_para_comparar(evento)
+    titulo_normalizado = _normalizar_para_comparar(titulo)
+
+    if titulo_normalizado and evento_normalizado.startswith(f"{titulo_normalizado} "):
+        return limpiar_titulo(titulo)
+
+    return evento
+
+
 def normalizar_resultado_ia(data, titulo):
     if not isinstance(data, dict):
         data = {}
@@ -258,6 +272,7 @@ def normalizar_resultado_ia(data, titulo):
     enfoque = str(data.get("enfoque") or "").strip()
 
     evento = limpiar_titulo(evento or titulo[:120])
+    evento = _recortar_evento_pegado_a_titulo(evento, titulo)
     resumen = limpiar_titulo(resumen or "")
     enfoque = limpiar_titulo(enfoque or "")
 
