@@ -16,7 +16,13 @@ def recortar_texto(texto, max_chars):
     texto = " ".join((texto or "").split())
     if len(texto) <= max_chars:
         return texto
-    return texto[:max_chars].rsplit(" ", 1)[0]
+
+    recorte = texto[:max_chars].rsplit(" ", 1)[0].strip()
+    ultimo_cierre = max(recorte.rfind("."), recorte.rfind("!"), recorte.rfind("?"))
+    if ultimo_cierre >= int(max_chars * 0.55):
+        return recorte[: ultimo_cierre + 1].strip()
+
+    return recorte
 
 
 def _api_key():

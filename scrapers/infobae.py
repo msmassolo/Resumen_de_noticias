@@ -1,16 +1,23 @@
 from bs4 import BeautifulSoup
-from scrapers.utils import es_reciente, limpiar_titulo, normalizar_url, obtener_html
+from scrapers.utils import es_reciente, normalizar_url, obtener_html, titulo_mas_completo
 
 
 def _extraer_titulo_link(link_tag):
+    atributos = titulo_mas_completo(link_tag.get("aria-label", ""), link_tag.get("title", ""))
+
     for selector in ("h1", "h2", "h3", "h4"):
         heading = link_tag.find(selector)
         if heading:
-            titulo = limpiar_titulo(heading.get_text(" ", strip=True))
+            titulo = titulo_mas_completo(
+                heading.get_text(" ", strip=True),
+                heading.get("aria-label", ""),
+                heading.get("title", ""),
+                atributos,
+            )
             if titulo:
                 return titulo
 
-    return limpiar_titulo(link_tag.get_text(" ", strip=True))
+    return titulo_mas_completo(link_tag.get_text(" ", strip=True), atributos)
 
 
 def get_infobae():

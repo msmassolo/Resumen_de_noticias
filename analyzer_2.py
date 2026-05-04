@@ -90,17 +90,17 @@ def unificar_bloques(texto):
         return None
 
     if len(items) == 1:
-        evento = recortar_texto(items[0]["evento"], 140)
+        evento = recortar_texto(items[0]["evento"], 180)
         resumen = _resumen_util(evento, items[0].get("resumen")) or (
             "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
         )
-        return _formatear(evento, recortar_texto(resumen, 260), links)
+        return _formatear(evento, recortar_texto(resumen, 420), links)
 
     eventos_txt = "\n".join(
         (
             f"- Medio: {recortar_texto(item.get('medio') or 'Fuente', 24)}. "
-            f"Evento: {recortar_texto(item['evento'], 90)}. "
-            f"Datos: {recortar_texto(_resumen_util(item['evento'], item.get('resumen')) or 'sin detalles adicionales verificables', 150)}. "
+            f"Evento: {recortar_texto(item['evento'], 120)}. "
+            f"Datos: {recortar_texto(_resumen_util(item['evento'], item.get('resumen')) or 'sin detalles adicionales verificables', 220)}. "
             f"Enfoque: {recortar_texto(item.get('enfoque') or 'sin enfoque editorial verificable', 130)}"
         )
         for item in items[:5]
@@ -112,7 +112,7 @@ def unificar_bloques(texto):
         "Si los medios presentan atribuciones, responsabilidades, criticas o causas distintas, expresalo comparando por medio. "
         "Ejemplo de estilo: La Nacion atribuye X a Y, mientras Clarin lo vincula con Z. "
         "Si no hay diferencias de enfoque verificables, no inventes contraste editorial. "
-        'Devuelve JSON minificado: {"titulo":"max 16 palabras","resumen":"1 frase, max 60 palabras"}\n'
+        'Devuelve JSON minificado: {"titulo":"max 18 palabras","resumen":"1 o 2 frases, max 75 palabras"}\n'
         f"{eventos_txt}"
     )
 
@@ -120,7 +120,7 @@ def unificar_bloques(texto):
     respuesta = pedir_groq(
         "Redactas sintesis breves sin inventar.",
         prompt,
-        max_tokens=135,
+        max_tokens=240,
         temperature=0,
         retries=2,
     )
@@ -140,14 +140,14 @@ def unificar_bloques(texto):
                 resumen = linea.replace("RESUMEN:", "", 1).strip()
 
     if not titulo:
-        titulo = recortar_texto(items[0]["evento"], 140)
+        titulo = recortar_texto(items[0]["evento"], 180)
     if not resumen or _normalizar(resumen) == _normalizar(titulo):
         resumenes = [
             _resumen_util(item["evento"], item.get("resumen"))
             for item in items
             if _resumen_util(item["evento"], item.get("resumen"))
         ]
-        resumen = recortar_texto(" ".join(resumenes[:2]), 260)
+        resumen = recortar_texto(" ".join(resumenes[:2]), 420)
     if not resumen:
         resumen = "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
 

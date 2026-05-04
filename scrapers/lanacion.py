@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from scrapers.utils import es_reciente, limpiar_titulo, normalizar_url, obtener_html
+from scrapers.utils import es_reciente, normalizar_url, obtener_html, titulo_mas_completo
 
 
 def get_lanacion():
@@ -26,7 +26,11 @@ def get_lanacion():
 
             for t in soup.find_all("a"):
 
-                titulo = limpiar_titulo(t.get_text(" ", strip=True))
+                titulo = titulo_mas_completo(
+                    t.get_text(" ", strip=True),
+                    t.get("aria-label", ""),
+                    t.get("title", ""),
+                )
                 link = t.get("href", "")
 
                 if not titulo or not link:

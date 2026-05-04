@@ -1,7 +1,7 @@
 import json
 
 from bs4 import BeautifulSoup
-from scrapers.utils import limpiar_titulo, normalizar_url, obtener_html
+from scrapers.utils import limpiar_titulo, normalizar_url, obtener_html, titulo_mas_completo
 
 
 def _iter_json_items(data):
@@ -88,7 +88,13 @@ def get_clarin():
                 if not link_tag:
                     continue
 
-                titulo = limpiar_titulo(t.get_text(" ", strip=True))
+                titulo = titulo_mas_completo(
+                    t.get_text(" ", strip=True),
+                    t.get("aria-label", ""),
+                    t.get("title", ""),
+                    link_tag.get("aria-label", ""),
+                    link_tag.get("title", ""),
+                )
                 link = link_tag.get("href", "")
 
                 if not titulo or not link:

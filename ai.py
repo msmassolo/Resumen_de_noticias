@@ -4,7 +4,7 @@ import re
 from groq_client import pedir_groq, recortar_texto
 
 
-MAX_CONTENIDO_CHARS = 1100
+MAX_CONTENIDO_CHARS = 2200
 
 
 def _normalizar(texto):
@@ -27,7 +27,7 @@ def _resumen_fallback(titulo, contenido):
             break
 
     if candidatas:
-        return recortar_texto(" ".join(candidatas), 260)
+        return recortar_texto(" ".join(candidatas), 420)
 
     return "El texto disponible no aporta detalles adicionales verificables sobre este hecho."
 
@@ -71,7 +71,7 @@ def procesar_noticia(titulo, contenido):
         "El resumen debe explicar actor, accion, contexto o consecuencia solo si aparecen en el texto. "
         "El enfoque debe indicar si el medio atribuye responsabilidad, culpa, causa, critica, defensa o contraste politico; si no aparece, dejalo vacio. "
         "No copies el titulo como resumen. Si no hay detalles adicionales verificables, dilo explicitamente. "
-        'Devuelve JSON minificado: {"evento":"max 14 palabras","resumen":"1 frase, max 34 palabras","enfoque":"max 24 palabras o vacio"}\n'
+        'Devuelve JSON minificado: {"evento":"max 18 palabras","resumen":"1 o 2 frases, max 65 palabras","enfoque":"max 24 palabras o vacio"}\n'
         f"TITULO: {titulo}\nTEXTO: {contenido}"
     )
 
@@ -79,7 +79,7 @@ def procesar_noticia(titulo, contenido):
     texto = pedir_groq(
         "Extraes hechos concretos de noticias.",
         prompt,
-        max_tokens=125,
+        max_tokens=220,
         temperature=0,
         retries=1,
     )

@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-MAX_CONTENIDO_CHARS = 1400
+MAX_CONTENIDO_CHARS = 2600
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -55,6 +55,27 @@ def limpiar_titulo(texto):
     texto = re.sub(r"\bPor([A-ZÁÉÍÓÚÑ])", r"Por \1", texto)
     texto = re.sub(r"([a-záéíóúñ])EN VIVO", r"\1 EN VIVO", texto)
     return texto.strip()
+
+
+def recortar_en_limite_natural(texto, max_chars):
+    texto = " ".join((texto or "").split())
+    if len(texto) <= max_chars:
+        return texto
+
+    recorte = texto[:max_chars].rsplit(" ", 1)[0].strip()
+    ultimo_cierre = max(recorte.rfind("."), recorte.rfind("!"), recorte.rfind("?"))
+    if ultimo_cierre >= int(max_chars * 0.55):
+        return recorte[: ultimo_cierre + 1].strip()
+
+    return recorte
+
+
+def titulo_mas_completo(*candidatos):
+    titulos = [limpiar_titulo(candidato) for candidato in candidatos if limpiar_titulo(candidato)]
+    if not titulos:
+        return ""
+
+    return max(titulos, key=lambda titulo: (len(titulo), titulo.count(" ")))
 
 
 def obtener_html(url, timeout=10):
@@ -131,7 +152,7 @@ def obtener_contenido_detalle(link):
         soup = BeautifulSoup(html, "html.parser")
         texto_json_ld = _texto_desde_json_ld(soup)
         if texto_json_ld:
-            return texto_json_ld[:MAX_CONTENIDO_CHARS], "json_ld"
+            return recortar_en_limite_natural(texto_json_ld, MAX_CONTENIDO_CHARS), "json_ld"
 
         textos = []
         vistos = set()
@@ -150,7 +171,7 @@ def obtener_contenido_detalle(link):
             print(f"Contenido insuficiente: {link}")
             return "", "contenido_insuficiente"
 
-        return texto[:MAX_CONTENIDO_CHARS], "parrafos"
+        return recortar_en_limite_natural(texto, MAX_CONTENIDO_CHARS), "parrafos"
 
     except Exception as e:
         print(f"Error parseando contenido: {e}")

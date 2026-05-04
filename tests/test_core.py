@@ -7,7 +7,7 @@ import analyzer_2
 from main_web import extraer_noticia_unificada, normalizar_categoria, normalizar_resultado_ia, parsear_grupos
 from scrapers.finanzas_argy import extraer_dolares, extraer_riesgo_pais, extraer_riesgo_pais_argentinadatos
 from scrapers.infobae import _extraer_titulo_link
-from scrapers.utils import limpiar_titulo, normalizar_url
+from scrapers.utils import limpiar_titulo, normalizar_url, recortar_en_limite_natural, titulo_mas_completo
 from web_generator import (
     clave_categoria,
     generar_html_datos_financieros,
@@ -94,6 +94,36 @@ class CoreHelpersTest(unittest.TestCase):
         self.assertEqual(
             _extraer_titulo_link(link),
             "Desde mañana las tarifas de colectivos aumentan 11,6 por ciento",
+        )
+
+    def test_infobae_usa_atributo_completo_si_heading_llega_cortado(self):
+        html = """
+        <a href="/economia/nota" aria-label="Punto por punto: como es el nuevo regimen para contratar trabajadores sin empleo formal que reduce fuerte las cargas patronales">
+            <h2>Punto por punto: como es el nuevo regimen para contratar trabajadores sin empleo formal que reduce fuerte las cargas pat</h2>
+        </a>
+        """
+        link = BeautifulSoup(html, "html.parser").find("a")
+
+        self.assertEqual(
+            _extraer_titulo_link(link),
+            "Punto por punto: como es el nuevo regimen para contratar trabajadores sin empleo formal que reduce fuerte las cargas patronales",
+        )
+
+    def test_recortar_en_limite_natural_prefiere_oracion_completa(self):
+        texto = (
+            "Primera oracion con datos verificables y suficiente detalle para ser util. "
+            "Segunda oracion que quedaria cortada en una preposicion de"
+        )
+
+        self.assertEqual(
+            recortar_en_limite_natural(texto, 95),
+            "Primera oracion con datos verificables y suficiente detalle para ser util.",
+        )
+
+    def test_titulo_mas_completo_prefiere_candidato_mas_largo(self):
+        self.assertEqual(
+            titulo_mas_completo("Inflacion por la Guerr", "Inflacion por la Guerra comercial"),
+            "Inflacion por la Guerra comercial",
         )
 
     def test_normalizar_resultado_ia_recorta_evento_con_bajada_pegada(self):

@@ -640,7 +640,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 line-height: 1.24;
                 letter-spacing: 0;
                 overflow-wrap: break-word;
-                hyphens: auto;
+                hyphens: none;
             }
 
             .card p {
@@ -648,6 +648,8 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 color: var(--text-secondary);
                 font-size: 12.5px;
                 line-height: 1.48;
+                overflow-wrap: break-word;
+                hyphens: none;
             }
 
             .sources {
