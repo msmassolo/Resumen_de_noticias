@@ -165,7 +165,7 @@ class CoreHelpersTest(unittest.TestCase):
             {
                 "nombre": "Riesgo País",
                 "valor": "539",
-                "detalle": "ArgentinaDatos 2026-05-01",
+                "detalle": "",
                 "actualizado": "2026-05-01",
             },
         )

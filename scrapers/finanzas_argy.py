@@ -159,12 +159,11 @@ def extraer_riesgo_pais_argentinadatos(payload):
             continue
 
         fecha = _limpiar_texto(item.get("fecha"))
-        detalle = f"ArgentinaDatos {fecha}" if fecha else "ArgentinaDatos"
 
         return {
             "nombre": "Riesgo País",
             "valor": _limpiar_texto(valor),
-            "detalle": detalle,
+            "detalle": "",
             "actualizado": fecha,
         }
 
