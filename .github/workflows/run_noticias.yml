@@ -5,8 +5,8 @@ permissions:
 
 on:
   schedule:
-    # 08:00, 10:00, 12:00, 15:00 y 18:00 de Argentina (UTC-3).
-    - cron: '0 11,13,15,18,21 * * *'
+    # 06:00, 08:00, 10:00, 12:00, 14:00, 16:00 y 18:00 de Argentina (UTC-3).
+    - cron: '0 9,11,13,15,17,19,21 * * *'
   workflow_dispatch:
 
 jobs:
