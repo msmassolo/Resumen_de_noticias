@@ -132,6 +132,27 @@ class CoreHelpersTest(unittest.TestCase):
 
         self.assertEqual([item["nombre"] for item in extraer_dolares(payload)], ["Dólar Blue", "Dólar Oficial", "Dólar MEP"])
         self.assertEqual(extraer_riesgo_pais(html)["valor"], "545")
+        self.assertEqual(extraer_riesgo_pais(html)["detalle"], "-3,88%")
+
+    def test_extraer_riesgo_pais_con_variacion_en_lineas_separadas(self):
+        html = """
+        <section>
+            <span>Riesgo País</span>
+            <strong>539,00</strong>
+            <span>-4.94</span>
+            <span>%</span>
+        </section>
+        """
+
+        self.assertEqual(
+            extraer_riesgo_pais(html),
+            {
+                "nombre": "Riesgo País",
+                "valor": "539,00",
+                "detalle": "-4.94%",
+                "actualizado": "",
+            },
+        )
 
     def test_generar_html_datos_financieros(self):
         html = generar_html_datos_financieros(

@@ -120,16 +120,21 @@ def extraer_riesgo_pais(html_text):
         if re.search(r"Riesgo\s+Pa(?:í|i)s", linea, re.IGNORECASE):
             bloque = " ".join(lineas[i:i + 8])
 
-            match = re.search(
-                r"(\d{3,5}(?:[.,]\d{2})?)\s*([+-]?\d+(?:[.,]\d+)?%)?",
+            valor_match = re.search(
+                r"(?<![\w])(\d{3,5}(?:[.,]\d{2})?)(?![\w])",
                 bloque
             )
 
-            if not match:
+            if not valor_match:
                 continue
 
-            valor = _limpiar_texto(match.group(1))
-            variacion = _limpiar_texto(match.group(2)) if match.group(2) else ""
+            variacion_match = re.search(
+                r"([+-]?\d+(?:[.,]\d+)?)\s*%",
+                bloque[valor_match.end():]
+            )
+
+            valor = _limpiar_texto(valor_match.group(1))
+            variacion = f"{_limpiar_texto(variacion_match.group(1))}%" if variacion_match else ""
 
             return {
                 "nombre": "Riesgo País",
