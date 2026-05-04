@@ -877,7 +877,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             <div class="header-inner">
                 <p class="eyebrow">Agente</p>
                 <h1>Resumen de Noticias</h1>
-                <p>Actualizado el __FECHA__ a las __HORA__ hs. > Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información. </p>
+                <p>Actualizado el __FECHA__ a las __HORA__ hs. Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información. </p>
             </div>
         </div>
 
