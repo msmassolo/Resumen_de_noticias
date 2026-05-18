@@ -11,6 +11,13 @@ $env:GROQ_API_KEY="tu_api_key"
 python main_web.py
 ```
 
+Para publicar desde local, agregar en `.env`:
+
+```env
+GITHUB_TOKEN=tu_token_de_github
+GITHUB_REPO_URL=https://github.com/msmassolo/Resumen_de_noticias.git
+```
+
 Por defecto solo genera `index.html` y archivos de depuración en `data/`.
 
 ## Verificación

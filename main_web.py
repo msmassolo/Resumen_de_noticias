@@ -14,6 +14,7 @@ import os
 import sys
 import time
 import subprocess
+import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from dotenv import load_dotenv
@@ -24,6 +25,7 @@ CACHE_IA_PATH = ".cache_ai.json"
 CACHE_IA_TTL_DIAS = int(os.getenv("CACHE_IA_TTL_DIAS", "3"))
 CACHE_IA_VERSION = "evento-resumen-enfoque-v3"
 ARTIFACTS_DIR = Path("data")
+GITHUB_REPO_URL = "https://github.com/msmassolo/Resumen_de_noticias.git"
 
 
 def configurar_salida_utf8():
@@ -130,17 +132,62 @@ def subir_index_github():
         print("\nGitHub Actions se encarga del commit/push final.\n")
         return
 
+    token = os.getenv("GITHUB_TOKEN")
+    if not token:
+        raise ValueError("GITHUB_TOKEN no esta definido en .env")
+
+    repo_url = os.getenv("GITHUB_REPO_URL", GITHUB_REPO_URL)
+    if not repo_url.startswith("https://github.com/"):
+        raise ValueError("GITHUB_REPO_URL debe ser una URL HTTPS de GitHub")
+
     print("\n🚀 Subiendo index.html a GitHub...\n")
+    askpass_path = None
 
     try:
+        with tempfile.NamedTemporaryFile("w", suffix=".cmd", delete=False, encoding="utf-8") as f:
+            askpass_path = f.name
+            f.write("@echo off\n")
+            f.write('echo %~1 | findstr /I "Username" >nul\n')
+            f.write("if not errorlevel 1 (\n")
+            f.write("  echo x-access-token\n")
+            f.write(") else (\n")
+            f.write('  powershell -NoProfile -Command "[Console]::Out.Write($env:GITHUB_TOKEN)"\n')
+            f.write(")\n")
+
+        env = os.environ.copy()
+        env["GITHUB_TOKEN"] = token
+        env["GIT_ASKPASS"] = askpass_path
+        env["GIT_TERMINAL_PROMPT"] = "0"
+
         subprocess.run(["git", "add", "index.html"], check=True)
         subprocess.run(["git", "commit", "-m", "update automatico"], check=False)
-        subprocess.run(["git", "push"], check=True)
+        subprocess.run(
+            [
+                "git",
+                "-c",
+                "credential.helper=",
+                "push",
+                repo_url,
+                "HEAD:main",
+            ],
+            check=True,
+            env=env,
+        )
 
         print("✅ Web actualizada en GitHub Pages")
 
+    except subprocess.CalledProcessError as e:
+        print(f"⚠️ Error subiendo a GitHub. Comando git fallo con codigo {e.returncode}.")
+
     except Exception as e:
         print("⚠️ Error subiendo a GitHub:", e)
+
+    finally:
+        if askpass_path:
+            try:
+                os.unlink(askpass_path)
+            except OSError:
+                pass
 
 
 def parsear_grupos(texto):
