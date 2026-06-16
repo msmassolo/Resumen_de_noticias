@@ -178,6 +178,9 @@ def obtener_riesgo_pais():
             response = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
             response.raise_for_status()
 
+            if not response.encoding or "charset" not in response.headers.get("Content-Type", "").lower():
+                response.encoding = response.apparent_encoding or response.encoding
+
             riesgo_pais = extraer_riesgo_pais(response.text)
 
             if riesgo_pais:

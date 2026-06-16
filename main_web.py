@@ -229,7 +229,7 @@ def parsear_grupos(texto):
         elif linea.startswith("-"):
             try:
                 idx = int(linea.replace("-", "").strip())
-                if idx not in usados:
+                if idx > 0 and idx not in usados:
                     grupo_actual.append(idx)
                     usados.add(idx)
             except:
@@ -377,8 +377,8 @@ def ejecutar_proyecto(publicar=False):
             cache_modificada = True
             time.sleep(1.2)
 
-        data = normalizar_resultado_ia(data, n["titulo"])
-
+        # data ya viene normalizada: del cache (se guardó normalizada) o recién
+        # procesada arriba.
         resultados.append({
             "diario": n["diario"],
             "titulo": n["titulo"],

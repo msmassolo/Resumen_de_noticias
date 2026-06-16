@@ -740,12 +740,10 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 display: none;
             }
 
-            body.compact .card,
             body.compact .card {
                 padding: 12px;
             }
 
-            body.compact .card h3,
             body.compact .card h3 {
                 font-size: 14px;
             }

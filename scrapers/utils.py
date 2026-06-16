@@ -86,6 +86,11 @@ def obtener_html(url, timeout=10):
             print(f"Pagina respondio {response.status_code}: {url}")
             return ""
 
+        # Evita mojibake cuando el servidor no declara charset (requests asume
+        # ISO-8859-1 por defecto para text/*).
+        if not response.encoding or "charset" not in response.headers.get("Content-Type", "").lower():
+            response.encoding = response.apparent_encoding or response.encoding
+
         return response.text
 
     except requests.exceptions.Timeout:
@@ -181,18 +186,26 @@ def obtener_contenido_detalle(link):
 def es_reciente(texto_html):
     texto = texto_html.lower()
 
-    match = re.search(r"hace (\d+) hora", texto)
-    if match:
-        horas = int(match.group(1))
-        return horas <= 36
+    # Señales explícitas de contenido viejo: descartar.
+    if re.search(r"hace \d+ (semana|mes|año|anio)", texto):
+        return False
+    if re.search(r"(semana|mes|año|anio) pasad[oa]", texto):
+        return False
 
     match = re.search(r"hace (\d+) minuto", texto)
     if match:
         return True
+
+    match = re.search(r"hace (\d+) hora", texto)
+    if match:
+        horas = int(match.group(1))
+        return horas <= 36
 
     match = re.search(r"hace (\d+) d[ií]a", texto)
     if match:
         dias = int(match.group(1))
         return dias <= 1
 
+    # Sin señal temporal en el markup del enlace: se incluye (default permisivo
+    # para no vaciar el feed; la recencia real la garantiza la sección del diario).
     return True
