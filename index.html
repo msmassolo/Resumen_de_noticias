@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@600;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
         <style>
             * {
@@ -29,7 +29,7 @@
                 --infobae: #D8B08C;
                 --clarin: #C99999;
                 --lanacion: #AEBFCF;
-                --font-title: "Fraunces";
+                --font-title: "Inter";
                 --font-body: "IBM Plex Sans";
                 --font-mono: "IBM Plex Mono";
                 --shadow-card: 0 1px 2px rgba(33, 29, 22, 0.04), 0 10px 24px rgba(33, 29, 22, 0.05);
@@ -37,33 +37,33 @@
 
             :root[data-theme="dark"] {
                 color-scheme: dark;
-                --background: #17140f;
-                --surface: #1e1a13;
-                --surface-soft: #262119;
-                --primary: #c9c0ac;
-                --secondary: #3a3327;
-                --accent: #7fb7a6;
-                --accent-soft: #24312c;
-                --text-primary: #f2ede1;
-                --text-secondary: #a89d88;
-                --border: #322c22;
-                --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px rgba(0, 0, 0, 0.28);
+                --background: #0b1220;
+                --surface: #131c2e;
+                --surface-soft: #1b2740;
+                --primary: #c7d2e8;
+                --secondary: #263351;
+                --accent: #5eb1e6;
+                --accent-soft: #1b3145;
+                --text-primary: #eef2fb;
+                --text-secondary: #9aa9c7;
+                --border: #26314d;
+                --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 26px rgba(0, 0, 0, 0.38);
             }
 
             @media (prefers-color-scheme: dark) {
                 :root:not([data-theme="light"]) {
                     color-scheme: dark;
-                    --background: #17140f;
-                    --surface: #1e1a13;
-                    --surface-soft: #262119;
-                    --primary: #c9c0ac;
-                    --secondary: #3a3327;
-                    --accent: #7fb7a6;
-                    --accent-soft: #24312c;
-                    --text-primary: #f2ede1;
-                    --text-secondary: #a89d88;
-                    --border: #322c22;
-                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px rgba(0, 0, 0, 0.28);
+                    --background: #0b1220;
+                    --surface: #131c2e;
+                    --surface-soft: #1b2740;
+                    --primary: #c7d2e8;
+                    --secondary: #263351;
+                    --accent: #5eb1e6;
+                    --accent-soft: #1b3145;
+                    --text-primary: #eef2fb;
+                    --text-secondary: #9aa9c7;
+                    --border: #26314d;
+                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 26px rgba(0, 0, 0, 0.38);
                 }
             }
 
@@ -116,9 +116,9 @@
                 max-width: 820px;
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-optical-sizing: auto;
-                font-size: clamp(30px, 4vw, 52px);
+                font-size: clamp(27px, 3.6vw, 47px);
                 font-weight: 600;
                 line-height: 1.06;
                 letter-spacing: -0.01em;
@@ -288,8 +288,8 @@
             .finance-heading h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
-                font-size: clamp(18px, 1.7vw, 23px);
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
+                font-size: clamp(16px, 1.5vw, 20px);
                 font-weight: 600;
                 line-height: 1.15;
             }
@@ -322,7 +322,7 @@
                 margin-top: 5px;
                 color: var(--text-primary);
                 font-family: var(--font-mono), monospace;
-                font-size: 19px;
+                font-size: 17.5px;
                 font-weight: 500;
                 line-height: 1.15;
             }
@@ -372,8 +372,8 @@
                 margin: 0;
                 text-align: left;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
-                font-size: clamp(20px, 2vw, 27px);
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
+                font-size: clamp(18px, 1.8vw, 24px);
                 font-weight: 600;
                 line-height: 1.15;
             }
@@ -414,8 +414,8 @@
             .card h3 {
                 margin: 0 0 8px;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
-                font-size: 17px;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
+                font-size: 16px;
                 font-weight: 600;
                 line-height: 1.28;
                 letter-spacing: -0.005em;
@@ -497,8 +497,8 @@
             .search-results-heading h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
-                font-size: clamp(20px, 2vw, 27px);
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
+                font-size: clamp(18px, 1.8vw, 24px);
                 font-weight: 600;
                 line-height: 1.15;
             }
@@ -527,7 +527,7 @@
             }
 
             body.compact .card h3 {
-                font-size: 14px;
+                font-size: 13px;
             }
 
             .infobae { background: rgba(216, 176, 140, 0.56); color: #2b1c0d; }
@@ -559,7 +559,7 @@
                 }
 
                 .header h1 {
-                    font-size: 30px;
+                    font-size: 27px;
                 }
 
                 .toolbar {
@@ -621,8 +621,8 @@
             .footer h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
-                font-size: 20px;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
+                font-size: 18px;
                 font-weight: 600;
                 line-height: 1.15;
             }
@@ -667,7 +667,7 @@
                 <div class="header-copy">
                     <p class="eyebrow">Agente · Edición diaria</p>
                     <h1>Resumen de Noticias</h1>
-                    <p>Actualizado el miércoles 15 de julio de 2026 a las 13:15 hs. Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información.</p>
+                    <p>Actualizado el miércoles 15 de julio de 2026 a las 13:56 hs. Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información.</p>
                 </div>
                 <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar entre modo claro y oscuro">
                     <span class="theme-toggle-label">Modo oscuro</span>
@@ -680,7 +680,7 @@
             <button class="compact-btn" type="button" aria-pressed="false">Modo compacto</button>
         </div>
 
-        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>31</span></button><button class="filtro-btn" data-cat="ECONOMIA" type="button">Economía <span>11</span></button><button class="filtro-btn" data-cat="POLITICA" type="button">Política <span>10</span></button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">Internacional <span>10</span></button></div>
+        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>31</span></button><button class="filtro-btn" data-cat="ECONOMIA" type="button">Economía <span>11</span></button><button class="filtro-btn" data-cat="POLITICA" type="button">Política <span>11</span></button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">Internacional <span>9</span></button></div>
 
         
         <section class="finance-section" aria-label="Datos financieros">
@@ -691,20 +691,20 @@
                 
                 <article class="finance-card">
                     <span>Dólar Blue</span>
-                    <strong>$ 1520</strong>
-                    <span>Compra $ 1500</span>
+                    <strong>$ 1530</strong>
+                    <span>Compra $ 1510</span>
                 </article>
         
                 <article class="finance-card">
                     <span>Dólar Oficial</span>
-                    <strong>$ 1494,56</strong>
-                    <span>Compra $ 1443,90</span>
+                    <strong>$ 1496,44</strong>
+                    <span>Compra $ 1445,77</span>
                 </article>
         
                 <article class="finance-card">
                     <span>Dólar MEP</span>
-                    <strong>$ 1515,91</strong>
-                    <span>Compra $ 1515,91</span>
+                    <strong>$ 1513,31</strong>
+                    <span>Compra $ 1513,31</span>
                 </article>
         
                 <article class="finance-card">
@@ -742,13 +742,17 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="El Gobierno abre una nueva licitación para buscar gas y petróleo frente a las costas de Mar del Plata El Gobierno nacional puso en marcha un nuevo proceso para buscar gas y petróleo en el Mar Argentino. A través de un decreto publicado este miércoles en el Boletín Oficial, la Secretaría de Energía convocará un concurso internacional para adjudicar un permiso de exploración en el área CAN_200, un bloque de 5. Infobae">
-                    <h3>El Gobierno abre una nueva licitación para buscar gas y petróleo frente a las costas de Mar del Plata</h3>
-                    <p>El Gobierno nacional puso en marcha un nuevo proceso para buscar gas y petróleo en el Mar Argentino. A través de un decreto publicado este miércoles en el Boletín Oficial, la Secretaría de Energía convocará un concurso internacional para adjudicar un permiso de exploración en el área CAN_200, un bloque de 5.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="Gobierno convoca licitación para buscar gas y petróleo en el Mar Argentino El Gobierno nacional lanzó un nuevo proceso para buscar gas y petróleo en el Mar Argentino, a través de un concurso convocado por la Secretaría de Energía. El proceso se inició con un decreto publicado en el Boletín Oficial y busca otorgar un permiso de exploración en busca de gas y petróleo en el Mar. Infobae Clarín">
+                    <h3>Gobierno convoca licitación para buscar gas y petróleo en el Mar Argentino</h3>
+                    <p>El Gobierno nacional lanzó un nuevo proceso para buscar gas y petróleo en el Mar Argentino, a través de un concurso convocado por la Secretaría de Energía. El proceso se inició con un decreto publicado en el Boletín Oficial y busca otorgar un permiso de exploración en busca de gas y petróleo en el Mar.</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/economia/2026/07/15/el-gobierno-abre-una-nueva-licitacion-para-buscar-gas-y-petroleo-frente-a-las-costas-de-mar-del-plata/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.clarin.com/energia-y-mineria/gobierno-llama-licitacion-buscar-petroleo-frente-costa-atlantica_0_Pku0GhNTe9.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
                         </a>
             
                     </div>
@@ -778,17 +782,37 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="Petróleo retoma la suba después de ataques de Estados Unidos en Irán Después de una tregua, Estados Unidos lanzó ataques contra Irán, golpeando instalaciones militares cerca del estrecho de Ormuz, lo que ha llevado a una suba en los precios del petróleo a nivel mundial. La Nación Clarín">
-                    <h3>Petróleo retoma la suba después de ataques de Estados Unidos en Irán</h3>
-                    <p>Después de una tregua, Estados Unidos lanzó ataques contra Irán, golpeando instalaciones militares cerca del estrecho de Ormuz, lo que ha llevado a una suba en los precios del petróleo a nivel mundial.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="Mercados. El riesgo país baja y se acerca a los 400 puntos El riesgo país abandona la tendencia alcista de las últimas dos ruedas y se acerca a los 400 puntos. Por su parte, las acciones argentinas registran subas tanto en el mercado local como en la Bolsa de Nueva York. La Nación">
+                    <h3>Mercados. El riesgo país baja y se acerca a los 400 puntos</h3>
+                    <p>El riesgo país abandona la tendencia alcista de las últimas dos ruedas y se acerca a los 400 puntos. Por su parte, las acciones argentinas registran subas tanto en el mercado local como en la Bolsa de Nueva York.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/economia/el-riesgo-pais-baja-y-se-acerca-a-los-400-puntos-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="ECONOMIA" data-search="Negociaciones avanzadas entre Delivery Hero y Uber Technologies para una eventual oferta de adquisición Delivery Hero confirma negociaciones avanzadas con Uber Technologies para una posible oferta de adquisición. La operación podría reconfigurar el mapa del delivery en América Latina. La Nación">
+                    <h3>Negociaciones avanzadas entre Delivery Hero y Uber Technologies para una eventual oferta de adquisición</h3>
+                    <p>Delivery Hero confirma negociaciones avanzadas con Uber Technologies para una posible oferta de adquisición. La operación podría reconfigurar el mapa del delivery en América Latina.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/economia/negocios/uber-avanza-en-la-compra-de-pedidosya-delivery-hero-confirmo-negociaciones-para-vender-la-empresa-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="ECONOMIA" data-search="Conflicto en Medio Oriente. El petróleo retoma la suba y aleja la baja de los combustibles Después de una tregua que había traído algo de alivio, Estados Unidos lanzó anoche una nueva ronda de ataques contra Irán y golpeó instalaciones militares cerca del estrecho de Ormuz, mientras Teherán aseguró haber cerrado nuevamente el paso. La Nación">
+                    <h3>Conflicto en Medio Oriente. El petróleo retoma la suba y aleja la baja de los combustibles</h3>
+                    <p>Después de una tregua que había traído algo de alivio, Estados Unidos lanzó anoche una nueva ronda de ataques contra Irán y golpeó instalaciones militares cerca del estrecho de Ormuz, mientras Teherán aseguró haber cerrado nuevamente el paso.</p>
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/economia/el-petroleo-retoma-la-suba-y-aleja-la-baja-de-los-combustibles-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
-                        </a>
-            
-                        <a href="https://www.clarin.com/economia/escasez-petroleo-fmi-advirtio-continuidad-guerra-medio-oriente-agotando-reservas-mundiales_0_uAdDTSkzot.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
                         </a>
             
                     </div>
@@ -806,25 +830,25 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="&quot;Mejor que un departamento&quot;. Cómo es el nuevo bono del Gobierno que paga renta mensual en dólares Con el objetivo de captar parte de los dólares que quedaron liberados tras el pago de los bonos soberanos de la semana pasada, este miércoles el Gobierno sale al mercado con la primera licitación del Bonar 2029 (AO29). Se trata de un título pensado para los inversores más conservadores, ya que permite generar un flujo mensual de ingresos en dólares. La Nación">
-                    <h3>&quot;Mejor que un departamento&quot;. Cómo es el nuevo bono del Gobierno que paga renta mensual en dólares</h3>
-                    <p>Con el objetivo de captar parte de los dólares que quedaron liberados tras el pago de los bonos soberanos de la semana pasada, este miércoles el Gobierno sale al mercado con la primera licitación del Bonar 2029 (AO29). Se trata de un título pensado para los inversores más conservadores, ya que permite generar un flujo mensual de ingresos en dólares.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="Luego del dato de inflación, los bonos en dólares anotan una nueva suba y el riesgo país se acerca a los 400 puntos Los activos argentinos capitalizan las buenas noticias que cosechó el Gobierno esta semana y acciones y bonos suben este miércoles. El indicador de JP Morgan se mantiene en zona de mínimos de 2018 y en el mercado hay expectativa por el momento en que quiebre el piso de las 400 unidades. En el frente cambiario el dólar opera sin cambios respecto a su cierre del martes en el mercado minorista: a $1. Clarín">
+                    <h3>Luego del dato de inflación, los bonos en dólares anotan una nueva suba y el riesgo país se acerca a los 400 puntos</h3>
+                    <p>Los activos argentinos capitalizan las buenas noticias que cosechó el Gobierno esta semana y acciones y bonos suben este miércoles. El indicador de JP Morgan se mantiene en zona de mínimos de 2018 y en el mercado hay expectativa por el momento en que quiebre el piso de las 400 unidades. En el frente cambiario el dólar opera sin cambios respecto a su cierre del martes en el mercado minorista: a $1.</p>
                     <div class="sources">
         
-                        <a href="https://www.lanacion.com.ar/economia/dolar/como-es-el-bonar-2029-el-nuevo-bono-del-gobierno-que-paga-renta-mensual-en-dolares-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
+                        <a href="https://www.clarin.com/economia/luego-dato-inflacion-bonos-dolares-anotan-nueva-suba-riesgo-pais-acerca-400-puntos_0_3o7iztSe04.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
                         </a>
             
                     </div>
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="Tras la reunión con Milei. El director global de una farmacéutica respaldó los cambios en patentes y dijo que la Argenti El ejecutivo alemán vivió en la Argentina durante cinco años, en los primeros tramos de su carrera dentro de Bayer, y aunque hoy integra el Consejo de Administración global de la compañía y dirige desde Berlín su división farmacéutica, todavía reconoce la ciudad. La Nación">
-                    <h3>Tras la reunión con Milei. El director global de una farmacéutica respaldó los cambios en patentes y dijo que la Argenti</h3>
-                    <p>El ejecutivo alemán vivió en la Argentina durante cinco años, en los primeros tramos de su carrera dentro de Bayer, y aunque hoy integra el Consejo de Administración global de la compañía y dirige desde Berlín su división farmacéutica, todavía reconoce la ciudad.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="¿Escasez de petróleo?: el FMI advirtió que la continuidad de la guerra en Medio Oriente está agotando las reservas mundi La nueva disparada en los precios del petróleo a nivel mundial por la reanudación de la guerra en Medio Oriente podría no ser el mayor dolor de cabeza para la economía global de los hidrocarburos. Esto como consecuencia de un informe del Fondo Monetario Internacional (FMI) en el que se advierte sobre el agotamiento de las reservas como consecuencia del conflicto bélico. Clarín">
+                    <h3>¿Escasez de petróleo?: el FMI advirtió que la continuidad de la guerra en Medio Oriente está agotando las reservas mundi</h3>
+                    <p>La nueva disparada en los precios del petróleo a nivel mundial por la reanudación de la guerra en Medio Oriente podría no ser el mayor dolor de cabeza para la economía global de los hidrocarburos. Esto como consecuencia de un informe del Fondo Monetario Internacional (FMI) en el que se advierte sobre el agotamiento de las reservas como consecuencia del conflicto bélico.</p>
                     <div class="sources">
         
-                        <a href="https://www.lanacion.com.ar/economia/negocios/stefan-oelrich-el-pais-tendra-una-gran-oportunidad-para-atraer-mas-inversiones-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
+                        <a href="https://www.clarin.com/economia/escasez-petroleo-fmi-advirtio-continuidad-guerra-medio-oriente-agotando-reservas-mundiales_0_uAdDTSkzot.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
                         </a>
             
                     </div>
@@ -841,35 +865,11 @@
             
                     </div>
                 </article>
-        
-                <article class="card" data-categoria="ECONOMIA" data-search="El Gobierno llama a licitación para buscar petróleo frente a la Costa Atlántica El Gobierno de Javier Milei instruyó a la Secretaría de Energía y al Ministerio de Economía para que convoquen a una licitación internacional para otorgar un permiso de exploración en busca de gas y petróleo en el Mar Argentino costas afuera de la provincia de Buenos Aires. Clarín">
-                    <h3>El Gobierno llama a licitación para buscar petróleo frente a la Costa Atlántica</h3>
-                    <p>El Gobierno de Javier Milei instruyó a la Secretaría de Energía y al Ministerio de Economía para que convoquen a una licitación internacional para otorgar un permiso de exploración en busca de gas y petróleo en el Mar Argentino costas afuera de la provincia de Buenos Aires.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/energia-y-mineria/gobierno-llama-licitacion-buscar-petroleo-frente-costa-atlantica_0_Pku0GhNTe9.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="ECONOMIA" data-search="Pese a perder área, la soja aportará US$ 28726 a la economía argentina por impuestos y exportaciones El cultivo que más dólares aporta a las arcas nacionales finalizó el ciclo 2025/26 con indicadores dispares. Aunque los productores destinaron menos lotes a la oleaginosa las buenas condiciones agroclimáticas permitieron obtener buenos rendimientos y alcanzar una producción de 501 millones de toneladas que dejarán US$ 19106 millones de producto bruto sojero al país y US$ 28726 entre exportaciones del complejo y Clarín">
-                    <h3>Pese a perder área, la soja aportará US$ 28726 a la economía argentina por impuestos y exportaciones</h3>
-                    <p>El cultivo que más dólares aporta a las arcas nacionales finalizó el ciclo 2025/26 con indicadores dispares. Aunque los productores destinaron menos lotes a la oleaginosa las buenas condiciones agroclimáticas permitieron obtener buenos rendimientos y alcanzar una producción de 501 millones de toneladas que dejarán US$ 19106 millones de producto bruto sojero al país y US$ 28726 entre exportaciones del complejo y</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/rural/pese-perder-area-sembrada-soja-aportara-us-28726-economia-argentina-impuestos-exportaciones_0_VSjHPJbhk1.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
         </div></section>
             <section class="categoria-section" data-categoria="POLITICA">
                 <div class="section-heading">
                     <h2>Política</h2>
-                    <span>10 noticias</span>
+                    <span>11 noticias</span>
                 </div>
                 <div class="news-grid">
             
@@ -937,29 +937,13 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="POLITICA" data-search="Cornejo se despegó de su vice y cuestionó sus dichos sobre la Selección francesa de fútbol El gobernador de Mendoza, Alfredo Cornejo, envió una carta a la embajada de Francia cuestionando los comentarios de su vice, Hebe Casado, sobre la Selección francesa de fútbol. Esto sucede mientras el Gobierno de Javier Milei busca reactivar la agenda legislativa después de celebrar un nuevo descenso en la inflación. La Nación Clarín">
-                    <h3>Cornejo se despegó de su vice y cuestionó sus dichos sobre la Selección francesa de fútbol</h3>
-                    <p>El gobernador de Mendoza, Alfredo Cornejo, envió una carta a la embajada de Francia cuestionando los comentarios de su vice, Hebe Casado, sobre la Selección francesa de fútbol. Esto sucede mientras el Gobierno de Javier Milei busca reactivar la agenda legislativa después de celebrar un nuevo descenso en la inflación.</p>
+                <article class="card" data-categoria="POLITICA" data-search="Denunciaron al juez federal de Formosa que viajó al mundial porque lo hizo sin autorización para salir del país El juez federal de Formosa Pablo Morán fue denunciado por haber viajado al mundial de fútbol para ver a la selección argentina sin autorización para salir del país y con la sospecha que desde el exterior hizo una audiencia judicial algo que está expresamente prohibido por el reglamento de la justicia nacional. Clarín">
+                    <h3>Denunciaron al juez federal de Formosa que viajó al mundial porque lo hizo sin autorización para salir del país</h3>
+                    <p>El juez federal de Formosa Pablo Morán fue denunciado por haber viajado al mundial de fútbol para ver a la selección argentina sin autorización para salir del país y con la sospecha que desde el exterior hizo una audiencia judicial algo que está expresamente prohibido por el reglamento de la justicia nacional.</p>
                     <div class="sources">
         
-                        <a href="https://www.lanacion.com.ar/politica/javier-milei-y-sus-medidas-en-vivo-tensiones-en-el-gobierno-y-repercusiones-por-el-partido-de-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                        <a href="https://www.clarin.com/politica/javier-milei-medidas-vivo-celebrar-dato-inflacion-gobierno-busca-reactivar-agenda-legislativa-sesion-senado_0_LPW9ZfUxcx.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                        <a href="https://www.clarin.com/politica/denunciaron-juez-federal-formosa-viajo-mundial-hizo-autorizacion-salir-pais_0_WG9lWJ63vl.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
                             Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA" data-search="Quiénes la rechazan. La eliminación de las PASO se impone en las encuestas, pero no escapa a la grieta En medio de las negociaciones del Gobierno para avanzar con la reforma electoral que impulsa en el Congreso, la opinión pública muestra un fuerte respaldo a la eliminación de las Primarias Abiertas Simultáneas y Obligatorias (PASO), elemento central del proyecto. La Nación">
-                    <h3>Quiénes la rechazan. La eliminación de las PASO se impone en las encuestas, pero no escapa a la grieta</h3>
-                    <p>En medio de las negociaciones del Gobierno para avanzar con la reforma electoral que impulsa en el Congreso, la opinión pública muestra un fuerte respaldo a la eliminación de las Primarias Abiertas Simultáneas y Obligatorias (PASO), elemento central del proyecto.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/politica/la-eliminacion-de-las-paso-se-impone-en-las-encuestas-pero-no-escapa-a-la-grieta-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
                         </a>
             
                     </div>
@@ -1000,20 +984,48 @@
             
                     </div>
                 </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Minuto a minuto. Javier Milei y sus medidas: tensiones en el Gobierno y repercusiones por el partido de Argentina vs. In MENDOZA.- A través de una carta enviada a la embajada de Francia, el gobernador de Mendoza, Alfredo Cornejo, se despegó de su vice, Hebe Casado, y cuestionó sus polémicos dichos sobre la Selección gala de fútbol, a la que había calificado de “equipo africano”. En este sentido, el mandatario aseguró en su escrito que la provincia “rechaza plenamente toda manifestación de carácter discriminatorio”. La Nación">
+                    <h3>Minuto a minuto. Javier Milei y sus medidas: tensiones en el Gobierno y repercusiones por el partido de Argentina vs. In</h3>
+                    <p>MENDOZA.- A través de una carta enviada a la embajada de Francia, el gobernador de Mendoza, Alfredo Cornejo, se despegó de su vice, Hebe Casado, y cuestionó sus polémicos dichos sobre la Selección gala de fútbol, a la que había calificado de “equipo africano”. En este sentido, el mandatario aseguró en su escrito que la provincia “rechaza plenamente toda manifestación de carácter discriminatorio”.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/politica/javier-milei-y-sus-medidas-en-vivo-tensiones-en-el-gobierno-y-repercusiones-por-el-partido-de-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Quiénes la rechazan. La eliminación de las PASO se impone en las encuestas, pero no escapa a la grieta En medio de las negociaciones del Gobierno para avanzar con la reforma electoral que impulsa en el Congreso, la opinión pública muestra un fuerte respaldo a la eliminación de las Primarias Abiertas Simultáneas y Obligatorias (PASO), elemento central del proyecto. La Nación">
+                    <h3>Quiénes la rechazan. La eliminación de las PASO se impone en las encuestas, pero no escapa a la grieta</h3>
+                    <p>En medio de las negociaciones del Gobierno para avanzar con la reforma electoral que impulsa en el Congreso, la opinión pública muestra un fuerte respaldo a la eliminación de las Primarias Abiertas Simultáneas y Obligatorias (PASO), elemento central del proyecto.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/politica/la-eliminacion-de-las-paso-se-impone-en-las-encuestas-pero-no-escapa-a-la-grieta-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
         </div></section>
             <section class="categoria-section" data-categoria="INTERNACIONAL">
                 <div class="section-heading">
                     <h2>Internacional</h2>
-                    <span>10 noticias</span>
+                    <span>9 noticias</span>
                 </div>
                 <div class="news-grid">
             
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Irán vuelve a atacar objetivos militares de EEUU en Kuwait y Baréin, pero casi todos sus misiles son interceptados El régimen iraní lanzó nuevos ataques contra bases militares de Estados Unidos en Jordania, Bahréin y Kuwait, pero la mayoría de los misiles fueron interceptados. Esto marca una nueva escalada en la tensión entre Washington y Teherán, apenas un mes después del memorando de entendimiento. Infobae Infobae">
-                    <h3>Irán vuelve a atacar objetivos militares de EEUU en Kuwait y Baréin, pero casi todos sus misiles son interceptados</h3>
-                    <p>El régimen iraní lanzó nuevos ataques contra bases militares de Estados Unidos en Jordania, Bahréin y Kuwait, pero la mayoría de los misiles fueron interceptados. Esto marca una nueva escalada en la tensión entre Washington y Teherán, apenas un mes después del memorando de entendimiento.</p>
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Ucrania atacó a 19 petroleros rusos en el mar de Azov y elevó a 136 los buques alcanzados en la zona Ucrania atacó 19 petroleros rusos durante la noche en el mar de Azov y elevó a 136 buques el total de embarcaciones alcanzadas en diez días, en una ofensiva dirigida contra la flota que sostiene el abastecimiento de Crimea. La nueva oleada coincidió con el Día de la Estatalidad de Ucrania, una fecha con la que Kiev reivindicó más de 1. Infobae Infobae Infobae">
+                    <h3>Ucrania atacó a 19 petroleros rusos en el mar de Azov y elevó a 136 los buques alcanzados en la zona</h3>
+                    <p>Ucrania atacó 19 petroleros rusos durante la noche en el mar de Azov y elevó a 136 buques el total de embarcaciones alcanzadas en diez días, en una ofensiva dirigida contra la flota que sostiene el abastecimiento de Crimea. La nueva oleada coincidió con el Día de la Estatalidad de Ucrania, una fecha con la que Kiev reivindicó más de 1.</p>
                     <div class="sources">
         
-                        <a href="https://www.infobae.com/america/mundo/2026/07/15/iran-volvio-a-atacar-objetivos-militares-de-estados-unidos-en-kuwait-y-barein-pero-casi-todos-sus-misiles-fueron-interceptados/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                        <a href="https://www.infobae.com/america/mundo/2026/07/15/ucrania-ataco-a-19-petroleros-rusos-en-el-mar-de-azov-y-elevo-a-136-los-buques-alcanzados-en-la-zona/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                        <a href="https://www.infobae.com/america/mundo/2026/07/15/el-regimen-de-iran-elevo-a-12-anos-la-condena-a-del-britanico-craig-foreman-acusado-de-espionaje/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Leer en Infobae
                         </a>
             
@@ -1024,16 +1036,40 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Periodista chileno defiende a Argentina en Mundial 2026 Un periodista chileno expresó su apoyo al equipo argentino en medio de críticas internacionales, mientras el primer ministro británico saliente prometió apoyo a su sucesor en el Parlamento. La Nación La Nación">
-                    <h3>Periodista chileno defiende a Argentina en Mundial 2026</h3>
-                    <p>Un periodista chileno expresó su apoyo al equipo argentino en medio de críticas internacionales, mientras el primer ministro británico saliente prometió apoyo a su sucesor en el Parlamento.</p>
+                <article class="card" data-categoria="INTERNACIONAL" data-search="La NASA presenta detalles de Artemis III, la misión más compleja en años La NASA presentó oficialmente los detalles de Artemis III, una misión que promete convertirse en una de las operaciones espaciales más complejas de las últimas décadas. El astronauta italiano Luca Parmitano, piloto de la misión, expresó su expectativa de encontrar algo italiano en el menú durante la misión prevista para 2027. La Nación La Nación">
+                    <h3>La NASA presenta detalles de Artemis III, la misión más compleja en años</h3>
+                    <p>La NASA presentó oficialmente los detalles de Artemis III, una misión que promete convertirse en una de las operaciones espaciales más complejas de las últimas décadas. El astronauta italiano Luca Parmitano, piloto de la misión, expresó su expectativa de encontrar algo italiano en el menú durante la misión prevista para 2027.</p>
                     <div class="sources">
         
-                        <a href="https://www.lanacion.com.ar/el-mundo/un-periodista-chileno-defendio-a-la-argentina-en-la-previa-del-partido-contra-inglaterra-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                        <a href="https://www.lanacion.com.ar/el-mundo/luca-parmitano-piloto-de-la-mision-artemis-iii-al-ser-presentado-espero-tener-algo-italiano-en-el-nid13072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
-                        <a href="https://www.lanacion.com.ar/el-mundo/promesas-dardos-y-una-broma-sobre-inglaterra-argentina-asi-fue-la-ultima-sesion-de-starmer-en-el-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                        <a href="https://www.lanacion.com.ar/el-mundo/tres-cohetes-y-cuatro-astronautas-como-sera-artemis-iii-la-mision-mas-compleja-de-la-nasa-en-anos-nid14072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="“No es una producción de Hollywood, es real”. Un analista internacional detalló la nueva estrategia de EE.UU. para enfre Estados Unidos intensificó su ofensiva contra Irán mediante el despliegue de drones marinos y botes a control remoto, una nueva táctica militar, que ya tuvo pruebas en el conflicto de Ucrania, busca optimizar recursos ante una preocupante reducción en el inventario de misiles del Pentágono. La Nación">
+                    <h3>“No es una producción de Hollywood, es real”. Un analista internacional detalló la nueva estrategia de EE.UU. para enfre</h3>
+                    <p>Estados Unidos intensificó su ofensiva contra Irán mediante el despliegue de drones marinos y botes a control remoto, una nueva táctica militar, que ya tuvo pruebas en el conflicto de Ucrania, busca optimizar recursos ante una preocupante reducción en el inventario de misiles del Pentágono.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/el-mundo/un-analista-internacional-detallo-la-nueva-estrategia-de-eeuu-para-enfrentar-a-iran-nid14072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="&quot;Quiero que ganen&quot;. Un periodista chileno defendió a la Argentina en la previa del partido contra Inglaterra En medio de un contexto de duras críticas de los medios internacionales hacia la Argentina en el Mundial 2026, un periodista chileno reafirmó su apoyo al equipo que este miércoles se enfrentará a Inglaterra por un lugar en la final del domingo, aseguró que quiere que la selección se consagre campeona del mundo y habló de “argentinofobia”. La Nación">
+                    <h3>&quot;Quiero que ganen&quot;. Un periodista chileno defendió a la Argentina en la previa del partido contra Inglaterra</h3>
+                    <p>En medio de un contexto de duras críticas de los medios internacionales hacia la Argentina en el Mundial 2026, un periodista chileno reafirmó su apoyo al equipo que este miércoles se enfrentará a Inglaterra por un lugar en la final del domingo, aseguró que quiere que la selección se consagre campeona del mundo y habló de “argentinofobia”.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/el-mundo/un-periodista-chileno-defendio-a-la-argentina-en-la-previa-del-partido-contra-inglaterra-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
@@ -1052,25 +1088,13 @@
                     </div>
                 </article>
         
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Tenía 30 años. Murió la colombiana que solicitó la eutanasia por trastornos de la salud mental Catalina Giraldo murió el pasado 9 de julio mediante eutanasia en Colombia luego de una prolongada batalla judicial y médica para acceder al suicidio asistido. La psicóloga, de 30 años, padecía desde hacía años trastornos psiquiátricos graves y sostenía que su sufrimiento era incompatible con una vida digna. La Nación">
-                    <h3>Tenía 30 años. Murió la colombiana que solicitó la eutanasia por trastornos de la salud mental</h3>
-                    <p>Catalina Giraldo murió el pasado 9 de julio mediante eutanasia en Colombia luego de una prolongada batalla judicial y médica para acceder al suicidio asistido. La psicóloga, de 30 años, padecía desde hacía años trastornos psiquiátricos graves y sostenía que su sufrimiento era incompatible con una vida digna.</p>
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince. Clarín">
+                    <h3>Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata</h3>
+                    <p>Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince.</p>
                     <div class="sources">
         
-                        <a href="https://www.lanacion.com.ar/el-mundo/murio-catalina-giraldo-la-colombiana-de-30-anos-que-solicito-la-eutanasia-por-trastornos-de-la-salud-nid14072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Nueva tripulación de la NASA. Luca Parmitano, piloto de la misión Artemis III al ser presentado: &quot;Espero tener algo ital El astronauta italiano Luca Parmitano aseguró que espera encontrar “algo italiano en el menú” durante la misión Artemis III, el vuelo de prueba de la NASA previsto para 2027. Durante su presentación oficial como piloto de la expedición, el integrante de la Agencia Espacial Europea (ESA) combinó el humor con la emoción al referirse al desafío que tendrá por delante junto al resto de la tripulación. La Nación">
-                    <h3>Nueva tripulación de la NASA. Luca Parmitano, piloto de la misión Artemis III al ser presentado: &quot;Espero tener algo ital</h3>
-                    <p>El astronauta italiano Luca Parmitano aseguró que espera encontrar “algo italiano en el menú” durante la misión Artemis III, el vuelo de prueba de la NASA previsto para 2027. Durante su presentación oficial como piloto de la expedición, el integrante de la Agencia Espacial Europea (ESA) combinó el humor con la emoción al referirse al desafío que tendrá por delante junto al resto de la tripulación.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/el-mundo/luca-parmitano-piloto-de-la-mision-artemis-iii-al-ser-presentado-espero-tener-algo-italiano-en-el-nid13072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
+                        <a href="https://www.clarin.com/mundo/oleada-calor-italia-45-grados-sicilia-cerdena-alerta-roja-15-ciudades-riesgo-muertes-deshidratacion_0_MvjTep7FzU.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
                         </a>
             
                     </div>
@@ -1082,30 +1106,6 @@
                     <div class="sources">
         
                         <a href="https://www.clarin.com/mundo/salvador-pedido-miles-anos-carcel-termina-juicio-masivo-jefes-pandilla-mara-salvatrucha_0_fXAIY0brp9.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Mal trimestre para la economía china: creció al ritmo más lento en tres años El PIB de China creció 4,3% interanual en el segundo trimestre de 2026, por debajo del 5% del trimestre previo y de la previsión de los expertos, que lo situaban en torno al 4,5%. La Oficina Nacional de Estadística de China informó además de un avance del 0,9% frente al trimestre anterior, la tasa interanual más baja desde finales de 2022. Infobae">
-                    <h3>Mal trimestre para la economía china: creció al ritmo más lento en tres años</h3>
-                    <p>El PIB de China creció 4,3% interanual en el segundo trimestre de 2026, por debajo del 5% del trimestre previo y de la previsión de los expertos, que lo situaban en torno al 4,5%. La Oficina Nacional de Estadística de China informó además de un avance del 0,9% frente al trimestre anterior, la tasa interanual más baja desde finales de 2022.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.infobae.com/america/mundo/2026/07/15/trimestre-debil-para-la-economia-china-crecio-al-ritmo-mas-lento-en-tres-anos-y-beijing-se-queja-de-un-entorno-inestable-e-incierto/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Leer en Infobae
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince. Clarín">
-                    <h3>Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata</h3>
-                    <p>Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/mundo/oleada-calor-italia-45-grados-sicilia-cerdena-alerta-roja-15-ciudades-riesgo-muertes-deshidratacion_0_MvjTep7FzU.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
                             Leer en Clarín
                         </a>
             
