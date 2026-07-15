@@ -123,7 +123,7 @@ def unificar_bloques(texto):
     respuesta = pedir_groq(
         "Redactas sintesis breves sin inventar.",
         prompt,
-        max_tokens=240,
+        max_tokens=420,
         temperature=0,
         retries=2,
     )
@@ -141,6 +141,11 @@ def unificar_bloques(texto):
                 titulo = linea.replace("TITULO:", "", 1).strip()
             elif linea.startswith("RESUMEN:"):
                 resumen = linea.replace("RESUMEN:", "", 1).strip()
+
+    # Respuesta de Groq puede llegar cortada a mitad de palabra si se
+    # agota max_tokens; recortar_texto respeta el ultimo espacio/oracion.
+    titulo = recortar_texto(titulo, 180)
+    resumen = recortar_texto(resumen, 420)
 
     if not titulo:
         titulo = recortar_texto(items[0]["evento"], 180)

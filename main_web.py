@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 CACHE_IA_PATH = ".cache_ai.json"
 CACHE_IA_TTL_DIAS = int(os.getenv("CACHE_IA_TTL_DIAS", "3"))
-CACHE_IA_VERSION = "evento-resumen-enfoque-v3"
+CACHE_IA_VERSION = "evento-resumen-enfoque-contenido-v4"
 ARTIFACTS_DIR = Path("data")
 GITHUB_REPO_URL = "https://github.com/msmassolo/Resumen_de_noticias.git"
 
@@ -380,6 +380,7 @@ def ejecutar_proyecto(publicar=False):
 
             data = procesar_noticia(n["titulo"], contenido)
             data = normalizar_resultado_ia(data, n["titulo"])
+            data["contenido_completo"] = contenido
             escribir_cache_ia(cache_ia, cache_key, data)
             cache_modificada = True
             time.sleep(1.2)
@@ -392,6 +393,7 @@ def ejecutar_proyecto(publicar=False):
             "evento": data["evento"],
             "resumen": data["resumen"],
             "enfoque": data.get("enfoque", ""),
+            "contenido_completo": data.get("contenido_completo", ""),
             "link": n["link"],
             "categoria": n.get("categoria", "general")
         })
@@ -508,7 +510,8 @@ LINKS:
 
     logger.info("--- GENERANDO WEB ---")
 
-    generar_web(noticias_web, datos_financieros=datos_financieros)
+    contenidos_completos = {r["link"]: r.get("contenido_completo", "") for r in resultados}
+    generar_web(noticias_web, datos_financieros=datos_financieros, contenidos_completos=contenidos_completos)
 
     logger.info("🌐 Web generada: index.html")
 

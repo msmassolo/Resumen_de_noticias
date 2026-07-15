@@ -169,7 +169,25 @@ def clave_categoria(categoria):
     return orden.get(categoria, len(orden)), categoria
 
 
-def generar_html_noticias(noticias):
+def generar_html_cuerpo_completo(link, nombre, texto_completo):
+    parrafos = "".join(
+        f"<p>{escape(parrafo)}</p>"
+        for parrafo in texto_completo.splitlines()
+        if parrafo.strip()
+    )
+
+    return f"""
+                    <details class="full-text">
+                        <summary>Leer nota completa ({escape(nombre)})</summary>
+                        <div class="full-text-body">
+                            {parrafos}
+                        </div>
+                    </details>
+    """
+
+
+def generar_html_noticias(noticias, contenidos_completos=None):
+    contenidos_completos = contenidos_completos or {}
     html_noticias = ""
     categoria_actual = None
 
@@ -217,6 +235,16 @@ def generar_html_noticias(noticias):
 
         html_noticias += """
                     </div>
+        """
+
+        for link in noticia["links"]:
+            texto_completo = (contenidos_completos.get(link) or "").strip()
+            if not texto_completo:
+                continue
+            nombre, _ = obtener_diario_y_clase(link)
+            html_noticias += generar_html_cuerpo_completo(link, nombre, texto_completo)
+
+        html_noticias += """
                 </article>
         """
 
@@ -303,7 +331,7 @@ def generar_html_datos_financieros(datos):
     """
 
 
-def generar_web(contenido, output_path="index.html", datos_financieros=None):
+def generar_web(contenido, output_path="index.html", datos_financieros=None, contenidos_completos=None):
     fecha_actual = datetime.now(ZoneInfo("America/Argentina/Buenos_Aires"))
     fecha_formateada = formatear_fecha_es(fecha_actual)
     hora_formateada = fecha_actual.strftime("%H:%M")
@@ -317,7 +345,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
     categorias = {noticia["categoria"] for noticia in noticias}
     conteos = {categoria: sum(1 for noticia in noticias if noticia["categoria"] == categoria) for categoria in categorias}
 
-    html_noticias = generar_html_noticias(noticias)
+    html_noticias = generar_html_noticias(noticias, contenidos_completos)
     filtros_html = generar_filtros(categorias, conteos)
     datos_financieros_html = generar_html_datos_financieros(datos_financieros)
 
@@ -330,7 +358,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@600;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
         <style>
             * {
@@ -354,7 +382,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 --lanacion: #AEBFCF;
                 --font-title: "Inter";
                 --font-body: "IBM Plex Sans";
-                --font-mono: "IBM Plex Mono";
+                --font-mono: "Inter";
                 --shadow-card: 0 1px 2px rgba(33, 29, 22, 0.04), 0 10px 24px rgba(33, 29, 22, 0.05);
             }
 
@@ -428,7 +456,8 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             .eyebrow {
                 margin: 0 0 8px;
                 color: var(--accent);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10.5px;
                 font-weight: 500;
                 letter-spacing: 0.16em;
@@ -468,7 +497,8 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 color: var(--text-secondary);
                 background: var(--surface);
                 cursor: pointer;
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10.5px;
                 font-weight: 500;
                 letter-spacing: 0.08em;
@@ -644,7 +674,8 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 display: block;
                 margin-top: 5px;
                 color: var(--text-primary);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 17.5px;
                 font-weight: 500;
                 line-height: 1.15;
@@ -703,7 +734,8 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             .section-heading span {
                 color: var(--text-secondary);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10px;
                 font-weight: 500;
                 letter-spacing: 0.06em;
@@ -783,6 +815,58 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 transform: translateY(-1px);
             }
 
+            .full-text {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid var(--border);
+            }
+
+            .full-text summary {
+                list-style: none;
+                cursor: pointer;
+                color: var(--accent);
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 10.5px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+            }
+
+            .full-text summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .full-text summary::before {
+                content: "+ ";
+            }
+
+            .full-text[open] summary::before {
+                content: "− ";
+            }
+
+            .full-text summary:hover {
+                text-decoration: underline;
+            }
+
+            .full-text-body {
+                margin-top: 10px;
+            }
+
+            .full-text-body p {
+                margin: 0 0 10px;
+                color: var(--text-secondary);
+                font-size: 12px;
+                line-height: 1.6;
+                overflow-wrap: break-word;
+            }
+
+            .full-text-body p:last-child {
+                margin-bottom: 0;
+            }
+
+            body.compact .full-text {
+                display: none;
+            }
+
             .empty-state,
             .search-empty-state {
                 display: none;
@@ -828,7 +912,8 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             .search-results-heading span {
                 color: var(--text-secondary);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10px;
                 font-weight: 500;
                 letter-spacing: 0.06em;
