@@ -360,33 +360,33 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             :root[data-theme="dark"] {
                 color-scheme: dark;
-                --background: #17140f;
-                --surface: #1e1a13;
-                --surface-soft: #262119;
-                --primary: #c9c0ac;
-                --secondary: #3a3327;
-                --accent: #7fb7a6;
-                --accent-soft: #24312c;
-                --text-primary: #f2ede1;
-                --text-secondary: #a89d88;
-                --border: #322c22;
-                --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px rgba(0, 0, 0, 0.28);
+                --background: #0b1220;
+                --surface: #131c2e;
+                --surface-soft: #1b2740;
+                --primary: #c7d2e8;
+                --secondary: #263351;
+                --accent: #5eb1e6;
+                --accent-soft: #1b3145;
+                --text-primary: #eef2fb;
+                --text-secondary: #9aa9c7;
+                --border: #26314d;
+                --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 26px rgba(0, 0, 0, 0.38);
             }
 
             @media (prefers-color-scheme: dark) {
                 :root:not([data-theme="light"]) {
                     color-scheme: dark;
-                    --background: #17140f;
-                    --surface: #1e1a13;
-                    --surface-soft: #262119;
-                    --primary: #c9c0ac;
-                    --secondary: #3a3327;
-                    --accent: #7fb7a6;
-                    --accent-soft: #24312c;
-                    --text-primary: #f2ede1;
-                    --text-secondary: #a89d88;
-                    --border: #322c22;
-                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px rgba(0, 0, 0, 0.28);
+                    --background: #0b1220;
+                    --surface: #131c2e;
+                    --surface-soft: #1b2740;
+                    --primary: #c7d2e8;
+                    --secondary: #263351;
+                    --accent: #5eb1e6;
+                    --accent-soft: #1b3145;
+                    --text-primary: #eef2fb;
+                    --text-secondary: #9aa9c7;
+                    --border: #26314d;
+                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 26px rgba(0, 0, 0, 0.38);
                 }
             }
 
@@ -441,7 +441,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 color: var(--text-primary);
                 font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-optical-sizing: auto;
-                font-size: clamp(30px, 4vw, 52px);
+                font-size: clamp(27px, 3.6vw, 47px);
                 font-weight: 600;
                 line-height: 1.06;
                 letter-spacing: -0.01em;
@@ -612,7 +612,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin: 0;
                 color: var(--text-primary);
                 font-family: var(--font-title), "IBM Plex Sans", sans-serif;
-                font-size: clamp(18px, 1.7vw, 23px);
+                font-size: clamp(16px, 1.5vw, 20px);
                 font-weight: 600;
                 line-height: 1.15;
             }
@@ -645,7 +645,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin-top: 5px;
                 color: var(--text-primary);
                 font-family: var(--font-mono), monospace;
-                font-size: 19px;
+                font-size: 17.5px;
                 font-weight: 500;
                 line-height: 1.15;
             }
@@ -696,7 +696,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 text-align: left;
                 color: var(--text-primary);
                 font-family: var(--font-title), "IBM Plex Sans", sans-serif;
-                font-size: clamp(20px, 2vw, 27px);
+                font-size: clamp(18px, 1.8vw, 24px);
                 font-weight: 600;
                 line-height: 1.15;
             }
@@ -738,7 +738,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin: 0 0 8px;
                 color: var(--text-primary);
                 font-family: var(--font-title), "IBM Plex Sans", sans-serif;
-                font-size: 17px;
+                font-size: 16px;
                 font-weight: 600;
                 line-height: 1.28;
                 letter-spacing: -0.005em;
@@ -821,7 +821,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin: 0;
                 color: var(--text-primary);
                 font-family: var(--font-title), "IBM Plex Sans", sans-serif;
-                font-size: clamp(20px, 2vw, 27px);
+                font-size: clamp(18px, 1.8vw, 24px);
                 font-weight: 600;
                 line-height: 1.15;
             }
@@ -850,7 +850,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             }
 
             body.compact .card h3 {
-                font-size: 14px;
+                font-size: 13px;
             }
 
             .infobae { background: rgba(216, 176, 140, 0.56); color: #2b1c0d; }
@@ -882,7 +882,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 }
 
                 .header h1 {
-                    font-size: 30px;
+                    font-size: 27px;
                 }
 
                 .toolbar {
@@ -945,7 +945,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin: 0;
                 color: var(--text-primary);
                 font-family: var(--font-title), "IBM Plex Sans", sans-serif;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 600;
                 line-height: 1.15;
             }
