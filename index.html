@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@600;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
         <style>
             * {
@@ -31,7 +31,7 @@
                 --lanacion: #AEBFCF;
                 --font-title: "Inter";
                 --font-body: "IBM Plex Sans";
-                --font-mono: "IBM Plex Mono";
+                --font-mono: "Inter";
                 --shadow-card: 0 1px 2px rgba(33, 29, 22, 0.04), 0 10px 24px rgba(33, 29, 22, 0.05);
             }
 
@@ -105,7 +105,8 @@
             .eyebrow {
                 margin: 0 0 8px;
                 color: var(--accent);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10.5px;
                 font-weight: 500;
                 letter-spacing: 0.16em;
@@ -145,7 +146,8 @@
                 color: var(--text-secondary);
                 background: var(--surface);
                 cursor: pointer;
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10.5px;
                 font-weight: 500;
                 letter-spacing: 0.08em;
@@ -321,7 +323,8 @@
                 display: block;
                 margin-top: 5px;
                 color: var(--text-primary);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 17.5px;
                 font-weight: 500;
                 line-height: 1.15;
@@ -380,7 +383,8 @@
 
             .section-heading span {
                 color: var(--text-secondary);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10px;
                 font-weight: 500;
                 letter-spacing: 0.06em;
@@ -460,6 +464,58 @@
                 transform: translateY(-1px);
             }
 
+            .full-text {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid var(--border);
+            }
+
+            .full-text summary {
+                list-style: none;
+                cursor: pointer;
+                color: var(--accent);
+                font-family: var(--font-body), "IBM Plex Sans";
+                font-size: 10.5px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+            }
+
+            .full-text summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .full-text summary::before {
+                content: "+ ";
+            }
+
+            .full-text[open] summary::before {
+                content: "− ";
+            }
+
+            .full-text summary:hover {
+                text-decoration: underline;
+            }
+
+            .full-text-body {
+                margin-top: 10px;
+            }
+
+            .full-text-body p {
+                margin: 0 0 10px;
+                color: var(--text-secondary);
+                font-size: 12px;
+                line-height: 1.6;
+                overflow-wrap: break-word;
+            }
+
+            .full-text-body p:last-child {
+                margin-bottom: 0;
+            }
+
+            body.compact .full-text {
+                display: none;
+            }
+
             .empty-state,
             .search-empty-state {
                 display: none;
@@ -505,7 +561,8 @@
 
             .search-results-heading span {
                 color: var(--text-secondary);
-                font-family: var(--font-mono), monospace;
+                font-family: var(--font-mono), "IBM Plex Sans", sans-serif;
+                font-variant-numeric: tabular-nums;
                 font-size: 10px;
                 font-weight: 500;
                 letter-spacing: 0.06em;
@@ -667,7 +724,7 @@
                 <div class="header-copy">
                     <p class="eyebrow">Agente · Edición diaria</p>
                     <h1>Resumen de Noticias</h1>
-                    <p>Actualizado el miércoles 15 de julio de 2026 a las 13:56 hs. Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información.</p>
+                    <p>Actualizado el miércoles 15 de julio de 2026 a las 14:25 hs. Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información.</p>
                 </div>
                 <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar entre modo claro y oscuro">
                     <span class="theme-toggle-label">Modo oscuro</span>
@@ -680,7 +737,7 @@
             <button class="compact-btn" type="button" aria-pressed="false">Modo compacto</button>
         </div>
 
-        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>31</span></button><button class="filtro-btn" data-cat="ECONOMIA" type="button">Economía <span>11</span></button><button class="filtro-btn" data-cat="POLITICA" type="button">Política <span>11</span></button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">Internacional <span>9</span></button></div>
+        <div class="filtros" aria-label="Filtros de categoría"><button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>29</span></button><button class="filtro-btn" data-cat="ECONOMIA" type="button">Economía <span>10</span></button><button class="filtro-btn" data-cat="POLITICA" type="button">Política <span>11</span></button><button class="filtro-btn" data-cat="INTERNACIONAL" type="button">Internacional <span>8</span></button></div>
 
         
         <section class="finance-section" aria-label="Datos financieros">
@@ -691,8 +748,8 @@
                 
                 <article class="finance-card">
                     <span>Dólar Blue</span>
-                    <strong>$ 1530</strong>
-                    <span>Compra $ 1510</span>
+                    <strong>$ 1525</strong>
+                    <span>Compra $ 1505</span>
                 </article>
         
                 <article class="finance-card">
@@ -703,8 +760,8 @@
         
                 <article class="finance-card">
                     <span>Dólar MEP</span>
-                    <strong>$ 1513,31</strong>
-                    <span>Compra $ 1513,31</span>
+                    <strong>$ 1512,60</strong>
+                    <span>Compra $ 1512,60</span>
                 </article>
         
                 <article class="finance-card">
@@ -726,7 +783,7 @@
             <section class="categoria-section" data-categoria="ECONOMIA">
                 <div class="section-heading">
                     <h2>Economía</h2>
-                    <span>11 noticias</span>
+                    <span>10 noticias</span>
                 </div>
                 <div class="news-grid">
             
@@ -740,22 +797,34 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Las Micro, Pequeñas y Medianas Empresas (MiPyMEs), los pequeños contribuyentes y las entidades sin fines de lucro ya pueden adherirse al nuevo plan de facilidades de pago implementado por la Agencia de Recaudación y Control Aduanero (ARCA). El régimen permite regularizar deudas impositivas, aduaneras y de la seguridad social vencidas hasta el 30 de junio de 2026 mediante un esquema de financiación que contempla distintas condiciones de acuerdo con el perfil de cada contribuyente. La medida fue establecida por la Resolución General 5875/2026 y alcanza también multas e intereses asociados a esas obligaciones. El plan no prevé condonaciones de capital, intereses ni sanciones, sino que ofrece la posibilidad de cancelar las deudas en cuotas dentro de un plazo determinado. Quiénes pueden acceder El régimen está destinado a tres grupos de contribuyentes. Quedan excluidas las personas condenadas por determinados delitos tributarios o aduaneros con sentencia firme, las personas jurídicas cuyos directivos se encuentren en esa situación, los responsables solidarios respecto de las obligaciones incluidas y determinados garantes de deudas fiscales. Cómo funciona el plan El régimen contempla diferentes condiciones de financiación según el tipo de contribuyente. Las Micro y Pequeñas Empresas, los pequeños contribuyentes y las entidades sin fines de lucro podrán financiar obligaciones impositivas, aduaneras y de la seguridad social en hasta 18 cuotas. En el caso de las retenciones y percepciones impositivas, el máximo será de 9 cuotas. Para acceder deberán realizar un pago a cuenta equivalente al 5% de la deuda consolidada. La tasa de financiación será del 2,75% mensual y tanto el anticipo como cada cuota deberán ser de, al menos, $50.000. Las Medianas Empresas Tramos 1 y 2, en tanto, podrán acceder a planes de hasta 15 cuotas para obligaciones generales y de hasta 7 cuotas para retenciones y percepciones. En estos casos, el anticipo asciende al 10% de la deuda consolidada y la tasa de financiación también será del 2,75% mensual. Los pagos serán mensuales, iguales y consecutivos. El plan comprende obligaciones impositivas, aduaneras y de los recursos de la seguridad social vencidas hasta el 30 de junio de 2026, junto con sus accesorios. También permite incorporar retenciones y percepciones impositivas, obligaciones aduaneras vinculadas con tributos sobre importaciones y exportaciones y multas aplicadas hasta esa fecha.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="Gobierno convoca licitación para buscar gas y petróleo en el Mar Argentino El Gobierno nacional lanzó un nuevo proceso para buscar gas y petróleo en el Mar Argentino, a través de un concurso convocado por la Secretaría de Energía. El proceso se inició con un decreto publicado en el Boletín Oficial y busca otorgar un permiso de exploración en busca de gas y petróleo en el Mar. Infobae Clarín">
-                    <h3>Gobierno convoca licitación para buscar gas y petróleo en el Mar Argentino</h3>
-                    <p>El Gobierno nacional lanzó un nuevo proceso para buscar gas y petróleo en el Mar Argentino, a través de un concurso convocado por la Secretaría de Energía. El proceso se inició con un decreto publicado en el Boletín Oficial y busca otorgar un permiso de exploración en busca de gas y petróleo en el Mar.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="El Gobierno abre una nueva licitación para buscar gas y petróleo frente a las costas de Mar del Plata El Gobierno nacional puso en marcha un nuevo proceso para buscar gas y petróleo en el Mar Argentino. A través de un decreto publicado este miércoles en el Boletín Oficial, la Secretaría de Energía convocará un concurso internacional para adjudicar un permiso de exploración en el área CAN_200, un bloque de 5. Infobae">
+                    <h3>El Gobierno abre una nueva licitación para buscar gas y petróleo frente a las costas de Mar del Plata</h3>
+                    <p>El Gobierno nacional puso en marcha un nuevo proceso para buscar gas y petróleo en el Mar Argentino. A través de un decreto publicado este miércoles en el Boletín Oficial, la Secretaría de Energía convocará un concurso internacional para adjudicar un permiso de exploración en el área CAN_200, un bloque de 5.</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/economia/2026/07/15/el-gobierno-abre-una-nueva-licitacion-para-buscar-gas-y-petroleo-frente-a-las-costas-de-mar-del-plata/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Leer en Infobae
                         </a>
             
-                        <a href="https://www.clarin.com/energia-y-mineria/gobierno-llama-licitacion-buscar-petroleo-frente-costa-atlantica_0_Pku0GhNTe9.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>El Gobierno nacional puso en marcha un nuevo proceso para buscar gas y petróleo en el Mar Argentino. A través de un decreto publicado este miércoles en el Boletín Oficial, la Secretaría de Energía convocará un concurso internacional para adjudicar un permiso de exploración en el área CAN_200, un bloque de 5.000 kilómetros cuadrados ubicado en la Cuenca Argentina Norte, frente a las costas de Buenos Aires, entre Quequén y Mar del Plata. La convocatoria apunta a medir el potencial energético de la Plataforma Continental Argentina y, ante un eventual hallazgo comercial, habilitar una futura concesión de explotación. La medida no implica un descubrimiento de petróleo o gas ni el inicio inmediato de una perforación, sino que lo que habilita es el procedimiento para seleccionar a la empresa que realizará los trabajos exploratorios y asumirá los costos del proyecto. El área CAN_200 surgió de una manifestación de interés presentada el 14 de febrero de 2025 por Challenger Energy Group PLC, una compañía de exploración atlántica que cotiza en el mercado AIM de Londres y que propuso explorar ese bloque marítimo. El antecedente en Mar del Plata El bloque que ahora se licitará está en la misma gran región marina donde se desarrolló la última experiencia exploratoria frente a la costa bonaerense. En 2024, la noruega Equinor concluyó sin éxito la perforación del pozo exploratorio Argerich-1, a más de 300 kilómetros de Mar del Plata. Ese antecedente es clave para entender el alcance del nuevo decreto. La exploración offshore no garantiza resultados positivos: primero se estudia el subsuelo, luego se perfora, y solo después de esa secuencia puede saberse si existe un yacimiento comercialmente explotable. La discusión por la exploración del Mar Argentino tomó impulso en 2018, cuando durante el gobierno de Mauricio Macri se aprobó por decreto la licitación de las cuencas Argentina Norte, Austral Marina y Malvinas Oeste. A fines de 2021, el entonces Ministerio de Ambiente autorizó la exploración sísmica en sectores de la Cuenca Argentina Norte ubicados a unos 300 kilómetros de la costa de Mar del Plata y Bahía Blanca, en áreas vinculadas a YPF, Shell y Equinor. Ese proceso abrió una controversia pública y ambiental de fuerte visibilidad en la costa atlántica. Hubo una audiencia pública consultiva en el partido de General Pueyrredón que se extendió durante semanas, y una de las organizaciones más activas en rechazo al proyecto fue Greenpeace.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="ECONOMIA" data-search="Cuáles son las provincias con mayor morosidad entre las familias y a cuánto asciende en cada una La morosidad de las familias volvió a subir en mayo y llegó al 15,9%, lo que implica una suba de 0,5 puntos porcentuales respecto a abril. La problemática ya generó que casi 7 millones de personas dejaran de ser “sujetos de crédito”. Infobae">
@@ -768,6 +837,14 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>La morosidad de las familias volvió a subir en mayo y llegó al 15,9%, lo que implica una suba de 0,5 puntos porcentuales respecto a abril. La problemática ya generó que casi 7 millones de personas dejaran de ser “sujetos de crédito”. En este marco, se observa una importante heterogeneidad a lo largo del país: en algunas regiones la irregularidad más que duplica el promedio. La consultora Analytica señaló que, en términos generales, la proporción de personas con al menos una deuda en mora se mantuvo prácticamente estable respecto del mes anterior, al ubicarse en el 26,8% de la población, equivalente a 5,3 millones de personas. Asimismo, precisó que se registran 19,8 millones de personas con algún crédito en el sistema financiero ampliado, que incluye bancos, Fintech (Mercado Pago y Tarjeta Naranja) , mutuales y cooperativas, tarjetas de consumo, casas de electrodomésticos y fideicomisos financieros. Entre quienes tienen deudas exclusivamente con bancos, el 20% registra atrasos en los pagos, frente al 28,4% de los que solo están endeudados con fintech. Al ponderar por el volumen de la deuda, las tasas de irregularidad descienden al 12,6% en los bancos, al 21,6% en las fintech y alcanzan el 46,9% en el resto de las entidades financieras. En comparación con abril, la proporción de deudores en mora aumentó principalmente entre quienes mantienen créditos únicamente con bancos (+0,8 puntos porcentuales) y entre aquellos que combinan deudas con bancos, fintech y otros proveedores de crédito (+0,9 puntos). En cambio, indicó la consultora, los endeudados únicamente con otros proveedores mostraron la mayor caída relativa de personas en situación irregular (-1,2 p.p.), producto de una baja en la cantidad de morosos (-5,6%) más pronunciada que la reducción general de este tipo de deudores (-4,4%). Distribución regional Ahora bien, “tanto los niveles de endeudamiento en el sistema formal como la mora tienen una distribución heterogénea entre regiones”, remarcó Analytica. En las provincias del NOA la proporción de deudores morosos sobre el total es la más alta, liderada por San Juan (35,2%), Catamarca (34,2%), San Luis (34,1%) y La Rioja (34,0%). En el otro extremo, los ratios más bajos se observan en CABA (16,1%), seguida por La Pampa (19,5%) y Neuquén (23,3%). El informe destacó que se registró una leve mejora relativa en la mayoría de las provincias, siendo La Rioja la más favorecida (-1,2 p.p.). Sin embargo, el porcentaje de deudores morosos tuvo un leve aumento en las provincias más pobladas, como Buenos Aires (+0,1 p.p.), Santa Fe (+0,3 p.p.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="ECONOMIA" data-search="Dólar hoy en vivo: a cuánto se negocian todas las cotizaciones minuto a minuto este miércoles 15 de julio Sube el dólar blue El dólar blue avanza cinco pesos o 0,3% en el día, a $1.525 para la venta, con lo que regresó al nivel del 2 de julio último. En 2026 el dólar informal aún descuenta cinco pesos respecto de los $1.530 del cierre del año anterior. Infobae">
@@ -780,18 +857,45 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Sube el dólar blue El dólar blue avanza cinco pesos o 0,3% en el día, a $1.525 para la venta, con lo que regresó al nivel del 2 de julio último. En 2026 el dólar informal aún descuenta cinco pesos respecto de los $1.530 del cierre del año anterior. ¿A cuánto se vende el dólar en bancos? El precio del billete al público alcanza los $1.495 para la venta en el Banco Nación. El BCRA informó que en las entidades financieras el dólar minorista promedió $1.500,76 para la venta y $1.449,27 para la compra. El BCRA compró USD 532 millones El Banco Central absorbió USD 532 millones, en parte por operaciones de mercado y también por una compra “en bloque” correspondiente a la colocación de Obligaciones Negociables, lo que constituyó el mayor volumen de compras en una sesión en lo que va de la gestión de Santiago Bausili al frente de la entidad. Las reservas internacionales brutas crecieron en USD 482 millones, a 48.687 millones de dólares.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="Mercados. El riesgo país baja y se acerca a los 400 puntos El riesgo país abandona la tendencia alcista de las últimas dos ruedas y se acerca a los 400 puntos. Por su parte, las acciones argentinas registran subas tanto en el mercado local como en la Bolsa de Nueva York. La Nación">
-                    <h3>Mercados. El riesgo país baja y se acerca a los 400 puntos</h3>
-                    <p>El riesgo país abandona la tendencia alcista de las últimas dos ruedas y se acerca a los 400 puntos. Por su parte, las acciones argentinas registran subas tanto en el mercado local como en la Bolsa de Nueva York.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="El riesgo país se acerca a los 400 puntos y acciones argentinas suben en ambos mercados El riesgo país abandona la tendencia alcista y se acerca a los 400 puntos, mientras que las acciones argentinas registran subas tanto en el mercado local como en la Bolsa de Nueva York, aprovechando las buenas noticias del Gobierno. La Nación Clarín">
+                    <h3>El riesgo país se acerca a los 400 puntos y acciones argentinas suben en ambos mercados</h3>
+                    <p>El riesgo país abandona la tendencia alcista y se acerca a los 400 puntos, mientras que las acciones argentinas registran subas tanto en el mercado local como en la Bolsa de Nueva York, aprovechando las buenas noticias del Gobierno.</p>
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/economia/el-riesgo-pais-baja-y-se-acerca-a-los-400-puntos-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
+                        <a href="https://www.clarin.com/economia/luego-dato-inflacion-bonos-dolares-anotan-nueva-suba-riesgo-pais-acerca-400-puntos_0_3o7iztSe04.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>El riesgo país abandona la tendencia alcista de las últimas dos ruedas y se acerca a los 400 puntos. Por su parte, las acciones argentinas registran subas tanto en el mercado local como en la Bolsa de Nueva York. El indicador elaborado por JP Morgan cae cinco unidades y se ubica en los 405 puntos básicos, de acuerdo a las pantallas de Rava. De esa forma, se aleja de las 410 unidades que tocó ayer y se acerca a su valor mínimo de la gestión libertaria, cuando el pasado viernes tocó los 402 puntos. Este resultado es el reflejo del desempeño de los bonos soberanos. Los títulos bajo ley local suben hasta 0,9% (AE38), mientras que los Globales ascienden hasta 1,1% (GD30). Fernando Marull, socio de FMyA, sostuvo que la compresión en el riesgo país se da como consecuencia del contexto internacional. Si bien el conflicto de Medio Oriente se sostiene, lo que hace que el precio del petróleo suba y haya expectativas de un incremento en las tasas de interés de la Reserva Federal de Estados Unidos (Fed), las bolsas internacionales operan en territorio positivo y las tasas estadounidenses a 10 años están “más tranquilas”. Este contexto ayuda a que haya más apetito por títulos argentinos. A esto se le suman las buenas noticias que hubo ayer sobre la macroeconomía local. El analista destacó que el Banco Central compró US$532 millones, el mayor monto en la era Milei, y la desaceleración en la inflación de junio, que perforó el 2% por primera vez en 10 meses. En ese sentido, evaluó que, si el mercado internacional acompaña, el riesgo país puede perforar los 400 puntos. En sintonía con los principales índices de Wall Street, las acciones argentinas que operan en la Bolsa de Nueva York (ADR) registran subas. Lideran el panel Globant (+3,9%), Banco Supervielle (+3,7%) y Banco Macro (+2,7%). Por su parte, Mercado Libre retrocede mayormente 1,5%. La Bolsa porteña también tiende al alza: el Merval suma 1% y cotiza a 3.262.667,08 unidades, lo equivalente a US$2087,55 al ajustar por el dólar contado con liquidación (+0,7%). Se destacan Noticia en desarrollo. Tras dos ruedas consecutivas de subas, el indicador elaborado por JP Morgan cae cinco unidades y queda cerca de su valor mínimo en la gestión de Javier Milei; las acciones argentinas en Wall Street avanzan hasta 5,6%</p>
+                        </div>
+                    </details>
+    
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>Los activos argentinos capitalizan las buenas noticias que cosechó el Gobierno esta semana y acciones y bonos suben este miércoles. De esta manera el riesgo país vuelve a bajar un escalón hasta los 405 puntos. El indicador de JP Morgan se mantiene en zona de mínimos de 2018 y en el mercado hay expectativa por el momento en que quiebre el piso de las 400 unidades.En el frente cambiario el dólar opera sin cambios respecto a su cierre del martes en el mercado minorista: a $1.495 en el Banco Nación aunque algunas entidades también lo ofrecían hasta $10 más barato.A media rueda los bonos soberanos en dólares subían hasta 05% en oposición al movimiento del resto de la deuda de los países emergentes. El ETF de mercados emergentes caía un 05%. Este desacople de los títulos argentinos podría indicar una buena respuesta del mercado al dato de inflación que reportó el INDEC este martes y a las compras récord de dólares que hizo el Banco Central esta semana.En tanto las acciones argentinas que operan en Wall Street se movían con mayoría de subas con el papel de Globant a la cabeza. La tecnológica ganaba 47% en Nueva York.Con este panorama el mercado local también mostraba alzas. El índice Merval medido en dólares al contado con liquidación avanzaba 08% lo que le permite acumular ganancias de 24% desde que empezó el mes. Hacia adelante analistas esperan que aparezcan &quot;buenas noticias&quot; en el mercado de acciones que impulsen más los precios. &quot;En el cronograma doméstico las presentaciones de balances arrancan la primera semana de agosto con Vista como excepción que reporta este jueves&quot; señalaron en Delphos a la vez que agregaron: A eso se suman los eventuales IPOs de Genneia e YPF Luz que surgen como nuevos termómetros del apetito por riesgo argentino. Desde el frente externo priman los efectos del petróleo —especialmente sobre YPF y Vista— y los movimientos en las tasas de los Treasuries (bonos del Tesoro de Estados Unidos)&quot;.NE</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="ECONOMIA" data-search="Negociaciones avanzadas entre Delivery Hero y Uber Technologies para una eventual oferta de adquisición Delivery Hero confirma negociaciones avanzadas con Uber Technologies para una posible oferta de adquisición. La operación podría reconfigurar el mapa del delivery en América Latina. La Nación">
@@ -804,23 +908,50 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>La operación dejó de ser una especulación de mercado y entró en una nueva etapa. Delivery Hero, la compañía alemana propietaria de PedidosYa, confirmó que mantiene negociaciones avanzadas con Uber Technologies para una eventual oferta de adquisición de la totalidad de la empresa. El anuncio llega semanas después de que trascendiera que Uber había acercado una primera propuesta para quedarse con el grupo alemán. En ese momento, desde Delivery Hero habían señalado que la oferta indicativa de Uber se situaba en los €33 por acción, lo que equivaldría a una oferta cercana a los €10.000 millones. Ahora, desde la empresa reconocieron que las conversaciones avanzan, aunque evitaron comentarios sobre una eventual valuación o sobre los términos económicos de la negociación. “En respuesta a los recientes rumores del mercado, Delivery Hero confirma negociaciones avanzadas con Uber Technologies respecto a una posible oferta de adquisición dirigida a todos los accionistas de la compañía. Delivery Hero no comenta sobre las especulaciones relativas al precio de la oferta”, indicaron en un comunicado enviado a sus inversores. Consultadas por LA NACION, ninguna de las dos compañías emitió comentarios. De concretarse, la operación reconfiguraría el mapa del delivery en América Latina. En la Argentina, los principales jugadores son PedidosYa, Rappi y Uber Eats -que retomó su operación este año-. En 2020, Delivery Hero había adquirido las operaciones de Glovo en América Latina por 230 millones de euros: como resultado, la aplicación de Glovo cesó sus actividades en Argentina y otros países de la región, integrando a sus comercios y repartidores a la red de PedidosYa. Además del delivery de comida, Uber viene ampliando su ecosistema hacia supermercados, comercio electrónico, reservas de viajes y otros servicios bajo demanda, una estrategia que le permitiría aprovechar la infraestructura y la base de usuarios de Delivery Hero para acelerar su expansión internacional. Primeros acercamientos de Uber a Delivery Hero La propuesta de adquisición llega semanas después de que Uber ingresara como accionista en Delivery Hero. A mediados de abril, la compañía conducida por Dara Khosrowshahi adquirió un paquete de 13,6 millones de acciones que estaban en manos de Prosus —firma inversora, también dueña de Despegar—, que representó aproximadamente el 4,5% del capital social de Delivery Hero. “Celebramos la inversión adicional de Uber en Delivery Hero.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="Conflicto en Medio Oriente. El petróleo retoma la suba y aleja la baja de los combustibles Después de una tregua que había traído algo de alivio, Estados Unidos lanzó anoche una nueva ronda de ataques contra Irán y golpeó instalaciones militares cerca del estrecho de Ormuz, mientras Teherán aseguró haber cerrado nuevamente el paso. La Nación">
-                    <h3>Conflicto en Medio Oriente. El petróleo retoma la suba y aleja la baja de los combustibles</h3>
-                    <p>Después de una tregua que había traído algo de alivio, Estados Unidos lanzó anoche una nueva ronda de ataques contra Irán y golpeó instalaciones militares cerca del estrecho de Ormuz, mientras Teherán aseguró haber cerrado nuevamente el paso.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="Petróleo retoma la suba después de ataques de Estados Unidos en Irán Después de una tregua, Estados Unidos lanzó ataques contra instalaciones militares cerca del estrecho de Ormuz, lo que ha llevado a una suba en los precios del petróleo a nivel mundial. El FMI advirtió que la continuidad de la guerra en Medio Oriente está agotando las reservas mundiales. La Nación Clarín">
+                    <h3>Petróleo retoma la suba después de ataques de Estados Unidos en Irán</h3>
+                    <p>Después de una tregua, Estados Unidos lanzó ataques contra instalaciones militares cerca del estrecho de Ormuz, lo que ha llevado a una suba en los precios del petróleo a nivel mundial. El FMI advirtió que la continuidad de la guerra en Medio Oriente está agotando las reservas mundiales.</p>
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/economia/el-petroleo-retoma-la-suba-y-aleja-la-baja-de-los-combustibles-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
+                        <a href="https://www.clarin.com/economia/escasez-petroleo-fmi-advirtio-continuidad-guerra-medio-oriente-agotando-reservas-mundiales_0_uAdDTSkzot.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>La escalada bélica en Medio Oriente volvió a meterse en el precio de la nafta. Después de una tregua que había traído algo de alivio, Estados Unidos lanzó anoche una nueva ronda de ataques contra Irán y golpeó instalaciones militares cerca del estrecho de Ormuz, mientras Teherán aseguró haber cerrado nuevamente el paso. El resultado se sintió en el mercado petrolero: el Brent, la cotización de referencia internacional, sube hoy por tercer día consecutivo y se ubica en torno a los US$85 por barril (+1%), tras acumular una suba superior al 11% en los dos días previos. El tráfico de buques tanque por Ormuz cayó a mínimos de dos meses. El presidente de Estados Unidos, Donald Trump, amenazó con atacar plantas eléctricas y puentes si Irán no negocia, y varios análisis empiezan a señalar un riesgo adicional: que Teherán ordene a sus aliados Houthis bloquear el Bab el-Mandeb, el estrecho que conecta el mar Rojo con el golfo de Adén. Un funcionario Houthi advirtió que ese cierre podría disparar el crudo hasta US$200 el barril. “Pondría en riesgo simultáneamente las dos arterias energéticas más críticas del mundo”, señaló la consultora Outlier. La derivada local de ese conflicto se paga en el surtidor. El litro de nafta súper promedió esta semana los $2047 en la Ciudad de Buenos Aires —donde los precios son más bajos por la mayor competencia—, contra los $1566 de principios de año: una suba acumulada del 30,7%. Llenar un tanque de 50 litros pasó de costar $78.300 a casi $102.000 en seis meses. El petróleo llegó a acumular una suba del 67% desde enero, con el Brent tocando picos de US$118 el barril durante el momento más agudo del conflicto. De esa suba, solo el 23% se trasladó al surtidor en menos de dos meses —algo que en gestiones anteriores hubiera sido impensado—, pero eso dejó un atraso de al menos 15% en el precio de las naftas respecto de la paridad de importación. Según datos que YPF presentó ante inversores a principios de mayo, esa brecha llegó a superar el 18%. La ecuación de YPF El esquema tiene una lógica financiera concreta. Desde el inicio del conflicto, el Brent trepó con fuerza e YPF optó por no trasladar toda esa suba al surtidor, y aplicó un mecanismo de “amortiguación”. Los precios de los combustibles están sin cambios desde principios de junio y, aunque con la tregua se esperaba que empezaran a bajar, ahora la compañía anticipa que se van a mantener altos. Los valores se sostendrán aun cuando el petróleo internacional baje, para compensar la diferencia acumulada.</p>
+                        </div>
+                    </details>
+    
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>La nueva disparada en los precios del petróleo a nivel mundial por la reanudación de la guerra en Medio Oriente podría no ser el mayor dolor de cabeza para la economía global. Esto como consecuencia de un informe del Fondo Monetario Internacional (FMI) en el que se advierte sobre el agotamiento de las reservas como consecuencia de la continuidad del conflicto bélico.En este sentido el organismo multilateral de crédito señaló en un nuevo reporte publicado este miércoles que &quot;si bien el mercado petrolero absorbió el impacto de la guerra las reservas se están agotando&quot;.Dentro de su análisis la entidad presidida por Kristalina Georgieva reveló que hacia fines de mayo pasado más de 1100 millones de barriles de crudo (equivalentes a unos 10 días de consumo en todo el planeta) no habían llegado al mercado. Un déficit que superó los de la crisis del petróleo de 1973 la guerra Irán-Irak y la Guerra del Golfo Pérsico.La guerra entre Estados Unidos Israel e Irán provocó el cierre del Estrecho de Ormuz. Una decisión clave que cortó el suministro de unos 20 millones de barriles diarios de crudo y productos refinados lo que equivale a una quinta parte del consumo mundial.Crisis del petróleo: los esfuerzos de la OPEP que no fueron suficientesA su vez algunos países que integran la OPEP en la zona redirigieron todo el petróleo que pudieron. Por un lado Arabia Saudita envió crudo a través de su oleoducto hacia el puerto de Yanbu en el mar Rojo. Mientras que Emiratos Árabes llevó a su terminal marítima de Fujairah ubicada fuera del estrecho casi hasta el límite de su capacidad.Sin embargo ambos esfuerzos sólo pudieron compensar una parte del volumen perdido por la clausura del estratégico paso marítimo impuesta por el régimen iraní.A fines de febrero cuando los gobiernos de Trump y Netanyahu iniciaron la guerra con una serie de bombardeos sobre Irán la oferta de crudo en todo el mundo superaba a la demanda en casi dos millones de barriles diarios. Pero entre marzo y mayo hubo una serie de factores que impulsaron el cierre de esta brecha.Crisis del petróleo: cómo fue la caída en las reservas mundialesPor un lado la contracción de la demanda fue fundamental en particular en Asia ya que los precios más altos redujeron el consumo y las economías recurrieron a alternativas como el carbón y las energías renovables. No obstante la demanda de transporte se mantuvo más estable en parte por los topes de valores de los combustibles los subsidios y las desgravaciones fiscales que contuvieron el impacto aunque a un costo fiscal.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="Tras dos semanas. Flybondi volvió a volar, pero la crisis sigue: siete cancelaciones en un solo día La aerolínea low cost Flybondi reanudó ayer sus operaciones luego de casi dos semanas sin volar —no lo hacía desde el viernes 3 de julio— tras alcanzar un acuerdo con YPF por el suministro de combustible de aviación Jet A-1. En YPF, en tanto, se limitaron a señalar que el abastecimiento se realiza con normalidad. La Nación">
-                    <h3>Tras dos semanas. Flybondi volvió a volar, pero la crisis sigue: siete cancelaciones en un solo día</h3>
-                    <p>La aerolínea low cost Flybondi reanudó ayer sus operaciones luego de casi dos semanas sin volar —no lo hacía desde el viernes 3 de julio— tras alcanzar un acuerdo con YPF por el suministro de combustible de aviación Jet A-1. En YPF, en tanto, se limitaron a señalar que el abastecimiento se realiza con normalidad.</p>
+                <article class="card" data-categoria="ECONOMIA" data-search="Flybondi reanudó operaciones después de acuerdo con YPF sobre combustible La aerolínea low cost Flybondi reanudó sus operaciones después de casi dos semanas sin volar, tras alcanzar un acuerdo con YPF por el suministro de combustible de aviación. La empresa operó vuelos con destino a Bariloche, Santiago del Estero y Neuquén, pero canceló siete vuelos programados para hoy. La Nación">
+                    <h3>Flybondi reanudó operaciones después de acuerdo con YPF sobre combustible</h3>
+                    <p>La aerolínea low cost Flybondi reanudó sus operaciones después de casi dos semanas sin volar, tras alcanzar un acuerdo con YPF por el suministro de combustible de aviación. La empresa operó vuelos con destino a Bariloche, Santiago del Estero y Neuquén, pero canceló siete vuelos programados para hoy.</p>
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/economia/flybondi-volvio-a-volar-pero-la-crisis-sigue-siete-cancelaciones-en-el-dia-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
@@ -828,30 +959,14 @@
                         </a>
             
                     </div>
-                </article>
         
-                <article class="card" data-categoria="ECONOMIA" data-search="Luego del dato de inflación, los bonos en dólares anotan una nueva suba y el riesgo país se acerca a los 400 puntos Los activos argentinos capitalizan las buenas noticias que cosechó el Gobierno esta semana y acciones y bonos suben este miércoles. El indicador de JP Morgan se mantiene en zona de mínimos de 2018 y en el mercado hay expectativa por el momento en que quiebre el piso de las 400 unidades. En el frente cambiario el dólar opera sin cambios respecto a su cierre del martes en el mercado minorista: a $1. Clarín">
-                    <h3>Luego del dato de inflación, los bonos en dólares anotan una nueva suba y el riesgo país se acerca a los 400 puntos</h3>
-                    <p>Los activos argentinos capitalizan las buenas noticias que cosechó el Gobierno esta semana y acciones y bonos suben este miércoles. El indicador de JP Morgan se mantiene en zona de mínimos de 2018 y en el mercado hay expectativa por el momento en que quiebre el piso de las 400 unidades. En el frente cambiario el dólar opera sin cambios respecto a su cierre del martes en el mercado minorista: a $1.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/economia/luego-dato-inflacion-bonos-dolares-anotan-nueva-suba-riesgo-pais-acerca-400-puntos_0_3o7iztSe04.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="ECONOMIA" data-search="¿Escasez de petróleo?: el FMI advirtió que la continuidad de la guerra en Medio Oriente está agotando las reservas mundi La nueva disparada en los precios del petróleo a nivel mundial por la reanudación de la guerra en Medio Oriente podría no ser el mayor dolor de cabeza para la economía global de los hidrocarburos. Esto como consecuencia de un informe del Fondo Monetario Internacional (FMI) en el que se advierte sobre el agotamiento de las reservas como consecuencia del conflicto bélico. Clarín">
-                    <h3>¿Escasez de petróleo?: el FMI advirtió que la continuidad de la guerra en Medio Oriente está agotando las reservas mundi</h3>
-                    <p>La nueva disparada en los precios del petróleo a nivel mundial por la reanudación de la guerra en Medio Oriente podría no ser el mayor dolor de cabeza para la economía global de los hidrocarburos. Esto como consecuencia de un informe del Fondo Monetario Internacional (FMI) en el que se advierte sobre el agotamiento de las reservas como consecuencia del conflicto bélico.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/economia/escasez-petroleo-fmi-advirtio-continuidad-guerra-medio-oriente-agotando-reservas-mundiales_0_uAdDTSkzot.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>La aerolínea low cost Flybondi reanudó ayer sus operaciones luego de casi dos semanas sin volar —no lo hacía desde el viernes 3 de julio— tras alcanzar un acuerdo con YPF por el suministro de combustible de aviación Jet A-1. Según allegados a la compañía, el conflicto quedó resuelto. En YPF, en tanto, se limitaron a señalar que el abastecimiento se realiza con normalidad. Desde hace meses, Flybondi debe pagar por adelantado para que la petrolera autorice la carga. De acuerdo con la información de los sistemas de Aeropuertos Argentina, la empresa operó ayer vuelos con destino a Bariloche, Santiago del Estero y Neuquén. Según medios locales, el vuelo a Bariloche despegó con apenas 62 pasajeros sobre un total de 189 asientos disponibles. Para hoy, la compañía tenía programados 15 vuelos. Al momento de este reporte, dos ya habían sido operados, siete fueron cancelados y seis permanecían activos. Actualmente, Flybondi cuenta con cuatro aviones operativos de una flota total de 13 aeronaves. La empresa prevé incorporar una quinta unidad durante el fin de semana. Por ahora, en el sitio web de Flybondi, destinos como Salta y Puerto Madryn muestran disponibilidad recién a partir de septiembre. En cambio, Ushuaia, Asunción, Bariloche, Corrientes, Córdoba, Jujuy, Mendoza, Neuquén, Posadas, Puerto Iguazú, San Juan, Santiago del Estero y Tucumán mantienen disponibilidad para los próximos días. En la red internacional, los vuelos a Florianópolis aparecen disponibles a partir de octubre, mientras que las rutas a Salvador y Maceió figuran desde enero de 2027. Los servicios a Asunción y Río de Janeiro, en tanto, continúan disponibles. La compañía contaría con unos 750 empleados, una parte de los cuales permanece suspendida en el marco de un acuerdo alcanzado con la Asociación de Trabajadores Aeronáuticos de Flybondi (ATAF). La gestión operativa quedó bajo la órbita de Leonel Dopazo, gerente de Operaciones. Según datos de la consultora Adventus, durante el primer semestre del año Flybondi concentró el 73,73% de todas las cancelaciones registradas en los aeropuertos argentinos entre un universo de 41 compañías aéreas. En lo que va de julio, además, apenas tres de sus vuelos despegaron en horario y la tasa de cancelaciones asciende al 91,90%. Flybondi inició sus operaciones en la Argentina en 2018, en el marco de la apertura del mercado aerocomercial impulsada durante la presidencia de Mauricio Macri.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="ECONOMIA" data-search="A pesar de la baja en la inflación, el poder de compra no mejora: solo ocho gremios le ganaron a los precios Según un informe oficial en mayo el salario real de los empleados privados registrados retrocedió 2% mensual incluso en un contexto de desaceleración de precios. En el último año hubo ocho gremios que consiguieron sacar ventaja en la carrera contra la inflación pero hubo otros convenios que perdieron más de 10%. Clarín">
@@ -864,6 +979,34 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>Según un informe oficial en mayo el salario real de los empleados privados registrados retrocedió 2% mensual incluso en un contexto de desaceleración de precios. En el último año hubo ocho gremios que consiguieron sacar ventaja en la carrera contra la inflación pero hubo otros convenios que perdieron más de 10%.Los datos que publicó la Secretaría de Trabajo mostraron que el poder de compra del salario promedio de los trabajadores formales del sector privado cayó un 2% en mayo respecto del mes anterior medido sin estacionalidad. En paralelo el salario medio de los principales convenios colectivos retrocedió un 14% en términos reales.Tal como sucede con la actividad económica que registra el estimador mensual del Indec la variación salarial también parece estar entregada a una dinámica de &quot;serrucho&quot; con subas y bajas alternadas mes a mes y sin encontrar una tendencia definida.El año comenzó con una recuperación salarial real (por sobre la inflación) de 05% en febrero y marzo hubo retrocesos de 02% y 03% en cada caso en abril otro repunte marcado de 13% y en mayo último dato una caída pronunciada.En una mirada más amplia el informe de la cartera laboral midió que el salario medio del empleado registrado privado se ubicó en mayo apenas 02 puntos porcentuales por encima del nivel de noviembre de 2023.Como contraste al salario negociado en paritarias le fue bastante peor: la remuneración pactada en los principales convenios colectivos entre gremios y cámaras empresarias acumuló una caída real de 77% también en relación a noviembre de 2023.El documento atribuye esa diferencia a la creciente brecha entre los salarios efectivamente percibidos por los trabajadores y los incrementos acordados en las negociaciones colectivas. Es decir la práctica extendida de acordar aumentos por fuera del convenio. En la comparación interanual también se observan retrocesos. Entre mayo de 2025 y mayo de 2026 el salario promedio de convenio perdió un 52% de poder adquisitivo mientras que el salario medio del empleo registrado privado cayó un 24%.El relevamiento contempla 27 convenios colectivos de amplia cobertura que representan alrededor de 36 millones de trabajadores registrados. Encargados de edificio y camioneros los ganadoresLa realidad salarial difiere según qué sector se observe. Ocho convenios registraron mejoras reales en los salarios en el último año. El mayor incremento correspondió a los encargados de edificios con una recomposición del 42% seguidos por Camioneros (32%) Seguros (18%) y Entidades deportivas (18%).</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="ECONOMIA" data-search="Caputo pone más subsidios en los colectivos y aleja los paros La Secretaría de Transporte que depende del Ministerio de Economía aprobó un aumento en los subsidios a los colectivos que cruzan la avenida General Paz o el Riachuelo y que pertenecen a &quot;jurisdicción nacional&quot; para fondear a las empresas operadoras del servicio público y evitar futuros paros. Fue el mismo día en que se aplicó una suba en las tarifas de 2%. Clarín">
+                    <h3>Caputo pone más subsidios en los colectivos y aleja los paros</h3>
+                    <p>La Secretaría de Transporte que depende del Ministerio de Economía aprobó un aumento en los subsidios a los colectivos que cruzan la avenida General Paz o el Riachuelo y que pertenecen a &quot;jurisdicción nacional&quot; para fondear a las empresas operadoras del servicio público y evitar futuros paros. Fue el mismo día en que se aplicó una suba en las tarifas de 2%.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/economia/caputo-pone-subsidios-colectivos-aleja-paros_0_n7wQaYu6Mg.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>La Secretaría de Transporte que depende del Ministerio de Economía aprobó un aumento en los subsidios a los colectivos que cruzan la avenida General Paz o el Riachuelo y que pertenecen a &quot;jurisdicción nacional&quot; para fondear a las empresas operadoras del servicio público y evitar futuros paros. Fue el mismo día en que se aplicó una suba en las tarifas de 2%.Mediante la resolución 48/2026 publicada este miércoles en el Boletín Oficial se aprobó la nueva estructura de costos reconocidos por el Gobierno para el sistema de transporte automotor de pasajeros con una &quot;tarifa técnica&quot; -conformada por la suma de recaudación por los boletos y los subsidios- de $ 1.816 en promedio 2% más que los anteriores $ 1.778.El Gobierno concedió así uno de los pedidos que venían haciendo las empresas que era reconocer el precio real del gasoil que usan y que tuvo un fuerte incremento a partir de marzo tras el inicio de la guerra en Medio Oriente.Sin embargo los montos que percibirán las compañías siguen estando por debajo de lo que reclaman que debería ser el costo real por pasajero que la Asociación Argentina de Empresarios del Transporte Automotor (AAETA) calculó en $ 2.138 sin IVA.Esa diferencia supone una pérdida de $ 76.000 millones por mes para el sistema que se traduce en una menor calidad del servicio peores frecuencias y unidades más viejas circulando por la Ciudad de Buenos Aires y el conurbano.Para poder pagar más subsidios pero sin comprometer la caja de Economía el Gobierno quitó del cálculo a un 3% de los coches y un 2% de los kilómetros que debe recorrer cada una de las 17.000 unidades.Luciano Fusaro presidente de AAETA analizó que la situación económica de las empresas de colectivos &quot;mejoró algo&quot; en los últimos meses porque Economía se puso &quot;más al día con el flujo de pagos&quot;. &quot;Pero el problema es que como parte de la adaptación el sistema se achicó más aún&quot; observó.&quot;Una parte se resolvió por normalización financiera otra por sinceramiento de precios y otra por ajuste del sistema (menos coches menos pasajeros y menos kilómetros recorridos). Así se alcanzó un nuevo equilibrio pero que consiste en menos frecuencias y pasajeros que se han adaptado a ello y dejan de usar los colectivos caminan o viajar por su cuenta&quot; indicó Fusaro.En lo que va de 2026 Economía lleva pagados subsidios por $ 303.74305 millones sobre $ 426.23705 devengados (registrados) El Gobierno aprobó una nueva estructura de costos para el transporte en la Ciudad y la provincia de Buenos Aires.Ahora pagará el costo real del gasoil y normaliza pagos a las empresas para evitar nuevos conflictos.</p>
+                        </div>
+                    </details>
+    
                 </article>
         </div></section>
             <section class="categoria-section" data-categoria="POLITICA">
@@ -873,6 +1016,26 @@
                 </div>
                 <div class="news-grid">
             
+                <article class="card" data-categoria="POLITICA" data-search="Axel Kicillof busca el voto sub 30 y envía referentes juveniles para tener presencia en las provincias Semanas atrás, el gobernador de la provincia de Buenos Aires, Axel Kicillof, se reunió con quienes integran la línea juvenil del Movimiento Derecho al Futuro. El MDF Juventudes iba a tener su acto de lanzamiento el 6 de junio último, pero producto del fallecimiento del Indio Solari, la actividad se pospuso. Infobae">
+                    <h3>Axel Kicillof busca el voto sub 30 y envía referentes juveniles para tener presencia en las provincias</h3>
+                    <p>Semanas atrás, el gobernador de la provincia de Buenos Aires, Axel Kicillof, se reunió con quienes integran la línea juvenil del Movimiento Derecho al Futuro. El MDF Juventudes iba a tener su acto de lanzamiento el 6 de junio último, pero producto del fallecimiento del Indio Solari, la actividad se pospuso.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.infobae.com/politica/2026/07/15/axel-kicillof-busca-el-voto-sub-30-y-envia-referentes-juveniles-para-tener-presencia-en-las-provincias/" target="_blank" rel="noopener noreferrer" class="chip infobae">
+                            Leer en Infobae
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Semanas atrás, el gobernador de la provincia de Buenos Aires, Axel Kicillof, se reunió con quienes integran la línea juvenil del Movimiento Derecho al Futuro. El MDF Juventudes iba a tener su acto de lanzamiento el 6 de junio último, pero producto del fallecimiento del Indio Solari, la actividad se pospuso. Luego, el mandatario recibió en la gobernación a las principales referencias del sector. En la reunión, se habló de distintos temas que atraviesan a jóvenes, sobre todo sociales y económicos. También le dijeron a Kicillof que están en contacto con otras provincias y que la idea es nacionalizar el MDF Juventudes. El plan es hacer pie en otras provincias a la par de lo que vienen haciendo distintas ramas del MDF. El objetivo final es dotar de estructura propia para lo que será la negociación del peronismo de cara a las elecciones del año que viene. Quienes están dentro del MDF están confiados de que Kicillof estará al frente de la campaña y será el candidato por el peronismo. Es en este marco que, lentamente, se empiezan a diseñar y estudiar distintos escenarios. El voto joven es uno de ellos. En las elecciones del 2023, La Libertad Avanza logró capitalizar buena parte del descreimiento político en jóvenes y buscará profundizarlo. Por caso, semanas atrás, el diputado provincial de LLA, Pablo Morillo, presentó un proyecto de ley para bajar la edad mínima para ser concejal en los 135 municipios bonaerenses: la propuesta es bajar de 25 a 18 años. Como dio cuenta Infobae, desde el partido pretenden aumentar la presencia de militantes de la juventud libertaria en las listas. Señalan que, si la iniciativa avanza en la legislatura bonaerense, podría haber candidatos menores de 25 años liderando listas en distintos distritos. Esta medida también apunta a captar el “voto joven” para el próximo año y a fortalecer la militancia, que el partido impulsa mediante diversas agrupaciones en los municipios de la provincia. El sector de Kicillof también busca sumar presencia juvenil. En la provincia de Buenos Aires, el MDF Juventudes está constituido y ya funciona como un dispositivo propio. Entre las referencias aparecen directoras de distintos ministerios, concejales; además, presencia de militancia universitaria y de ramas juveniles de sindicatos. La directora de Juventudes, Ayelén López, es una de las que está a cargo del despliegue más allá del territorio bonaerense, al igual que la directora de Coordinación de la Negociación Colectiva Municipal, del ministerio de Trabajo bonaerense, Macarena Kunkel.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
                 <article class="card" data-categoria="POLITICA" data-search="32 años después: ocho mundiales sin justicia A las 9.53 de aquella mañana de 1994 no solo explotó un edificio en la calle Pasteur. También estalló una parte de la confianza de los argentinos en que la verdad y la justicia llegarán alguna vez. Infobae">
                     <h3>32 años después: ocho mundiales sin justicia</h3>
                     <p>A las 9.53 de aquella mañana de 1994 no solo explotó un edificio en la calle Pasteur. También estalló una parte de la confianza de los argentinos en que la verdad y la justicia llegarán alguna vez.</p>
@@ -883,34 +1046,34 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Hay fechas que no envejecen. El 18 de julio es una de ellas. A las 9.53 de aquella mañana de 1994 no solo explotó un edificio en la calle Pasteur. También estalló una parte de la confianza de los argentinos en que la verdad y la justicia llegarán alguna vez. En 1994 el país todavía estaba hablando de la final del Mundial de Estados Unidos entre Brasil e Italia cuando, al día siguiente, la realidad lo golpeó con la peor tragedia terrorista de su historia. En 2026 el mundo está pendiente del Mundial otra vez en Estados Unidos -junto a México y Canadá- pero el 18 de julio nos obliga a detenernos. Mientras millones hablan de fútbol, no solo Argentina sino todo el mundo tiene la obligación moral de hacer una pausa y recordar que hay 85 personas que siguen esperando justicia. Lionel Messi tenía 7 años cuando Sebastián Barreiro de apenas 5, fue asesinado en el atentado a la AMIA. Mientras el futbolista se convirtió en campeón del mundo, ganó ocho Balones de Oro y marcó una era en el fútbol, la vida de Sebastián sigue detenida en aquella mañana del 18 de julio de 1994. 32 años después, la verdad y la justicia no llegaron para Barreiro. Se realizaron actos, sonaron sirenas, se leyeron uno por uno los nombres, se encendieron velas, familiares envejecieron esperando respuestas y otros ya no están. Mientras tanto funcionarios prometieron avanzar sin transformarlo en hechos y los gobiernos siguieron pasando sin cerrar la herida. Este año, una vez más, miles de personas se reunirán para recordar a las 85 víctimas. Habrá dirigentes, periodistas, referentes comunitarios, funcionarios, artistas y ciudadanos unidos por una misma palabra: Justicia. Pero hay una pregunta que incomoda y que merece ser formulada. ¿Cómo puede una democracia convivir durante treinta y dos años con el mayor atentado terrorista de su historia sin un solo condenado? Es por eso que este aniversario tiene un contexto diferente. El atentado a la AMIA ya no es solamente una herida abierta de la historia argentina. Hoy se recuerda en un mundo donde el antisemitismo volvió a crecer con una intensidad alarmante, donde los discursos de odio circulan con naturalidad y donde, después del 7 de octubre de 2023, muchos eligieron justificar el terrorismo antes que condenarlo. Por eso la memoria ya no alcanza si no está acompañada por un compromiso activo. Porque el antisemitismo no empieza con una bomba. Empieza cuando se relativiza el odio, cuando se mira para otro lado, cuando se justifica la violencia según quién sea la víctima o cuando el silencio resulta más cómodo que la condena.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
-                <article class="card" data-categoria="POLITICA" data-search="Gobierno de Formosa declara asueto para que la población vea partido de Argentina vs Inglaterra El Gobierno de Formosa declaró asueto administrativo para permitir que la población acompañe a la selección nacional en el partido contra Inglaterra. El gobernador Gildo Insfrán decretó asueto a partir de las 15:00 horas para que los empleados públicos puedan ver el partido. Infobae La Nación">
-                    <h3>Gobierno de Formosa declara asueto para que la población vea partido de Argentina vs Inglaterra</h3>
-                    <p>El Gobierno de Formosa declaró asueto administrativo para permitir que la población acompañe a la selección nacional en el partido contra Inglaterra. El gobernador Gildo Insfrán decretó asueto a partir de las 15:00 horas para que los empleados públicos puedan ver el partido.</p>
+                <article class="card" data-categoria="POLITICA" data-search="El Gobierno de Formosa declaró asueto por el partido de Argentina e Inglaterra El Gobierno de Formosa declaró asueto administrativo para permitir que la población acompañe a la selección nacional en el partido contra Inglaterra. Infobae">
+                    <h3>El Gobierno de Formosa declaró asueto por el partido de Argentina e Inglaterra</h3>
+                    <p>El Gobierno de Formosa declaró asueto administrativo para permitir que la población acompañe a la selección nacional en el partido contra Inglaterra.</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/politica/2026/07/15/el-gobierno-de-formosa-declaro-asueto-hoy-por-el-partido-de-argentina-e-inglaterra/" target="_blank" rel="noopener noreferrer" class="chip infobae">
                             Leer en Infobae
                         </a>
             
-                        <a href="https://www.lanacion.com.ar/politica/gildo-insfran-es-el-unico-gobernador-que-decreto-asueto-por-el-partido-contra-inglaterra-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
                     </div>
-                </article>
         
-                <article class="card" data-categoria="POLITICA" data-search="&quot;Veremos&quot;. Rodríguez Larreta no descartó una alianza con el PJ para volver a competir en la Ciudad Decidido a competir otra vez por la jefatura de Gobierno porteño, Horacio Rodríguez Larreta no descartó ayer una posible alianza con el peronismo de la Ciudad de Buenos Aires en las elecciones del año próximo. “Hoy no estoy buscando acuerdos, pero llegada la elección lo veremos”, respondió el exdirigente de Pro al ser consultado en Net TV sobre un posible acuerdo electoral con el PJ. La Nación">
-                    <h3>&quot;Veremos&quot;. Rodríguez Larreta no descartó una alianza con el PJ para volver a competir en la Ciudad</h3>
-                    <p>Decidido a competir otra vez por la jefatura de Gobierno porteño, Horacio Rodríguez Larreta no descartó ayer una posible alianza con el peronismo de la Ciudad de Buenos Aires en las elecciones del año próximo. “Hoy no estoy buscando acuerdos, pero llegada la elección lo veremos”, respondió el exdirigente de Pro al ser consultado en Net TV sobre un posible acuerdo electoral con el PJ.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/politica/horacio-rodriguez-larreta-no-descarto-una-alianza-con-el-pj-para-volver-a-competir-en-la-ciudad-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Con motivo del esperado partido entre la selección argentina e Inglaterra por una de las semifinales del Mundial 2026, el Gobierno de Formosa declaró asueto administrativo para este miércoles, al considerar que se trata de un encuentro válido por “el torneo deportivo más importante a nivel mundial”. La medida, que entrará en vigencia desde las 15 -una hora antes del pitazo inicial en el estadio Mercedes Benz de Atlanta, Estados Unidos- fue oficializada mediante el Decreto Nº 140, firmado por el gobernador Gildo Insfrán, y busca permitir que la población acompañe a la selección nacional en un encuentro considerado de especial interés para la comunidad, según consigna el diario El Comercial. Así, el decreto establece el asueto en toda la administración pública provincial e invitó a las municipalidades, comisiones de fomento, los Poderes Legislativo y Judicial, así como a las entidades bancarias públicas y privadas con asiento en la provincia, a adherirse a la disposición. El decreto establece el asueto en toda la administración pública provincial e invitó a adherirse a la disposición a las municipalidades, comisiones de fomento, los Poderes Legislativo y Judicial, así como a entidades bancarias públicas y privadas con presencia en la jurisdicción. Por su parte, el Gobierno del Chaco autorizó de manera excepcional la inasistencia del personal de la administración pública provincial que deba trabajar durante la tarde de este miércoles. La medida fue comunicada mediante el Memorándum N.º 3 de la Secretaría General de la Gobernación, firmado por Julio Ferro y dirigido a todos los ministerios y secretarías dependientes del Poder Ejecutivo provincial. Según consignan medios locales, el documento establece que se justificará la inasistencia del personal que presta servicios en el turno vespertino, y cuyo horario coincida con el desarrollo del partido. En tanto, la Municipalidad de Comodoro Rivadavia, provincia de Chubut, también dispuso un asueto excepcional para este miércoles, en relación al partido que Argentina e Inglaterra protagonizarán esta tarde por la Copa del Mundo. A través de un memorándum emitido por la Subsecretaría de Recursos Humanos, el intendente Othar Macharashvili autorizó el retiro anticipado del personal municipal a partir de las 14, dos horas antes del inicio del encuentro.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="POLITICA" data-search="Santilli gana poder y acumula nuevas áreas bajo su órbita: los otros movimientos subterráneos que decidió el Gobierno El Gobierno dispuso por decreto que Diego Santilli concentre el control de ENACOM y la Agencia de Acceso a la Información Pública (AAIP), mientras Arsat y el Correo Argentino pasarán a la órbita de su vicejefe y mano derecha Gustavo Coria, un movimiento que fortalece la estructura propia y de quienes están alineados con Karina Milei. Infobae">
@@ -923,78 +1086,65 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>El Gobierno dispuso por decreto que Diego Santilli concentre el control de ENACOM y la Agencia de Acceso a la Información Pública (AAIP), mientras Arsat y el Correo Argentino pasarán a la órbita de su vicejefe y mano derecha Gustavo Coria, un movimiento que fortalece la estructura propia y de quienes están alineados con Karina Milei. La medida quedó formalizada en el Decreto 581, publicado este lunes en el Boletín Oficial con las firmas del presidente Javier Milei y de Santilli. La reorganización se produce alrededor de la Jefatura de Gabinete y de las dos secretarías comunicacionales que dependen del Presidente. Los cambios se producen después de que el jefe de Gabinete, Diego Santilli, presentara su propuesta de estructura frente a los hermanos Milei y le fuera aprobado. “No creamos más áreas, sino que reordenamos al interior de la Jefatura y redujimos direcciones, subsecretarías y cargos por el traspaso del Ministerio del Interior a nuestra órbita”, comentó una fuente inobjetable a Infobae. La reorganización saca de la Secretaría de Innovación, Ciencia y Tecnología esos cuatro organismos y empresas, que hasta ahora dependían del área conducida por Darío Genua, alguien que llegó a la administración nacional por recomendación de Rodrigo Lugones, socio del asesor presidencial Santiago Caputo en la consultora Move. El cambio se produce mientras Arsat atraviesa el impacto de una causa judicial sobre su conducción anterior. Durante los allanamientos, la Justicia secuestró USD 2,4 millones en efectivo, además de drogas y equipos de espionaje, en propiedades del expresidente de la empresa Facundo Leal. El dato central del decreto es que Santilli pasa a controlar de manera directa áreas de altísimo componente estratégico como son las telecomunicaciones, a través de ENACOM; y la agencia que controla qué información es pasible de ser revelada desde el Poder Ejecutivo o no, la AAIP. Ambas estructuras responden directamente al jefe de Gabinete, ni siquiera a sus vicejefes. En tanto, Coria tendrá la responsabilidad sobre la conectividad terrestre y satelital que provee la empresa pública Arsat, así como el Correo Argentino, que tiene una importancia fundamental al momento de mirar la logística de lo que serán las próximas elecciones nacionales, ya que es la compañía de logística que ayuda al traslado de urnas y todos los elementos necesarios para poder llevar a cabo esa jornada.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
-                <article class="card" data-categoria="POLITICA" data-search="Facundo Tignanelli pidió desdramatizar la discusión política y aseguró que Cristina Kirchner será candidata El diputado bonaerense y dirigente de La Cámpora, Facundo Tignanelli, pidió desdramatizar la discusión política y aseguró que se trabaja para que Cristina Kirchner sea candidata presidencial. Reconoció desilusión con el vínculo con Axel Kicillof. Infobae">
-                    <h3>Facundo Tignanelli pidió desdramatizar la discusión política y aseguró que Cristina Kirchner será candidata</h3>
-                    <p>El diputado bonaerense y dirigente de La Cámpora, Facundo Tignanelli, pidió desdramatizar la discusión política y aseguró que se trabaja para que Cristina Kirchner sea candidata presidencial. Reconoció desilusión con el vínculo con Axel Kicillof.</p>
+                <article class="card" data-categoria="POLITICA" data-search="A horas de la semifinal Argentina-Inglaterra, Victoria Villarruel redobló la apuesta y apuntó contra Karina Milei Horas antes del inicio del partido entre Argentina e Inglaterra por la semifinal del Mundial 2026 la vicepresidenta Victoria Villarruel volvió a pronunciarse sobre la cuestión Malvinas en sus redes sociales y aprovechó la oportunidad para meter una chicana contra la secretaria general de la presidencia y líder de La Libertad Avanza Karina Milei. Clarín">
+                    <h3>A horas de la semifinal Argentina-Inglaterra, Victoria Villarruel redobló la apuesta y apuntó contra Karina Milei</h3>
+                    <p>Horas antes del inicio del partido entre Argentina e Inglaterra por la semifinal del Mundial 2026 la vicepresidenta Victoria Villarruel volvió a pronunciarse sobre la cuestión Malvinas en sus redes sociales y aprovechó la oportunidad para meter una chicana contra la secretaria general de la presidencia y líder de La Libertad Avanza Karina Milei.</p>
                     <div class="sources">
         
-                        <a href="https://www.infobae.com/politica/2026/07/15/facundo-tignanelli-pidio-desdramatizar-la-discusion-politica-y-aseguro-estamos-trabajando-para-que-cristina-sea-candidata/" target="_blank" rel="noopener noreferrer" class="chip infobae">
-                            Leer en Infobae
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA" data-search="Denunciaron al juez federal de Formosa que viajó al mundial porque lo hizo sin autorización para salir del país El juez federal de Formosa Pablo Morán fue denunciado por haber viajado al mundial de fútbol para ver a la selección argentina sin autorización para salir del país y con la sospecha que desde el exterior hizo una audiencia judicial algo que está expresamente prohibido por el reglamento de la justicia nacional. Clarín">
-                    <h3>Denunciaron al juez federal de Formosa que viajó al mundial porque lo hizo sin autorización para salir del país</h3>
-                    <p>El juez federal de Formosa Pablo Morán fue denunciado por haber viajado al mundial de fútbol para ver a la selección argentina sin autorización para salir del país y con la sospecha que desde el exterior hizo una audiencia judicial algo que está expresamente prohibido por el reglamento de la justicia nacional.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/politica/denunciaron-juez-federal-formosa-viajo-mundial-hizo-autorizacion-salir-pais_0_WG9lWJ63vl.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                        <a href="https://www.clarin.com/politica/horas-semifinal-argentina-inglaterra-victoria-villarruel-redoblo-apuesta-apunto-karina-milei_0_XWuOB32jBx.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
                             Leer en Clarín
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>Horas antes del inicio del partido entre Argentina e Inglaterra por la semifinal del Mundial 2026 la vicepresidenta Victoria Villarruel volvió a pronunciarse sobre la cuestión Malvinas en sus redes sociales y aprovechó la oportunidad para meter una chicana contra la secretaria general de la presidencia y líder de La Libertad Avanza Karina Milei.Todo comenzó con un posteo que Villarruel realizó anoche en X donde decidió distanciarse de la postura oficial del Gobierno y consideró que el encuentro Argentina-Inglaterra de esta tarde &quot;no es un partido más&quot; sino que se trata de &quot;jugar contra los piratas usurpadores&quot;.Este mediodía en la previa del partido decidió responder a algunos usuarios de la red social que se expresaron en desacuerdo con sus declaraciones.&quot;El deporte es expresión cultural y política de los pueblos y más aún el fútbol. ¿Cómo no vamos a mencionar que esta gente invadió nuestra tierra mató argentinos para sostener esa invasión y hoy sigue cruzando alegremente nuestro Mar sin pedir permiso y usando y abusando de nuestros recursos y que nadie lo diga?&quot; dijo la Vicepresidenta en uno de sus posteos.En otra publicación recordó que su padre un militar que combatió en la guerra de 1982 &quot;también fue a Malvinas&quot; y le enseñó &quot;que quien te invade más de 1 vez como lo hicieron los piratas siempre es un enemigo&quot;.&quot;No seamos tan tibios de creer que esto es solo fútbol porque mientras ellos limitan esto al fútbol siguen en nuestras Islas se meten en nuestro Mar y cruzan nuestro territorio sin permiso usurpan nuestros recursos y todo el mundo calladito. Nunca oculté como pienso no lo voy a hacer siendo vicepresidente solo para ser políticamente correcta&quot; continuó.Ante el cuestionamiento de otra usuaria que le reclamó &quot;mesura y respeto&quot; le dijo: &quot;Vos te acordás de Malvinas una vez al año yo las tengo en la carne desde 1982. No hay día que me olvide de las Islas Malvinas. No hay día que no me sienta honrada por ser hija de un Veterano de Malvinas&quot;.Otra usuaria en una sintonía más afín a las declaraciones de Villarruel le preguntó irónicamente &quot;si Karina ya se fue a disculpar a la embajada de Inglaterra&quot;.&quot;Seguramente vaya un día de estos. Ella lleva los scones&quot; respondió la Vicepresidenta que ya no oculta la fuerte interna que hay en el Gobierno.Ante el cuestionamiento de algunos usuarios defendió su rol como vicepresidenta y titular del Senado: &quot;Trabajo con honestidad y patriotismo en la función que me delegó la Constitución Nacional. Y mientras vos me reclamas a mí fíjate que mañana varios senadores van a votar la venta ilimitada de tierras a extranjeros.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
-                <article class="card" data-categoria="POLITICA" data-search="Varios intendentes planean sus sucesiones con esposas y hermanos mientras esperan retocar la ley de reelecciones indefin Muchos dirigentes políticos marcaron la finalización del Mundial como plazo para empezar a definir cuestiones electorales pero el intendente de Avellaneda Jorge Ferraresi se adelantó. Como parte de su precandidatura a gobernador renunció al municipio y asumió su esposa Magdalena Sierra probable candidata el año que viene. Clarín">
-                    <h3>Varios intendentes planean sus sucesiones con esposas y hermanos mientras esperan retocar la ley de reelecciones indefin</h3>
-                    <p>Muchos dirigentes políticos marcaron la finalización del Mundial como plazo para empezar a definir cuestiones electorales pero el intendente de Avellaneda Jorge Ferraresi se adelantó. Como parte de su precandidatura a gobernador renunció al municipio y asumió su esposa Magdalena Sierra probable candidata el año que viene.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/politica/varios-intendentes-planean-sucesiones-esposas-hermanos-esperan-retocar-ley-reelecciones-indefinidas-provincia_0_tQ70Ncoeny.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA" data-search="Corrupción en la AFA: en una insólita decisión judicial, habilitaron a que vuelva a revisarse quién investigará la causa La justicia volverá a analizar qué juez debe investigar la compra de la mansión de Pilar que se le atribuye al tesorero de la Asociación del Fútbol Argentino (AFA) Pablo Toviggino. El expediente ya pasó por cuatro magistrados. Fuentes judiciales informaron a Clarín que la Cámara Federal de Casación aceptó tratar una apelación de Luciano Pantano y su madre jubilada Ana Lucía Conte -quienes figuran formalmente como Clarín">
-                    <h3>Corrupción en la AFA: en una insólita decisión judicial, habilitaron a que vuelva a revisarse quién investigará la causa</h3>
-                    <p>La justicia volverá a analizar qué juez debe investigar la compra de la mansión de Pilar que se le atribuye al tesorero de la Asociación del Fútbol Argentino (AFA) Pablo Toviggino. El expediente ya pasó por cuatro magistrados. Fuentes judiciales informaron a Clarín que la Cámara Federal de Casación aceptó tratar una apelación de Luciano Pantano y su madre jubilada Ana Lucía Conte -quienes figuran formalmente como</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/politica/corrupcion-afa-insolita-decision-judicial-habilitaron-vuelva-revisarse-investigara-causa-mansion-pilar_0_rxNWqMnAWr.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA" data-search="El Gobierno nombró jueza a la esposa del magistrado del caso $Libra El gobierno nacional de Javier Milei designó este miércoles como jueza federal a Ana María Juan esposa de Marcelo Martínez De Giorgi el magistrado que tiene la causa contra el Presidente por la presunta estafa con la criptomoneda $Libra. Clarín">
-                    <h3>El Gobierno nombró jueza a la esposa del magistrado del caso $Libra</h3>
-                    <p>El gobierno nacional de Javier Milei designó este miércoles como jueza federal a Ana María Juan esposa de Marcelo Martínez De Giorgi el magistrado que tiene la causa contra el Presidente por la presunta estafa con la criptomoneda $Libra.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/politica/gobierno-nombro-jueza-esposa-magistrado-caso-libra-frente-camara-apelaciones_0_3GiwgWnwRH.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="POLITICA" data-search="Minuto a minuto. Javier Milei y sus medidas: tensiones en el Gobierno y repercusiones por el partido de Argentina vs. In MENDOZA.- A través de una carta enviada a la embajada de Francia, el gobernador de Mendoza, Alfredo Cornejo, se despegó de su vice, Hebe Casado, y cuestionó sus polémicos dichos sobre la Selección gala de fútbol, a la que había calificado de “equipo africano”. En este sentido, el mandatario aseguró en su escrito que la provincia “rechaza plenamente toda manifestación de carácter discriminatorio”. La Nación">
-                    <h3>Minuto a minuto. Javier Milei y sus medidas: tensiones en el Gobierno y repercusiones por el partido de Argentina vs. In</h3>
-                    <p>MENDOZA.- A través de una carta enviada a la embajada de Francia, el gobernador de Mendoza, Alfredo Cornejo, se despegó de su vice, Hebe Casado, y cuestionó sus polémicos dichos sobre la Selección gala de fútbol, a la que había calificado de “equipo africano”. En este sentido, el mandatario aseguró en su escrito que la provincia “rechaza plenamente toda manifestación de carácter discriminatorio”.</p>
+                <article class="card" data-categoria="POLITICA" data-search="Tensiones en el Gobierno y asuetos en Formosa por el partido de Argentina vs. Inglaterra El secretario de Estado norteamericano, Marco Rubio, anuncia una cumbre con la representación de 70 países, incluyendo la Argentina. En Argentina, el gobernador de Formosa, Gildo Insfrán, decreta asueto administrativo en la provincia para el partido entre la selección y Inglaterra, siendo el único gobernador en hacerlo. La Nación La Nación">
+                    <h3>Tensiones en el Gobierno y asuetos en Formosa por el partido de Argentina vs. Inglaterra</h3>
+                    <p>El secretario de Estado norteamericano, Marco Rubio, anuncia una cumbre con la representación de 70 países, incluyendo la Argentina. En Argentina, el gobernador de Formosa, Gildo Insfrán, decreta asueto administrativo en la provincia para el partido entre la selección y Inglaterra, siendo el único gobernador en hacerlo.</p>
                     <div class="sources">
         
                         <a href="https://www.lanacion.com.ar/politica/javier-milei-y-sus-medidas-en-vivo-tensiones-en-el-gobierno-y-repercusiones-por-el-partido-de-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
+                        <a href="https://www.lanacion.com.ar/politica/gildo-insfran-es-el-unico-gobernador-que-decreto-asueto-por-el-partido-contra-inglaterra-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>WASHINGTON.− El secretario de Estado norteamericano, Marco Rubio, será el anfitrión este jueves de una cumbre en esta capital que contará con la representación de unos 70 países, entre ellos la Argentina, en la que se abordarán estrategias para contrarrestar lo que la Casa Blanca considera un “resurgimiento del terrorismo político”. “Rubio invitó a representantes de diversas regiones, incluidas el hemisferio occidental, Europa y Asia”, señaló un vocero del Departamento de Estado a LA NACION, que supo que entre los participantes estará la Argentina. El principal representante del Gobierno en el encuentro será el canciller Pablo Quirno, que tiene actividad oficial prevista en Washington. El vocero del Departamento de Estado, Tommy Pigott, afirmó que la cumbre se organizó porque el terrorismo de extrema izquierda es “una vieja amenaza que resurge con fuertes vínculos transnacionales y nuevas convergencias”. Decidido a competir otra vez por la jefatura de Gobierno porteño, Horacio Rodríguez Larreta no descartó ayer una posible alianza con el peronismo de la Ciudad de Buenos Aires en las elecciones del año próximo. “Hoy no estoy buscando acuerdos, pero llegada la elección lo veremos”, respondió el exdirigente de Pro al ser consultado en Net TV sobre un posible acuerdo electoral con el PJ. En marzo, Rodríguez Larreta, que actualmente es legislador porteño, lanzó su propio espacio para 2027, que se llama “Metrópolis”. Por Denise Chmois En medio de las negociaciones del Gobierno para avanzar con la reforma electoral que impulsa en el Congreso, la opinión pública muestra un fuerte respaldo a la eliminación de las Primarias Abiertas Simultáneas y Obligatorias (PASO), elemento central del proyecto. El oficialismo promueve su derogación bajo el argumento del ahorro en el gasto público, mientras en la Casa Rosada consideran que la medida allanaría el camino de Javier Milei hacia la reelección en 2027. Encuestas recientes a las que tuvo acceso LA NACION revelan un apoyo marcado a la iniciativa. Los especialistas consultados señalaron tres motivos que explican los niveles de aprobación. Por un lado, el acuerdo con la reducción de los gastos del proceso electoral y el rechazo a votar en repetidas ocasiones durante un mismo año. Estas dos razones coinciden con los planteos que esgrime La Libertad Avanza (LLA).</p>
+                        </div>
+                    </details>
+    
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>El gobernador de Formosa, Gildo Insfrán (Partido Justicialista), decretó asueto administrativo en la administración pública provincial a partir de las 15, una hora antes del comienzo del partido entre la selección argentina y su par de Inglaterra por las semifinales del Mundial de fútbol. Es el único mandatario provincial que oficializó que parte de la jornada será no laborable. “Este gobierno entiende oportuno declarar asueto administrativo en el día de la fecha a partir de las 15:00 horas, en todo el territorio provincial e invitar a las municipalidades y comisiones de fomento, a los poderes Legislativo y Judicial, como así también a las instituciones bancarias -públicas y privadas- con asiento en la provincia, a adherirse a la presente medida”, sostuvo Insfrán en los considerandos del decreto con el que estableció el asueto, que lleva el número 140. Con la firma del gobernador y su jefe de Gabinete, Antonio Ferreira, en el decreto se indicó que el Mundial “es el torneo de fútbol más importante” y que el combinado nacional “disputará su encuentro contra la selección de fútbol de Inglaterra, en el marco de las semifinales de la mencionada copa mundial, el cual se llevará a cabo en la ciudad de Atlanta, Estados Unidos de América, a las 16:00 horas de nuestro país”. “Declárase asueto administrativo el día 15 de julio del corriente año a partir de las 15:00 horas, en todo el territorio de la provincia de Formosa”, se dispuso en el artículo 1º del decreto firmado por Insfrán. “Invítase a las municipalidades y comisiones de fomento, a los poderes Legislativo y Judicial, como así también a las instituciones bancarias -públicas y privadas- con asiento en la provincia, a adherirse a la presente medida”, se estableció en el segundo artículo de la norma. El resto de los gobernadores del país, y el jefe de gobierno porteño, optaron por no declarar asueto por el partido mundialista. La Asociación de Trabajadores del Estado (ATE) intentó, sin éxito, que el presidente Javier Milei eximiera de tareas a los empleados públicos este miércoles, a partir del mediodía. El secretario general del sindicato, Rodolfo Aguiar, enfrentado con el gobierno nacional, reclamó la medida porque “el encuentro entre ambos equipos en un Mundial supera el marco estrictamente deportivo” y “se trata de un encuentro de enorme trascendencia cultural e histórica para nuestro país y que moviliza el sentir nacional”.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="POLITICA" data-search="Quiénes la rechazan. La eliminación de las PASO se impone en las encuestas, pero no escapa a la grieta En medio de las negociaciones del Gobierno para avanzar con la reforma electoral que impulsa en el Congreso, la opinión pública muestra un fuerte respaldo a la eliminación de las Primarias Abiertas Simultáneas y Obligatorias (PASO), elemento central del proyecto. La Nación">
@@ -1007,18 +1157,106 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>En medio de las negociaciones del Gobierno para avanzar con la reforma electoral que impulsa en el Congreso, la opinión pública muestra un fuerte respaldo a la eliminación de las Primarias Abiertas Simultáneas y Obligatorias (PASO), elemento central del proyecto. El oficialismo promueve su derogación bajo el argumento del ahorro en el gasto público, mientras en la Casa Rosada consideran que la medida allanaría el camino de Javier Milei hacia la reelección en 2027. Encuestas recientes a las que tuvo acceso LA NACION revelan un apoyo marcado a la iniciativa. Los especialistas consultados señalaron tres motivos que explican los niveles de aprobación. Por un lado, el acuerdo con la reducción de los gastos del proceso electoral y el rechazo a votar en repetidas ocasiones durante un mismo año. Estas dos razones coinciden con los planteos que esgrime La Libertad Avanza (LLA). Por otra parte, el debate que se generó en los últimos meses en torno al asunto –que dividió las aguas en la dirigencia entre el apoyo oficialista y el rechazo opositor– explica que quienes se alinean con el Gobierno se hayan aglutinado en el respaldo a la eliminación de las PASO, y ocurra lo contrario con la oposición. La encuesta más reciente corresponde a Synopsis Consultores. La firma recolectó los datos entre el 7 y el 12 de julio y reveló que un 49,1% de los consultados está de acuerdo con que el año que viene no haya PASO, frente un 38,7% que se muestra en desacuerdo. Lucas Romero, director de la consultora, indicó que “la variable que mejor explica la postura de la gente es el sesgo partidario”, algo que –agregó– ocurre en la gran mayoría de los temas. “La mirada más favorable a la suspensión de las PASO se posiciona dentro del oficialismo, que es el que la está impulsando. La mirada más negativa se concentra en el voto opositor, que es el peronismo. En el resto, se ven matices”, sostuvo, en diálogo con LA NACION. El estudio muestra que el 82,5% de los votantes de LLA apoya la iniciativa. El 69,9% de los simpatizantes del peronismo está en desacuerdo. Distintos sectores de la oposición rechazaron el proyecto. Entre ellos, todas las variantes del justicialismo, pero también la oposición dialoguista, como Pro y la Unión Cívica Radical (UCR). Entienden que las PASO constituyen una herramienta útil para dirimir sus internas y candidatos de cara a las elecciones de 2027. En la misma línea, Mora Jozami, directora de la consultora Casa Tres, señaló que la eliminación de las PASO llega a un 70% de apoyo entre los votantes de Milei.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Rodríguez Larreta no descarta alianza con el PJ para las elecciones en la Ciudad El exjefe de gobierno porteño Horacio Rodríguez Larreta no descartó una posible alianza con el peronismo de la Ciudad de Buenos Aires para las elecciones del año próximo. Actualmente, Larreta es legislador porteño y lidera su propio espacio, &#x27;Metrópolis&#x27;, para competir en 2027. La Nación">
+                    <h3>Rodríguez Larreta no descarta alianza con el PJ para las elecciones en la Ciudad</h3>
+                    <p>El exjefe de gobierno porteño Horacio Rodríguez Larreta no descartó una posible alianza con el peronismo de la Ciudad de Buenos Aires para las elecciones del año próximo. Actualmente, Larreta es legislador porteño y lidera su propio espacio, &#x27;Metrópolis&#x27;, para competir en 2027.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/politica/horacio-rodriguez-larreta-no-descarto-una-alianza-con-el-pj-para-volver-a-competir-en-la-ciudad-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>Decidido a competir otra vez por la jefatura de Gobierno porteño, Horacio Rodríguez Larreta no descartó ayer una posible alianza con el peronismo de la Ciudad de Buenos Aires en las elecciones del año próximo. “Hoy no estoy buscando acuerdos, pero llegada la elección lo veremos”, respondió el exdirigente de Pro al ser consultado en Net TV sobre un posible acuerdo electoral con el PJ. En marzo, Rodríguez Larreta, que actualmente es legislador porteño, lanzó su propio espacio para 2027, que se llama “Metrópolis”. Desde hace meses, Rodríguez Larreta dice que se aboca a reunirse a diario con vecinos para moldear su agenda y convertirse en una oposición incómoda para Jorge Macri, quien ya anunció que buscará otro mandato a pesar de las rispideces con La Libertad Avanza (LLA). Es a Jorge Macri, su sucesor en 2023, a quien Larreta quiere desafiar en las urnas el año que viene. Por ahora, en esa contienda, también se tendrá que enfrentar con el peronismo y tal vez con LLA en caso de no sellar un acuerdo con Pro. En la Legislatura porteña, Rodríguez Larreta integra el bloque Confianza y Desarrollo, del que forman parte Guadalupe Tagliaferri y Emmanuel Ferrario, ambos de su círculo más íntimo, y los representantes de Confianza Pública (de Graciela Ocaña) y el Movimiento de Integración y Desarrollo (MID). La bancada tiene siete miembros y estará liderada por Ferrario, quien también se suele sumar a las recorridas barriales del exalcalde. Rodríguez Larreta observa cómo Jorge Macri se alinea con LLA, más allá de haber blanqueado su intención de ir por otro mandato. El exjefe de gobierno se entusiasma con la posibilidad de erigirse como el principal exponente de los sectores más moderados y hacerse un lugar entre los extremos de la polarización. “Estoy caminando solo con el equipo nuestro. Estoy en la Legislatura con Graciela Ocaña, con Emanuel Ferrario, con Guadalupe Tagliaferri. Anoche tuvimos una cena. Vino también Paula Oliveto y Maxi Ferraro. Gente con la que trabajé toda la vida. Yo creo en eso. No estoy buscando acuerdos. Cuando vos me preguntabas esto de ser el ganador muy temprano, uno de los problemas que tuve es que me rodeé de demasiados políticos. Lo digo yo, que vengo de la política, por supuesto. Después, llegada la elección, veremos. Pero hoy no. Hoy es otra cosa”, señaló Rodríguez Larreta cuando fue consultado por un hipotético acuerdo con el PJ.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Denunciaron al juez federal de Formosa que viajó al mundial porque lo hizo sin autorización para salir del país El juez federal de Formosa Pablo Morán fue denunciado por haber viajado al mundial de fútbol para ver a la selección argentina sin autorización para salir del país y con la sospecha que desde el exterior hizo una audiencia judicial algo que está expresamente prohibido por el reglamento de la justicia nacional. Clarín">
+                    <h3>Denunciaron al juez federal de Formosa que viajó al mundial porque lo hizo sin autorización para salir del país</h3>
+                    <p>El juez federal de Formosa Pablo Morán fue denunciado por haber viajado al mundial de fútbol para ver a la selección argentina sin autorización para salir del país y con la sospecha que desde el exterior hizo una audiencia judicial algo que está expresamente prohibido por el reglamento de la justicia nacional.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/politica/denunciaron-juez-federal-formosa-viajo-mundial-hizo-autorizacion-salir-pais_0_WG9lWJ63vl.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>El juez federal de Formosa Pablo Morán fue denunciado por haber viajado al mundial de fútbol para ver a la selección argentina sin autorización para salir del país y con la sospecha que desde el exterior hizo una audiencia judicial algo que está expresamente prohibido por el reglamento de la justicia nacional.La Cámara Federal de Resistencia tribunal superior del magistrado hizo una denuncia ante el Consejo de la Magistratura de la Nación y la Corte Suprema de Justicia de la Nación para que Morán sea investigado informaron a Clarín fuentes judiciales.La presidenta de la Cámara Rocío Alcalá le envió un informe a Horacio Rosatti presidente del Consejo y la Corte en el que dio cuenta que Morán tenía días de licencia pero no para irse del país lo que en una comunicación telefónica le reconoció a la magistrada. Ahora intervendrá el Consejo que es el órgano encargado de investigar la conducta de los jueces.En los últimos días circuló en redes sociales fotos de Morán en uno de los estadios en los que jugó la selección argentina en Estados Unidos. Morán juez federal de Formosa desde 2019 tiene vínculos con el fútbol: desde enero pasado es uno de los integrantes del Tribunal de Ética de la Asociación del Fútbol Argentino (AFA).No es el único funcionario público presente en el mundial. También se conocieron fotos del juez federal de Lomas de Zamora Federico Villena y del viceministro de justicia de la Nación Santiago Viola viaje que el gobierno de Javier Milei justificó.La denuncia de la Cámara de Resistencia señala que Morán pidió el 18 de junio pasado licencia para el 22 y 26 de ese mes y para el 3 6 y 7 de julio por razones particulares o para compensar trabajo que hizo en la feria judicial de 2023. Solicitó que sea con goce de sueldo. El tribunal aceptó el planteo.Lo que ocurrió es que el 24 de junio día que Morán debía estar en su tribunal no lo estaba. El fiscal federal Luis Benítez llamó a la Cámara para informar que no podía encontrar al juez y que necesitaba hacerlo para concretar una audiencia urgente en una causa judicial. El fiscal informó que según trascendidos Morán no estaba en el país.Sin embargo según los registros de la Oficina Judicial Central del Distrito Resistencia ese 24 de junio Morán había realizado una audiencia. No de manera presencial sino por videoconferencia. Al día siguiente -25 de junio que el juez también debía estar- una comisión de funcionarios enviada por la Cámara se presentó en el juzgado federal de Formosa. La secretaria privada de Morán les informó que no estaba.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Varios intendentes planean sus sucesiones con esposas y hermanos mientras esperan retocar la ley de reelecciones indefin Muchos dirigentes políticos marcaron la finalización del Mundial como plazo para empezar a definir cuestiones electorales pero el intendente de Avellaneda Jorge Ferraresi se adelantó. Como parte de su precandidatura a gobernador renunció al municipio y asumió su esposa Magdalena Sierra probable candidata el año que viene. Clarín">
+                    <h3>Varios intendentes planean sus sucesiones con esposas y hermanos mientras esperan retocar la ley de reelecciones indefin</h3>
+                    <p>Muchos dirigentes políticos marcaron la finalización del Mundial como plazo para empezar a definir cuestiones electorales pero el intendente de Avellaneda Jorge Ferraresi se adelantó. Como parte de su precandidatura a gobernador renunció al municipio y asumió su esposa Magdalena Sierra probable candidata el año que viene.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/politica/varios-intendentes-planean-sucesiones-esposas-hermanos-esperan-retocar-ley-reelecciones-indefinidas-provincia_0_tQ70Ncoeny.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>Muchos dirigentes políticos marcaron la finalización del Mundial como plazo para empezar a definir cuestiones electorales pero el intendente de Avellaneda Jorge Ferraresi se adelantó. Como parte de su precandidatura a gobernador renunció al municipio y asumió su esposa Magdalena Sierra probable candidata el año que viene. Este plan de sucesiones con un familiar se repite en varios distritos mientras esperan el cambio de la ley de reelecciones.Desde la &quot;Capital Nacional del Fútbol&quot; Ferraresi fue el primero en dar el puntapié para la carrera electoral bonaerense. Tiene varios competidores dentro del peronismo pero el conflicto de fondo es que hoy una ley le impide a 82 intendentes presentarse a un nuevo mandato en 2027. A la lista se suman varios legisladores y decenas y decenas de concejales y consejeros escolares.La posibilidad del cambio en esa ley entró en la interna del peronismo que aparece muy trabada. En el Movimiento Derecho al Futuro del gobernador Axel Kicillof insisten de manera pública en que quieren modificar la ley y confían en que lo lograrán. Del otro lado en La Cámpora no están en contra de modificar la ley pero quieren una discusión amplia que incluya el posible desdoblamiento electoral entre otros puntos.La discusión está trabada y como parte de la pelea entre el kirchnerismo más duro y el &quot;kicillofismo&quot; la vicegobernadora Verónica Magario ubicó a Malena Galmarini como presidenta de la comisión de &quot;Reforma Política y Régimen Electoral&quot;. La senadora de Tigre integra el Frente Renovador que impulsó el límite a las reelecciones junto con la ex gobernadora María Eugenia Vidal en 2016.os intendentes creen a Kicillof logrará aprobar la reforma de la ley pero por las dudas arman la sucesión. Y en el plan hereditario no solo los peronistas preparan a familiares para postularlos en sus cargos. Además de Ferraresi otra intendenta también empezó a recorrer la provincia. Mariel Fernández jefa comunal de Moreno camina el territorio bonaerense. Mientras en el municipio afloran los carteles con su foto y la de su hermano Emmanuel actual presidente del Concejo Deliberante. Falta menos de un año para el cierre de listas y si no se modifica la ley ahí podría estar la sucesión.En Campana el intendente macrista y corredor del Turismo Carretera Sebastián Abella acumula once años como intendente. Más allá del retoque o no de la ley anunció que no irá por un nuevo mandato. La candidata será su hermana Elisa la actual secretaria de Inclusión Educación y Cultura del municipio.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="POLITICA" data-search="Corrupción en la AFA: en una insólita decisión judicial, habilitaron a que vuelva a revisarse quién investigará la causa La justicia volverá a analizar qué juez debe investigar la compra de la mansión de Pilar que se le atribuye al tesorero de la Asociación del Fútbol Argentino (AFA) Pablo Toviggino. El expediente ya pasó por cuatro magistrados. Fuentes judiciales informaron a Clarín que la Cámara Federal de Casación aceptó tratar una apelación de Luciano Pantano y su madre jubilada Ana Lucía Conte -quienes figuran formalmente como Clarín">
+                    <h3>Corrupción en la AFA: en una insólita decisión judicial, habilitaron a que vuelva a revisarse quién investigará la causa</h3>
+                    <p>La justicia volverá a analizar qué juez debe investigar la compra de la mansión de Pilar que se le atribuye al tesorero de la Asociación del Fútbol Argentino (AFA) Pablo Toviggino. El expediente ya pasó por cuatro magistrados. Fuentes judiciales informaron a Clarín que la Cámara Federal de Casación aceptó tratar una apelación de Luciano Pantano y su madre jubilada Ana Lucía Conte -quienes figuran formalmente como</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/politica/corrupcion-afa-insolita-decision-judicial-habilitaron-vuelva-revisarse-investigara-causa-mansion-pilar_0_rxNWqMnAWr.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>La justicia volverá a analizar qué juez debe investigar la compra de la mansión de Pilar que se le atribuye al tesorero de la Asociación del Fútbol Argentino (AFA) Pablo Toviggino. El expediente ya pasó por cuatro magistrados.Fuentes judiciales informaron a Clarín que la Cámara Federal de Casación aceptó tratar una apelación de Luciano Pantano y su madre jubilada Ana Lucía Conte -quienes figuran formalmente como dueños de la propiedad pero se sospecha que son testaferros de Toviggino- que objetan que la causa la investigue la justicia en lo Penal Económico donde se encuentra actualmente.Para eso el tribunal fijó una audiencia para el próximo 12 de agosto a las 11:30 horas. Allí escuchará la postura de la defensa de Pantano y Conte y del fiscal general de Casación Mario Villar.Los acusados apelaron el fallo de la Cámara en lo Penal Económico que hace un mes ordenó que el caso esté a cargo del juzgado 10 de ese fuero hoy a cargo de Verónica Straccia. Pantano y Conte reclaman que el expediente vuelva al juez federal de Campana Adrián González Charvay. Quién debe investigar el caso está en discusión desde el inicio del expediente en diciembre pasado. Se investiga la compra de la mansión de 105 mil metros cuadrados con helipuerto y un galpón en el que se encontraron 54 autos de lujos y colección. La propiedad está a nombre de Real Central SA. una sociedad de Pantano y Conte pero que ninguno de los dos tiene la capacidad económica declarada para adquirirla. El primer juez del caso fue Daniel Rafecas que allanó la propiedad y encontró un bolso con el nombre de Toviggino una plaqueta del club Barracas Central en agradecimiento y que los 54 autos vehículos tenían cédulas azules –que autorizan a manejarlos- a nombre de familiares del tesorero de la AFA.Luego pasó a Marcelo Aguinsky magistrado del fuero Penal Económico quien planteó como hipótesis que la propiedad se compró con fondos de la AFA. Aguinsky determinó que Pantano tenía una tarjeta corporativa de la entidad con la gastaba 50 millones de pesos por mes y pagaba los Telepase de los autos. Pero la defensa de Pantano y Conte pidió que el caso pase a la justicia federal de Campana porque ese tribunal tiene jurisdicción sobre Pilar donde está la casa. El juez de la Cámara Federal de San Martín Alberto Lugones aceptó el planteo. Así el caso quedó a cargo de González Charvay.Pero todos los fiscales del caso objetaron esa decisión y apelaron para que intervenga Casación. Ese tribunal dijo que en rigor la decisión ante el planteo de los acusados no debió tomarla la Cámara de San Martín sino la Penal Económico.</p>
+                        </div>
+                    </details>
+    
                 </article>
         </div></section>
             <section class="categoria-section" data-categoria="INTERNACIONAL">
                 <div class="section-heading">
                     <h2>Internacional</h2>
-                    <span>9 noticias</span>
+                    <span>8 noticias</span>
                 </div>
                 <div class="news-grid">
             
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Ucrania atacó a 19 petroleros rusos en el mar de Azov y elevó a 136 los buques alcanzados en la zona Ucrania atacó 19 petroleros rusos durante la noche en el mar de Azov y elevó a 136 buques el total de embarcaciones alcanzadas en diez días, en una ofensiva dirigida contra la flota que sostiene el abastecimiento de Crimea. La nueva oleada coincidió con el Día de la Estatalidad de Ucrania, una fecha con la que Kiev reivindicó más de 1. Infobae Infobae Infobae">
-                    <h3>Ucrania atacó a 19 petroleros rusos en el mar de Azov y elevó a 136 los buques alcanzados en la zona</h3>
-                    <p>Ucrania atacó 19 petroleros rusos durante la noche en el mar de Azov y elevó a 136 buques el total de embarcaciones alcanzadas en diez días, en una ofensiva dirigida contra la flota que sostiene el abastecimiento de Crimea. La nueva oleada coincidió con el Día de la Estatalidad de Ucrania, una fecha con la que Kiev reivindicó más de 1.</p>
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Ucrania atacó a 19 petroleros rusos en el mar de Azov y elevó a 136 los buques alcanzados en la zona, mientras Estados Unidos desvió dos buques desde que retomó el bloqueo a los Ucrania atacó a 19 petroleros rusos en el mar de Azov, elevando a 136 los buques alcanzados en la zona. Mientras tanto, Estados Unidos desvió dos buques desde que retomó el bloqueo a los puertos de Irán y el régimen iraní elevó a 12 años la condena al británico Craig Foreman por espionaje. Infobae Infobae Infobae La Nación">
+                    <h3>Ucrania atacó a 19 petroleros rusos en el mar de Azov y elevó a 136 los buques alcanzados en la zona, mientras Estados Unidos desvió dos buques desde que retomó el bloqueo a los</h3>
+                    <p>Ucrania atacó a 19 petroleros rusos en el mar de Azov, elevando a 136 los buques alcanzados en la zona. Mientras tanto, Estados Unidos desvió dos buques desde que retomó el bloqueo a los puertos de Irán y el régimen iraní elevó a 12 años la condena al británico Craig Foreman por espionaje.</p>
                     <div class="sources">
         
                         <a href="https://www.infobae.com/america/mundo/2026/07/15/ucrania-ataco-a-19-petroleros-rusos-en-el-mar-de-azov-y-elevo-a-136-los-buques-alcanzados-en-la-zona/" target="_blank" rel="noopener noreferrer" class="chip infobae">
@@ -1033,23 +1271,40 @@
                             Leer en Infobae
                         </a>
             
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="La NASA presenta detalles de Artemis III, la misión más compleja en años La NASA presentó oficialmente los detalles de Artemis III, una misión que promete convertirse en una de las operaciones espaciales más complejas de las últimas décadas. El astronauta italiano Luca Parmitano, piloto de la misión, expresó su expectativa de encontrar algo italiano en el menú durante la misión prevista para 2027. La Nación La Nación">
-                    <h3>La NASA presenta detalles de Artemis III, la misión más compleja en años</h3>
-                    <p>La NASA presentó oficialmente los detalles de Artemis III, una misión que promete convertirse en una de las operaciones espaciales más complejas de las últimas décadas. El astronauta italiano Luca Parmitano, piloto de la misión, expresó su expectativa de encontrar algo italiano en el menú durante la misión prevista para 2027.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/el-mundo/luca-parmitano-piloto-de-la-mision-artemis-iii-al-ser-presentado-espero-tener-algo-italiano-en-el-nid13072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                        <a href="https://www.lanacion.com.ar/el-mundo/tres-cohetes-y-cuatro-astronautas-como-sera-artemis-iii-la-mision-mas-compleja-de-la-nasa-en-anos-nid14072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                        <a href="https://www.lanacion.com.ar/el-mundo/iran-amenaza-con-cerrar-un-segundo-paso-maritimo-clave-y-llevar-la-guerra-al-mar-rojo-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
                             Leer en La Nación
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Ucrania atacó 19 petroleros rusos durante la noche en el mar de Azov y elevó a 136 buques el total de embarcaciones alcanzadas en diez días, en una ofensiva dirigida contra la flota que sostiene el abastecimiento de Crimea. La nueva oleada coincidió con el Día de la Estatalidad de Ucrania, una fecha con la que Kiev reivindicó más de 1.000 años de tradición estatal y buscó rebatir la afirmación de Vladimir Putin de que Ucrania forma parte de Rusia. El cambio de táctica sorprendió a las fuerzas rusas y se apoyó en drones marinos. La operación golpeó 17 petroleros y dos gaseros en una sola noche. El impacto acumulado causó graves daños a la capacidad de Moscú para abastecer la península ucraniana anexionada. Rusia respondió con bombardeos sobre puertos ucranianos Un día antes, Ucrania destruyó el Izumrud, un patrullero de 205 pies del servicio de seguridad FSB en el mar Negro. La respuesta rusa llegó con ataques masivos contra instalaciones portuarias ucranianas. Al menos tres personas murieron en Odesa por ataques con misiles y drones. El ministerio de Defensa de Rusia dijo que había atacado los puertos de Odesa y Chornomorsk, además de depósitos de combustible e instalaciones de producción de drones. Moscú afirmó también que alcanzó cuatro buques navales que transportaban carga para las Fuerzas Armadas de Ucrania. En el puerto de Pivdennyi, en la región de Odesa, se declaró un gran incendio tras un ataque ruso. Lituania alertó sobre planes rusos contra infraestructura Ucrania dijo que Rusia golpeó dos buques civiles con banderas de Tanzania y Liberia, con un capitán muerto. Otra embarcación con bandera de las Islas Marshall recibió dos impactos y dejó dos muertos. La escalada coincidió con una advertencia de Lituania sobre posibles ataques rusos contra infraestructura. El presidente Gitanas Nauseda dijo en una entrevista publicada el miércoles por BNS que su país recibió señales de inteligencia y reforzaría la seguridad en sitios energéticos y de transporte. Nauseda precisó que no tenía información sobre el lugar ni el momento de esos ataques y tampoco dijo que Lituania fuera el objetivo. El mandatario sostuvo que las señales apuntaban a medios destinados a dañar físicamente infraestructura crítica y a interrumpir su funcionamiento inmediato. Lituania, miembro de la OTAN, comparte frontera terrestre con el enclave ruso de Kaliningrado y con Bielorrusia, aliada de Moscú. Desde la invasión rusa de Ucrania en 2022, el país triplicó su gasto en defensa.</p>
+                        </div>
+                    </details>
+    
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>La familia del británico Craig Foreman dijo que un juez de Irán le sumó dos años de prisión después de acusarlo de haber hablado con medios de comunicación, mientras cumple una condena de 10 años por espionaje junto con su esposa Lindsay Foreman. El nuevo castigo llegó después de que la pareja fuera arrestada en 2025 durante un viaje en motocicleta por Irán como parte de una vuelta al mundo. El gobierno de Reino Unido calificó la condena original como “totalmente injustificable”. Joe Bennett, hijo de Lindsay Foreman y portavoz de la familia, afirmó que recibieron informes de que Craig Foreman fue llevado ante un juez y notificado de la ampliación de su pena por haber hablado con la prensa. Bennett sostuvo que a Foreman le dijeron que iba a ver a su abogado, pero que en lugar de eso fue conducido ante un juez. Allí, según la declaración familiar, le informaron la sentencia adicional. Craig Foreman recibió la nueva pena por un contacto con los medios, de acuerdo con el relato de su familia. La consecuencia inmediata fue que su condena total pasó de 10 a 12 años. La familia denunció falta de defensa y traducción El portavoz también aseguró que Foreman no tuvo acceso a un abogado ni a un traductor. Añadió que no se le dio ninguna oportunidad de defenderse. Craig y Lindsay Foreman cumplen una condena de 10 años por cargos de espionaje que ambos niegan. Fueron detenidos mientras atravesaban Irán en motocicleta durante su viaje alrededor del mundo. El mes pasado la pareja británica perdió la apelación contra su condena. Ninguno pudo asistir a la audiencia ni recibió explicación sobre el rechazo del recurso. Se les pidió firmar documentos en persa que no podían leer. “No se les permitió asistir a su propia audiencia de apelación”, declaró Joe Bennett, hijo de Lindsay. La abogada Haydee Dijkstal, parte del equipo legal en el Reino Unido, afirmó que se trata de “turistas inocentes detenidos arbitrariamente y cuyos derechos fundamentales han sido violados grave y sistemáticamente durante su detención”. El caso fue remitido al Tribunal Supremo de Irán, aunque la familia desconoce los plazos, el proceso y si habrá representación legal efectiva. El Poder Judicial iraní no respondió a las solicitudes de comentarios. Las comunicaciones de la pareja con el exterior fueron cortadas hace más de un mes, tras una entrevista que concedieron a la BBC. Desde entonces, ambos iniciaron una huelga de hambre en protesta. El último contacto consular tuvo lugar en diciembre. Craig, carpintero de profesión, lleva 25 días sin ingerir alimentos y solo consume azúcar, leche y agua.</p>
+                        </div>
+                    </details>
+    
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Miércoles de escalada en el conflicto entre Estados Unidos e Irán: Washington llevó a cabo una nueva oleada de ataques contra objetivos militares iraníes y reforzó el bloqueo a los puertos del país persa, mientras Teherán respondió con ataques contra aliados de Washington en el Golfo y reiteró que el estrecho de Ormuz permanecerá cerrado “hasta que Estados Unidos ponga fin a su agresión”. El Comando Central de Estados Unidos (CENTCOM) informó que sus fuerzas atacaron decenas de blancos militares en Irán durante una operación de siete horas, con aviones de combate, drones y buques que lanzaron municiones de precisión contra sitios de misiles y drones, capacidades navales y sistemas de defensa costera. El objetivo, según la fuerza estadounidense, es degradar la capacidad iraní de amenazar el tráfico comercial marítimo en el estrecho de Ormuz. Entre los ataques, la ciudad portuaria de Bushehr, sede de la única planta nuclear civil del país, fue alcanzada en tres puntos, mientras que un bombardeo contra un cuartel cerca de Iranshahr, en el sudeste iraní, dejó siete militares muertos, según el ejército de ese país. Irán, por su parte, atacó bases y objetivos estadounidenses en Jordania, Kuwait y Bahrein, y los Guardianes Revolucionarios advirtieron que el cierre de Ormuz podría extenderse a otras rutas de exportación de petróleo y gas de la región. En paralelo, Bahrein aseguró haber interceptado un nuevo ataque aéreo iraní, mientras se confirmó la muerte de un marino indio desaparecido tras el ataque al buque GFS Galaxy frente a las costas de Omán, y la Justicia iraní ejecutó a un manifestante condenado por participar en las protestas antigubernamentales de principios de año. A continuación, la cobertura minuto a minuto: Irán dice estar enfocado en la defensa y no en negociaciones La agencia semioficial iraní Tasnim difundió declaraciones del vocero de la cancillería iraní, Esmaeil Baghaei, quien afirmó que las fuerzas armadas del país demostraron que cualquier agresión será respondida de forma recíproca. “No tenemos planes de negociación por el momento y estamos enfocados en la defensa”, agregó el funcionario. Baghaei sostuvo que el alto el fuego provisional acordado el mes pasado constituye un conjunto de obligaciones mutuas y que, mientras Estados Unidos continúe incumpliendo sus compromisos bajo ese acuerdo, Irán se abstendrá de cumplir con los propios. EEUU niega haber atacado un depósito civil de trigo en Irán El ejército de Estados Unidos rechazó este miércoles versiones que aseguraban que sus fuerzas habían atacado un depósito civil de trigo en Irán.</p>
+                        </div>
+                    </details>
+    
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>BEIRUT.– Después de haber estrangulado el tráfico marítimo a través del estrecho de Ormuz, Irán da señales de que podría jugar su carta más peligrosa hasta ahora: utilizar a sus aliados hutíes de Yemen para cerrar el paso de Bab el-Mandeb, la puerta de entrada al mar Rojo, lo que abriría un nuevo frente contra Washington y pondría en riesgo dos de las arterias energéticas más importantes del mundo: esa y el estrecho de Ormuz. A medida que los ataques estadounidenses se intensifican dentro de Irán y las ofensivas hutíes aumentan en paralelo, los analistas sostienen que Teherán está ampliando el conflicto y busca incrementar la presión sobre Washington al extender la amenaza contra el comercio mundial y el suministro de energía más allá del Golfo. Irán ya demostró el poder de su activo estratégico más valioso al interrumpir el tránsito por el estrecho de Ormuz. Ahora parece dispuesto a abrir un segundo foco de presión en Bab el-Mandeb, el angosto paso marítimo que conecta el mar Rojo con el golfo de Adén y por el que transitan las exportaciones petroleras sauditas y una parte significativa del comercio marítimo mundial. Un alto funcionario yemení advirtió el lunes que las fuerzas armadas del país estaban preparadas para cerrar el estrecho de Bab el-Mandeb —una medida que, según dijo, podría disparar el precio del petróleo hasta los 200 dólares por barril— si Arabia Saudita continuaba atacando Yemen, de acuerdo con un informe publicado por el sitio iraní Press TV. Mohammed al-Farah, integrante de la oficina política de Ansarullah, el movimiento de resistencia hutí, afirmó que Washington estaba incitando a Arabia Saudita a atacar Yemen y sostuvo que una provocación de ese tipo nunca beneficiaría a Estados Unidos. “Si la situación actual se agrava, el estrecho de Bab el-Mandeb y el estrecho de Ormuz serán cerrados como parte de una alianza operativa. Los precios del petróleo se dispararían entonces hasta los 200 dólares por barril en un impacto devastador”, advirtió. Si Ormuz representa la principal palanca estratégica de Teherán, Bab el-Mandeb podría ser su último gran recurso de reserva, según los analistas. “Irán está dispuesto a llegar hasta el final”, dijo el especialista en Medio Oriente Fawaz Gerges. Según explicó, Teherán intenta demostrarle a Washington que puede amenazar simultáneamente ambos pasos marítimos, transformando el conflicto de una confrontación bilateral en un desafío para las rutas marítimas sobre las que se sostiene el comercio energético mundial. “Ahora (Teherán) está escalando tanto cerca como lejos.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="INTERNACIONAL" data-search="“No es una producción de Hollywood, es real”. Un analista internacional detalló la nueva estrategia de EE.UU. para enfre Estados Unidos intensificó su ofensiva contra Irán mediante el despliegue de drones marinos y botes a control remoto, una nueva táctica militar, que ya tuvo pruebas en el conflicto de Ucrania, busca optimizar recursos ante una preocupante reducción en el inventario de misiles del Pentágono. La Nación">
@@ -1062,66 +1317,14 @@
                         </a>
             
                     </div>
-                </article>
         
-                <article class="card" data-categoria="INTERNACIONAL" data-search="&quot;Quiero que ganen&quot;. Un periodista chileno defendió a la Argentina en la previa del partido contra Inglaterra En medio de un contexto de duras críticas de los medios internacionales hacia la Argentina en el Mundial 2026, un periodista chileno reafirmó su apoyo al equipo que este miércoles se enfrentará a Inglaterra por un lugar en la final del domingo, aseguró que quiere que la selección se consagre campeona del mundo y habló de “argentinofobia”. La Nación">
-                    <h3>&quot;Quiero que ganen&quot;. Un periodista chileno defendió a la Argentina en la previa del partido contra Inglaterra</h3>
-                    <p>En medio de un contexto de duras críticas de los medios internacionales hacia la Argentina en el Mundial 2026, un periodista chileno reafirmó su apoyo al equipo que este miércoles se enfrentará a Inglaterra por un lugar en la final del domingo, aseguró que quiere que la selección se consagre campeona del mundo y habló de “argentinofobia”.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.lanacion.com.ar/el-mundo/un-periodista-chileno-defendio-a-la-argentina-en-la-previa-del-partido-contra-inglaterra-nid15072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
-                            Leer en La Nación
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Keir Starmer se despide en la previa del duelo ante Argentina: &quot;Este es el final de mi trayectoria política&quot; Con Downing Street embanderada para el partido entre Argentina e Inglaterra el primer ministro laborista Sir Keir Starmer pasó su último día en el cargo tras su renuncia apremiado por el alcalde de Mánchester Andy Burnham que aspiraba a ocupar su puesto ante el crecimiento de la ultraderecha en el país. Clarín">
-                    <h3>Keir Starmer se despide en la previa del duelo ante Argentina: &quot;Este es el final de mi trayectoria política&quot;</h3>
-                    <p>Con Downing Street embanderada para el partido entre Argentina e Inglaterra el primer ministro laborista Sir Keir Starmer pasó su último día en el cargo tras su renuncia apremiado por el alcalde de Mánchester Andy Burnham que aspiraba a ocupar su puesto ante el crecimiento de la ultraderecha en el país.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/mundo/keir-starmer-despide-previa-duelo-argentina-final-trayectoria-politica_0_tSnaAegRzq.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince. Clarín">
-                    <h3>Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata</h3>
-                    <p>Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/mundo/oleada-calor-italia-45-grados-sicilia-cerdena-alerta-roja-15-ciudades-riesgo-muertes-deshidratacion_0_MvjTep7FzU.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="El Salvador: con un pedido de miles de años de cárcel termina el juicio masivo a los jefes de la pandilla Mara Salvatruc El juicio colectivo contra jefes de la pandilla Mara Salvatrucha (MS-13) en El Salvador concluyó este martes luego de tres meses de audiencias en las que la fiscalía pidió miles de años de prisión contra los procesados. Se trata del primer juicio masivo contra los mandos de una pandilla entre ellos los 22 miembros de la llamada &quot;ranfla histórica&quot; la cúpula del grupo conformada por los veteranos de esta organización Clarín">
-                    <h3>El Salvador: con un pedido de miles de años de cárcel termina el juicio masivo a los jefes de la pandilla Mara Salvatruc</h3>
-                    <p>El juicio colectivo contra jefes de la pandilla Mara Salvatrucha (MS-13) en El Salvador concluyó este martes luego de tres meses de audiencias en las que la fiscalía pidió miles de años de prisión contra los procesados. Se trata del primer juicio masivo contra los mandos de una pandilla entre ellos los 22 miembros de la llamada &quot;ranfla histórica&quot; la cúpula del grupo conformada por los veteranos de esta organización</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/mundo/salvador-pedido-miles-anos-carcel-termina-juicio-masivo-jefes-pandilla-mara-salvatrucha_0_fXAIY0brp9.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
-                </article>
-        
-                <article class="card" data-categoria="INTERNACIONAL" data-search="&quot;Gracias por la atención&quot;: Rajoy redobló su apuesta tras las duras críticas por afirmar que la selección de Francia jueg Tras el triunfo de España ante Francia en las semifinales de la Copa del Mundo el expresidente ibérico Mariano Rajoy volvió a polemizar con sus declaraciones sobre la selección que dirige Didier Deschamps y aprovechó también para criticar al gobierno de Pedro Sánchez. Clarín">
-                    <h3>&quot;Gracias por la atención&quot;: Rajoy redobló su apuesta tras las duras críticas por afirmar que la selección de Francia jueg</h3>
-                    <p>Tras el triunfo de España ante Francia en las semifinales de la Copa del Mundo el expresidente ibérico Mariano Rajoy volvió a polemizar con sus declaraciones sobre la selección que dirige Didier Deschamps y aprovechó también para criticar al gobierno de Pedro Sánchez.</p>
-                    <div class="sources">
-        
-                        <a href="https://www.clarin.com/deportes/gracias-atencion-rajoy-redoblo-apuesta-duras-criticas-afirmar-seleccion-francia-juega-franceses_0_NJHGVpTIdb.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
-                            Leer en Clarín
-                        </a>
-            
-                    </div>
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>Estados Unidos intensificó su ofensiva contra Irán mediante el despliegue de drones marinos y botes a control remoto, una nueva táctica militar, que ya tuvo pruebas en el conflicto de Ucrania, busca optimizar recursos ante una preocupante reducción en el inventario de misiles del Pentágono. En este contexto, el analista internacional Andrés Repetto en diálogo con LN+, advirtió sobre la naturaleza de estas operaciones: “Lo que estamos viendo no es una producción de Hollywood, es real. Por primera vez o de forma masiva Estados Unidos ataca con este tipo de tecnología. Sé que es mucho más barata que los misiles que empleó hasta ahora”. Según el analista, existe una realidad operativa que las autoridades mencionan poco: “Estados Unidos agota sus stocks de misiles, de todo tipo de misiles, y esto preocupa obviamente al Pentágono. Por eso ahora va a implementar drones y este tipo de botes a control remoto, para ser más específicos”. Para detallar el funcionamiento de estos drones, Repetto sostuvo que tienen dos efectos: “Desde lo militar pero también desde la propaganda, porque si nos muestran esta imagen es porque quieren que la veamos”. Al ser consultado sobre la efectividad técnica de estos dispositivos en comparación con el armamento convencional, aclaró: “No tienen la misma potencia, no tienen a veces la misma precisión, pero claramente acá hay una cuestión de costos y la idea era atacar y seguir atacando el estrecho de Ormuz”. Por ahora, los ataques se concentran en dicha zona estratégica y no muestran una intención de avanzar sobre Teherán. Las declaraciones de Donald Trump Sin embargo, la preocupación crece por la posibilidad de un ataque a una central nuclear ubicada en el centro de Irán, una instalación que se encuentra a 600 metros de profundidad bajo una montaña, una característica que complica cualquier operativo militar. “No estamos viendo siempre lo mismo. Estamos viendo un pozo que se cava cada vez más profundo y que puede no tener mucha aparente contención”, detalló Repetto y enseguida agregó: “Si hay material radioactivo debajo de la Tierra en esa central nuclear el riesgo puede ser muy pero muy grande, no estamos viendo todos los días lo mismo&quot;. En este contexto de incertidumbre, el presidente Donald Trump justificó el accionar estadounidense y criticó duramente al régimen iraní: “Hemos destruido a su ejército, los estamos golpeando muy fuerte. Teníamos un acuerdo ayer o anteayer, todo estaba hecho y luego rompieron ese acuerdo inmediatamente porque descubrieron que había algo en el acuerdo que no les gustaba.</p>
+                        </div>
+                    </details>
+    
                 </article>
         
                 <article class="card" data-categoria="INTERNACIONAL" data-search="Scaloni y Tuchel elogian a España tras semifinales del Mundial 2026 El técnico inglés Thomas Tuchel y el técnico argentino Lionel Scaloni elogian el rendimiento de España en la semifinal del Mundial 2026, destacando su capacidad para desenvolverse con seguridad y serenidad en un contexto de máxima presión. Infobae">
@@ -1134,6 +1337,125 @@
                         </a>
             
                     </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Infobae)</summary>
+                        <div class="full-text-body">
+                            <p>Tan solo una hora después de que España doblegara a Francia en las semifinales del Mundial 2026, Lionel Scaloni y Thomas Tuchel llegaban a la rueda de prensa previa al partido de semifinales entre Inglaterra y Argentina. Los de Luis de la Fuente que firmaron el mejor partido de todo el torneo, mostraron su mejor versión, esa que les llevó a conquistar la Eurocopa hace dos años, encandilaron a franceses y españoles por igual. La Roja lució un juego de inteligentísimo que no pasó inadvertido para sus posibles rivales en la final. El técnico inglés, Thomas Tuchel, fue uno de los primeros en tomar la palabra ante la prensa. Al ser consultado por Marca sobre el rendimiento de España, Tuchel explicó que pudo observar el primer tiempo del partido y no ahorró elogios hacia el equipo dirigido por Luis de la Fuente. “Pude ver la primera mitad del partido de España y fue impresionante. Cuanto más grande es el escenario, mayor es la tensión, más tranquilos juegan y con más confianza en sí mismos. Es muy impresionante, enhorabuena por el logro”, afirmó el seleccionador de Inglaterra, resaltando la capacidad de España para desenvolverse con seguridad y serenidad en un contexto de máxima presión. Tuchel también se refirió al impacto que tiene España como modelo futbolístico. Destacó la importancia de tener un equipo que, en momentos de máxima exigencia, es capaz de mostrar una confianza inquebrantable y una madurez táctica sobresaliente. El técnico inglés también recordó que cuando aceptó e cargo al frente del banquillo de los Three Lions, España le pareció un ejemplo a seguir. Las palabra de Scaloni Por otro lado, Lionel Scaloni, técnico de la selección argentina, también compartió su punto de vista sobre la actuación de España en la semifinal. Scaloni admitió que no pudo ver el encuentro completo debido a los compromisos previos con la prensa, pero lo que alcanzó a observar le bastó para formarse una opinión favorable del equipo español. “No pude ver mucho porque veníamos para la rueda de prensa pero me pareció justo ganador. Ha hecho un gran trabajo en el partido de hoy, me parece que el más completo del Mundial”, sostuvo Scaloni, quien valoró la superioridad mostrada por España en esa instancia decisiva. El entrenador argentino puso el foco en el rendimiento colectivo, destacando que el equipo español no solo se impuso en el resultado, sino que además ofreció una actuación muy sólida, especialmente en el primer tiempo.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Keir Starmer se despide en la previa del duelo ante Argentina: &quot;Este es el final de mi trayectoria política&quot; Con Downing Street embanderada para el partido entre Argentina e Inglaterra el primer ministro laborista Sir Keir Starmer pasó su último día en el cargo tras su renuncia apremiado por el alcalde de Mánchester Andy Burnham que aspiraba a ocupar su puesto ante el crecimiento de la ultraderecha en el país. Clarín">
+                    <h3>Keir Starmer se despide en la previa del duelo ante Argentina: &quot;Este es el final de mi trayectoria política&quot;</h3>
+                    <p>Con Downing Street embanderada para el partido entre Argentina e Inglaterra el primer ministro laborista Sir Keir Starmer pasó su último día en el cargo tras su renuncia apremiado por el alcalde de Mánchester Andy Burnham que aspiraba a ocupar su puesto ante el crecimiento de la ultraderecha en el país.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/mundo/keir-starmer-despide-previa-duelo-argentina-final-trayectoria-politica_0_tSnaAegRzq.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>Con Downing Street embanderada para el partido entre Argentina e Inglaterra el primer ministro laborista Sir Keir Starmer pasó su último día en el cargo tras su renuncia apremiado por el alcalde de Mánchester Andy Burnham que aspiraba a ocupar su puesto ante el crecimiento de la ultraderecha en el país.Una interna laborista cruel para un líder poco carismático para los británicos: abogado de derechos humanos y exprocurador de la Corona más popular fuera del Reino Unido que en su propio país. La condecoración con la Legión de Honor por parte de Emmanuel Macron y su implacable defensa de Ucrania y su ayuda en la guerra así lo demuestran.Keir Starmer se enfrentó el miércoles a las preguntas de la líder conservadora Kemi Badenoch en su última sesión de interpelación al primer ministro (PMQs) a partir del mediodía. Hubo palabras simpáticas de los diputados que compararon su renuncia con una tarjeta roja de más de 400 árbitros de la Cámara de los Comunes y mucha emoción.&quot;No me importa el resultado de esta noche siempre que ganemos&quot; bromeó Starmer quien dimitió el 22 de junio tras meses de presión dentro de su propio Partido Laborista.&quot;El final de mi trayectoria política&quot;&quot;Este es el final de mi trayectoria política&quot; declaró Starmer quien se dedicó a ella a los 50 años como última de sus respuestas en el interrogatorio parlamentario.Respondía a una emotiva pregunta de Carolyn Harris una de sus más firmes defensoras y amigas. Starmer agradeció a Harris su apoyo y amistad hacia él y su familia.&quot;Señor presidente esta será mi última intervención desde esta tribuna. Todo primer ministro sabe al asumir el cargo que llegará el día en que deberá ceder el mando. Ese día ha llegado para mí. Este es el final de mi trayectoria política. En seis años pasé de una derrota histórica en 2019 a una victoria histórica en 2024 y en dos años de gobierno dejo el país en mejor situación de la que lo encontré. Estoy orgulloso de todo lo que hemos logrado&quot; dijo.A continuación agradeció a su equipo político a los diputados y a los funcionarios públicos.Starmer añadió: &quot;A mi sucesor y a cada uno de ustedes les brindo mi apoyo incondicional a todos mis colegas en la Cámara&quot;.&quot;A todos aquellos en la tribuna cuyas vidas han cambiado o mejorado gracias a este gobierno laborista y a todos los que en todo el país luchan por ser vistos y escuchados: ustedes son la razón por la que entré en política. A mi esposa e hijos: los amo. Adiós&quot; fueron sus últimas palabras en medio de una ovación con los diputados de pie despidiéndolo.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="La NASA presenta detalles de Artemis III, la misión más compleja en años La NASA presentó oficialmente los detalles de Artemis III, una misión que promete ser una de las operaciones espaciales más complejas de las últimas décadas. El astronauta italiano Luca Parmitano se refirió al desafío de la misión y expresó su esperanza de encontrar algo italiano en el menú. La Nación La Nación">
+                    <h3>La NASA presenta detalles de Artemis III, la misión más compleja en años</h3>
+                    <p>La NASA presentó oficialmente los detalles de Artemis III, una misión que promete ser una de las operaciones espaciales más complejas de las últimas décadas. El astronauta italiano Luca Parmitano se refirió al desafío de la misión y expresó su esperanza de encontrar algo italiano en el menú.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.lanacion.com.ar/el-mundo/luca-parmitano-piloto-de-la-mision-artemis-iii-al-ser-presentado-espero-tener-algo-italiano-en-el-nid13072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                        <a href="https://www.lanacion.com.ar/el-mundo/tres-cohetes-y-cuatro-astronautas-como-sera-artemis-iii-la-mision-mas-compleja-de-la-nasa-en-anos-nid14072026/" target="_blank" rel="noopener noreferrer" class="chip lanacion">
+                            Leer en La Nación
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>El astronauta italiano Luca Parmitano aseguró que espera encontrar “algo italiano en el menú” durante la misión Artemis III, el vuelo de prueba de la NASA previsto para 2027. Durante su presentación oficial como piloto de la expedición, el integrante de la Agencia Espacial Europea (ESA) combinó el humor con la emoción al referirse al desafío que tendrá por delante junto al resto de la tripulación. “Si no recuerdo mal, en Artemis II también tenían una crema de chocolate italiana muy famosa. Así que sí espero que aparezca algo italiano en el menú”, dijo Parmitano ante la prensa. El astronauta destacó que la gastronomía de su país es “un tesoro de la Unesco” y sostuvo que “todo el mundo quiere algo de comida italiana”. Con 49 años y dos hijas, Parmitano fue piloto de pruebas de la Fuerza Aérea Italiana antes de convertirse en astronauta de la ESA en 2009. A lo largo de su carrera completó dos misiones en la Estación Espacial Internacional y protagonizó algunas de las caminatas espaciales más complejas de los últimos años, incluida una en la que su casco comenzó a llenarse de agua debido a una falla técnica que puso en riesgo su vida. Una misión compleja y una responsabilidad compartida Durante la conferencia realizada en el Centro Espacial Johnson, en Houston, Parmitano explicó que compartirá las tareas de pilotaje con el comandante de la misión, Randy Bresnik. “Ambos somos pilotos de prueba y la nave espacial necesita una tripulación de dos personas para operar. Compartimos las responsabilidades”, señaló. El astronauta admitió que su designación fue inesperada y aseguró sentirse “muy humilde” frente a la complejidad del trabajo que deberán realizar: “Me siento honrado por formar parte de este increíble grupo y por dejarme volar”. “Es una misión muy compleja”, afirmó al referirse a los ensayos que llevará adelante la tripulación antes de los futuros intentos de regreso de astronautas a la superficie lunar. Qué hará Artemis III Según informó la NASA al presentar a la tripulación, Artemis III está prevista para 2027 y tendrá como objetivo realizar una serie de pruebas críticas en órbita terrestre utilizando dos módulos lunares distintos. La misión permitirá evaluar sistemas, procedimientos y capacidades operativas que serán fundamentales para las siguientes etapas del programa Artemis, especialmente para Artemis IV y las futuras expediciones que buscarán establecer una presencia humana sostenida en las cercanías de la Luna. La tripulación principal estará integrada por Parmitano, Bresnik, Andre Douglas y Frank Rubio.</p>
+                        </div>
+                    </details>
+    
+                    <details class="full-text">
+                        <summary>Leer nota completa (La Nación)</summary>
+                        <div class="full-text-body">
+                            <p>La NASA presentó oficialmente los detalles de Artemis III, una misión que promete convertirse en una de las operaciones espaciales más complejas de las últimas décadas. Prevista para 2027, la expedición pondrá a prueba nuevas tecnologías y procedimientos mediante una secuencia inédita de lanzamientos y maniobras en órbita terrestre. A diferencia de otras misiones tripuladas, Artemis III requerirá la coordinación de tres de los cohetes más potentes del mundo, la participación de cuatro astronautas y dos encuentros entre naves espaciales en pleno vuelo, una operación que servirá como ensayo para futuras expediciones del programa. Una misión que comenzará con tres lanzamientos La operación arrancará con el despegue del módulo de aterrizaje de exploración desarrollado por Blue Origin. Este vehículo será enviado al espacio antes que la tripulación y permanecerá durante varias semanas en órbita a la espera de los astronautas. Posteriormente, la NASA lanzará su cohete Space Launch System (SLS), que transportará a los cuatro integrantes de la misión a bordo de la nave Orion. Una vez en órbita terrestre, Orion se dirigirá hacia el vehículo de Blue Origin para realizar el primero de los dos acoplamientos previstos. Ambas naves permanecerán unidas durante aproximadamente dos días mientras los astronautas llevan adelante verificaciones técnicas, pruebas operativas y demostraciones de procedimientos, incluido el ingreso al módulo de aterrizaje. El segundo encuentro en el espacio Finalizadas las pruebas con Blue Origin, Orion se desacoplará y permanecerá en órbita a la espera de una segunda nave. En ese momento entrará en escena Starship, el vehículo de exploración lunar desarrollado por SpaceX. Tras su lanzamiento, la nave se encontrará con Orion para concretar un nuevo acoplamiento en el espacio. Durante cerca de un día, ambas naves realizarán controles y ensayos destinados a validar sistemas y operaciones que serán necesarios en futuras etapas del programa Artemis. El regreso de la tripulación Una vez completadas todas las pruebas, los astronautas volverán a abordar exclusivamente la nave Orion para emprender el regreso a la Tierra. La cápsula amerizará en el océano Pacífico, donde será recuperada por equipos de la Marina de los Estados Unidos y de la NASA, tal como ocurre en las actuales misiones del programa espacial estadounidense.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince. Clarín">
+                    <h3>Oleada de calor en Italia: 45 grados en Sicilia y Cerdeña, alerta roja en 15 ciudades y riesgo de muertes por deshidrata</h3>
+                    <p>Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/mundo/oleada-calor-italia-45-grados-sicilia-cerdena-alerta-roja-15-ciudades-riesgo-muertes-deshidratacion_0_MvjTep7FzU.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>Una oleada de calor extremo divide en dos a Italia con 45 grados en Sicilia y Cerdeña tormentas en el norte con riesgos de muertes por &quot;golpes de calor o deshidratación&quot;. La tercera oleada de calor insoportable entra en su fase más intensa con siete ciudades italianas bajo advertencia roja que este jueves serán quince.El norte del país comienza a sufrir los primeros violentos temporales preludio del cambio de circulación que entre sábado y domingo llevará a una baja de las temperaturas.El peligro del jueves abarcará desde Bolzano hasta Bolonia pasando por Florencia Palermo y Cagliari. Los valores más altos afectarán a Cerdeña y Sicilia especialmente en las zonas de Nuoro y Oristano. Además sufrirán la oleada de calor Caltanissetta y Catania donde la máxima podría llegar a 45 grados mientras que en Florencia se alcanzaría los 40 grados.Temporales en el norteLa arena sahariana en suspensión obstaculizará de noche la dispersión del calor favoreciendo aún más la sensación de sofocamiento.En el noreste en el Alto Adigio un temporal causó caídas en las Dolomitas de Sesto sin consecuencias graves. El Friuli occidental soportó un violento temporal mientras que en el Véneto Cortina d’Ampezzo sufrió una intensa tempestad. Además un rayo hirió a diez oficiales de la Academia de Módena que realizaban una ejercitación.Para este miércoles se esperan temporales en todo el norte de Italia. Fenómenos atmosféricos castigarán al Véneto y gran parte de Emilia-Romaña.Un cambio en la circulación atmosférica podría causar entre el sábado y el domingo temporales de fuerte intensidad. Se espera que este cambio tormentoso haga descender hasta diez grados la temperatura para estabilizarse en una bajada general de cinco grados.A través de los medios de comunicación se advierte a la población italiana que debe tomar medidas ya que &quot;se puede morir de calor&quot;.Las altas temperaturas matan no solo por el llamado &quot;golpe de calor&quot; sino porque agravan las patologías preexistentes.El riesgo para los ancianosOficialmente se informó que en la semana del 22 al 28 de junio se registraron 10.650 muertes más respecto al año anterior debido a las oleadas persistentes de calor. Fuentes médicas señalaron que 9.000 de los 10.000 decesos se registraron entre los mayores de 65 años. Esto se debe explica el profesor Dr. Tiziano Angelo Lucchi a que &quot;el estrés térmico evidencia la fragilidad del anciano que tiene menos capacidad para regular la temperatura corporal porque suda menos que es el principal mecanismo de dispersión del calor&quot;.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="El Salvador: con un pedido de miles de años de cárcel termina el juicio masivo a los jefes de la pandilla Mara Salvatruc El juicio colectivo contra jefes de la pandilla Mara Salvatrucha (MS-13) en El Salvador concluyó este martes luego de tres meses de audiencias en las que la fiscalía pidió miles de años de prisión contra los procesados. Se trata del primer juicio masivo contra los mandos de una pandilla entre ellos los 22 miembros de la llamada &quot;ranfla histórica&quot; la cúpula del grupo conformada por los veteranos de esta organización Clarín">
+                    <h3>El Salvador: con un pedido de miles de años de cárcel termina el juicio masivo a los jefes de la pandilla Mara Salvatruc</h3>
+                    <p>El juicio colectivo contra jefes de la pandilla Mara Salvatrucha (MS-13) en El Salvador concluyó este martes luego de tres meses de audiencias en las que la fiscalía pidió miles de años de prisión contra los procesados. Se trata del primer juicio masivo contra los mandos de una pandilla entre ellos los 22 miembros de la llamada &quot;ranfla histórica&quot; la cúpula del grupo conformada por los veteranos de esta organización</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/mundo/salvador-pedido-miles-anos-carcel-termina-juicio-masivo-jefes-pandilla-mara-salvatrucha_0_fXAIY0brp9.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>El juicio colectivo contra jefes de la pandilla Mara Salvatrucha (MS-13) en El Salvador concluyó este martes luego de tres meses de audiencias en las que la fiscalía pidió miles de años de prisión contra los procesados.Se trata del primer juicio masivo contra los mandos de una pandilla entre ellos los 22 miembros de la llamada &quot;ranfla histórica&quot; la cúpula del grupo conformada por los veteranos de esta organización criminal desarticulada por la &quot;guerra&quot; antipandillas del gobierno de Nayib Bukele.El proceso contra 485 imputados comenzó el 20 de abril de acuerdo a la cifra oficial más reciente y fue seguido en forma virtual desde diferentes presidios por los acusados incluidos unos 220 jefes en la megacárcel Centro de Confinamiento del Terrorismo (Cecot).Antes de emitir un fallo el tribunal Contra el Crimen Organizado de la capital escuchará y analizará un voluminoso expediente compuesto por 650 audios y 22.000 folios entre ellos actas policiales álbumes fotográficos autopsias y certificaciones presentadas por la Fiscalía.La mayoría de los acusados ya purgan condenas que equivalen a una vida en prisión.Los cargosLos pandilleros enfrentan cargos por homicidio feminicidio extorsión tráfico de armas tráfico de drogas desaparición de personas rebelión y otros delitos explicó la Fiscalía en un comunicado.La nota afirma que los pandilleros fueron inculpados de 14.420 crímenes cometidos entre el 2012 y el 2022 y utilizar el sistema de &quot;apertura de válvulas&quot; cuando los mandos de la pandilla ordenaban asesinatos desde las prisiones.Además presentaron pruebas de la conformación de 230 células de pandillas distribuidas en todo el país.El Órgano Judicial indicó en su cuenta en X que la Fiscalía &quot;solicitó la pena máxima para cada imputado por cada uno de los casos acusados&quot;. Además de requerir en concepto de responsabilidad civil el pago de 9 millones de dólares por extorsión agravada.Un total de 162 pandilleros hicieron uso de la palabra durante las audiencias.Penas de miles de añosEl pasado 8 de junio el fiscal del Crimen Organizado Max Muñoz dijo en X que &quot;con las penas que el juez imponga penas de miles de años estas personas definitivamente no salen del sistema penitenciario&quot;.&quot;No les alcanzan ni 10 vidas para poder purgar esas penas que van a enfrentar&quot; agregó el representante de la Fiscalía.Entre los asesinatos imputados figuran los de 87 personas en marzo de 2022 que llevaron a Bukele a declarar la &quot;guerra&quot; contra las pandillas bajo un estado de excepción que ha encarcelado a unas 92.000 personas sin orden judicial.</p>
+                        </div>
+                    </details>
+    
+                </article>
+        
+                <article class="card" data-categoria="INTERNACIONAL" data-search="&quot;Gracias por la atención&quot;: Rajoy redobló su apuesta tras las duras críticas por afirmar que la selección de Francia jueg Tras el triunfo de España ante Francia en las semifinales de la Copa del Mundo el expresidente ibérico Mariano Rajoy volvió a polemizar con sus declaraciones sobre la selección que dirige Didier Deschamps y aprovechó también para criticar al gobierno de Pedro Sánchez. Clarín">
+                    <h3>&quot;Gracias por la atención&quot;: Rajoy redobló su apuesta tras las duras críticas por afirmar que la selección de Francia jueg</h3>
+                    <p>Tras el triunfo de España ante Francia en las semifinales de la Copa del Mundo el expresidente ibérico Mariano Rajoy volvió a polemizar con sus declaraciones sobre la selección que dirige Didier Deschamps y aprovechó también para criticar al gobierno de Pedro Sánchez.</p>
+                    <div class="sources">
+        
+                        <a href="https://www.clarin.com/deportes/gracias-atencion-rajoy-redoblo-apuesta-duras-criticas-afirmar-seleccion-francia-juega-franceses_0_NJHGVpTIdb.html" target="_blank" rel="noopener noreferrer" class="chip clarin">
+                            Leer en Clarín
+                        </a>
+            
+                    </div>
+        
+                    <details class="full-text">
+                        <summary>Leer nota completa (Clarín)</summary>
+                        <div class="full-text-body">
+                            <p>Tras el triunfo de España ante Francia en las semifinales de la Copa del Mundo el expresidente ibérico Mariano Rajoy volvió a polemizar con sus declaraciones sobre la selección que dirige Didier Deschamps y aprovechó también para criticar al gobierno de Pedro Sánchez.“De manera especial gracias a las autoridades por la atención que me prestaron en este Mundial” escribió el exmandatario en su columna de opinión publicada ayer a la noche en el diario digital El Debate.Todo comenzó hace algunos días en otra columna donde Rajoy señaló previo a la semifinal que &quot;los Bleus cuentan con una plantilla de altísimo nivel. Eso sí sin franceses&quot;.Por su parte el actual presidente de España Pedro Sánchez consideró una &quot;vergüenza&quot; las declaraciones del dirigente del Partido Popular.&quot;Hay quien todavía mide la pertenencia por el apellido el lugar de nacimiento o el color de piel. Otros la medimos por el arraigo a un país y la voluntad de contribuir a él. Jugando al fútbol. Cuidando a nuestros mayores. O abriendo negocios. España es de quien la ama y la trabaja. No de quien la avergüenza con declaraciones xenófobas&quot; escribió Sánchez en su perfil de la red social X.En respuesta Rajoy agradeció este martes por la &quot;atención&quot; del Presidente a sus declaraciones y expresó: &quot;La pena es que tantos esfuerzos dedicados a glosar mis virtudes les hayan distraído de otras cuestiones (...) que importan a los españoles&quot;.Con su habitual ironía el expresidente comentó en su columna sobre el resultado del partido España-Francia y apuntó contra el gobierno de Sánchez.“Les interesa más chivarse a un ministro extranjero o hacer una reverencia a un primer ministro para provocar ruido distraer la atención alborotar y todo para que no se hable de lo que estamos viviendo” insistió Rajoy.Ayer en París Sánchez afirmó estar “muy avergonzado” por las &quot;declaraciones xenófobas&quot; de Rajoy durante una conversación con el primer ministro francés Sébastien Lecornu durante los actos con motivo de la Fiesta Nacional de Francia.Críticas a la selección de Francia: qué dijo Rajoy sobre un pedido de disculpasSin hacer referencia directa a sus expresiones sobre la Selección francesa Rajoy descartó pedir disculpas como le había pedido el Gobierno español: “Ellos no piden perdón por nada. Eso por lo visto siempre les toca a otros. Ustedes ya saben cómo soy y lo que pienso” completó.</p>
+                        </div>
+                    </details>
+    
                 </article>
         </div></section>
             <p class="empty-state">No hay noticias que coincidan con los filtros actuales.</p>
