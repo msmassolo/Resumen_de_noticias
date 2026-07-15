@@ -5,6 +5,9 @@ __pycache__/
 # ignorar secretos
 .env
 
+# archivos internos, no publicar
+CLAUDE.md
+
 # ignorar temporales
 *.log
 .cache_ai.json
