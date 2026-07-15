@@ -330,7 +330,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@600;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
         <style>
             * {
@@ -352,7 +352,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 --infobae: #D8B08C;
                 --clarin: #C99999;
                 --lanacion: #AEBFCF;
-                --font-title: "Fraunces";
+                --font-title: "Inter";
                 --font-body: "IBM Plex Sans";
                 --font-mono: "IBM Plex Mono";
                 --shadow-card: 0 1px 2px rgba(33, 29, 22, 0.04), 0 10px 24px rgba(33, 29, 22, 0.05);
@@ -439,7 +439,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 max-width: 820px;
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-optical-sizing: auto;
                 font-size: clamp(30px, 4vw, 52px);
                 font-weight: 600;
@@ -611,7 +611,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             .finance-heading h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-size: clamp(18px, 1.7vw, 23px);
                 font-weight: 600;
                 line-height: 1.15;
@@ -695,7 +695,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin: 0;
                 text-align: left;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-size: clamp(20px, 2vw, 27px);
                 font-weight: 600;
                 line-height: 1.15;
@@ -737,7 +737,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             .card h3 {
                 margin: 0 0 8px;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-size: 17px;
                 font-weight: 600;
                 line-height: 1.28;
@@ -820,7 +820,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             .search-results-heading h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-size: clamp(20px, 2vw, 27px);
                 font-weight: 600;
                 line-height: 1.15;
@@ -944,7 +944,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             .footer h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Fraunces", serif;
+                font-family: var(--font-title), "IBM Plex Sans", sans-serif;
                 font-size: 20px;
                 font-weight: 600;
                 line-height: 1.15;
