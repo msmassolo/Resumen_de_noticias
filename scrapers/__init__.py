@@ -2,8 +2,11 @@ from .infobae import get_infobae
 from .lanacion import get_lanacion
 from .clarin import get_clarin
 from .utils import normalizar_url
+import logging
 import re
 import unicodedata
+
+logger = logging.getLogger(__name__)
 
 
 def _normalizar_titulo(titulo):
@@ -39,18 +42,18 @@ def obtener_todo():
     try:
         noticias += get_infobae()
     except Exception as e:
-        print(f"⚠️ Error Infobae: {e}")
+        logger.warning("⚠️ Error Infobae: %s", e)
 
     try:
         noticias += get_lanacion()
     except Exception as e:
-        print(f"⚠️ Error La Nación: {e}")
+        logger.warning("⚠️ Error La Nación: %s", e)
 
     try:
         noticias += get_clarin()
     except Exception as e:
-        print(f"⚠️ Error Clarín: {e}")
+        logger.warning("⚠️ Error Clarín: %s", e)
 
     noticias = _deduplicar(noticias)
-    print(f"Total tras deduplicar: {len(noticias)} noticias")
+    logger.info("Total tras deduplicar: %s noticias", len(noticias))
     return noticias

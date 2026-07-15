@@ -1,3 +1,7 @@
+from logging_config import configurar_logging
+
+configurar_logging()
+
 from scrapers import obtener_todo
 from scrapers.finanzas_argy import get_datos_financieros
 from scrapers.utils import limpiar_titulo, obtener_contenido_detalle
@@ -10,6 +14,7 @@ from groq_client import MODEL
 
 import argparse
 import json
+import logging
 import os
 import sys
 import time
@@ -20,6 +25,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 CACHE_IA_PATH = ".cache_ai.json"
 CACHE_IA_TTL_DIAS = int(os.getenv("CACHE_IA_TTL_DIAS", "3"))
@@ -45,7 +52,7 @@ def cargar_cache_ia():
     except FileNotFoundError:
         return {}
     except Exception as e:
-        print(f"⚠️ No se pudo leer cache IA: {e}")
+        logger.warning("⚠️ No se pudo leer cache IA: %s", e)
         return {}
 
 
@@ -54,7 +61,7 @@ def guardar_cache_ia(cache):
         with open(CACHE_IA_PATH, "w", encoding="utf-8") as f:
             json.dump(cache, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"⚠️ No se pudo guardar cache IA: {e}")
+        logger.warning("⚠️ No se pudo guardar cache IA: %s", e)
 
 
 # 🔥 NUEVO: función para subir a GitHub
@@ -114,7 +121,7 @@ def guardar_json_intermedio(nombre, data):
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"No se pudo guardar {nombre}: {e}")
+        logger.warning("No se pudo guardar %s: %s", nombre, e)
 
 
 def guardar_texto_intermedio(nombre, texto):
@@ -124,12 +131,12 @@ def guardar_texto_intermedio(nombre, texto):
         with open(path, "w", encoding="utf-8") as f:
             f.write(texto)
     except Exception as e:
-        print(f"No se pudo guardar {nombre}: {e}")
+        logger.warning("No se pudo guardar %s: %s", nombre, e)
 
 
 def subir_index_github():
     if os.getenv("GITHUB_ACTIONS") == "true":
-        print("\nGitHub Actions se encarga del commit/push final.\n")
+        logger.info("GitHub Actions se encarga del commit/push final.")
         return
 
     token = os.getenv("GITHUB_TOKEN")
@@ -140,7 +147,7 @@ def subir_index_github():
     if not repo_url.startswith("https://github.com/"):
         raise ValueError("GITHUB_REPO_URL debe ser una URL HTTPS de GitHub")
 
-    print("\n🚀 Subiendo index.html a GitHub...\n")
+    logger.info("🚀 Subiendo index.html a GitHub...")
     askpass_path = None
 
     try:
@@ -174,13 +181,13 @@ def subir_index_github():
             env=env,
         )
 
-        print("✅ Web actualizada en GitHub Pages")
+        logger.info("✅ Web actualizada en GitHub Pages")
 
     except subprocess.CalledProcessError as e:
-        print(f"⚠️ Error subiendo a GitHub. Comando git fallo con codigo {e.returncode}.")
+        logger.error("⚠️ Error subiendo a GitHub. Comando git fallo con codigo %s.", e.returncode)
 
     except Exception as e:
-        print("⚠️ Error subiendo a GitHub:", e)
+        logger.error("⚠️ Error subiendo a GitHub: %s", e)
 
     finally:
         if askpass_path:
@@ -337,11 +344,11 @@ def normalizar_resultado_ia(data, titulo):
 
 
 def ejecutar_proyecto(publicar=False):
-    print("\n--- INICIANDO RECOLECCIÓN DE NOTICIAS ---")
+    logger.info("--- INICIANDO RECOLECCIÓN DE NOTICIAS ---")
 
     noticias = obtener_todo()
     guardar_json_intermedio("raw_news.json", noticias)
-    print(f"📰 Total noticias: {len(noticias)}")
+    logger.info("📰 Total noticias: %s", len(noticias))
 
     resultados = []
     cache_ia = cargar_cache_ia()
@@ -353,14 +360,14 @@ def ejecutar_proyecto(publicar=False):
 
     # 🔴 ETAPA 1: IA
     for i, n in enumerate(noticias, start=1):
-        print(f"\n🔎 [{i}/{len(noticias)}] {n['diario']}")
-        print(f"📰 {n['titulo'][:80]}...")
+        logger.info("🔎 [%s/%s] %s", i, len(noticias), n["diario"])
+        logger.info("📰 %s...", n["titulo"][:80])
 
         cache_key = n["link"]
         data = leer_cache_ia(cache_ia, cache_key)
         if data:
             cache_hits += 1
-            print("✅ Cache IA")
+            logger.info("✅ Cache IA")
         else:
             cache_misses += 1
             contenido, motivo_contenido = obtener_contenido_detalle(n["link"])
@@ -368,7 +375,7 @@ def ejecutar_proyecto(publicar=False):
             if not contenido:
                 sin_contenido += 1
                 fallos_contenido[motivo_contenido] = fallos_contenido.get(motivo_contenido, 0) + 1
-                print(f"⚠️ Sin contenido ({motivo_contenido})")
+                logger.warning("⚠️ Sin contenido (%s)", motivo_contenido)
                 continue
 
             data = procesar_noticia(n["titulo"], contenido)
@@ -389,22 +396,22 @@ def ejecutar_proyecto(publicar=False):
             "categoria": n.get("categoria", "general")
         })
 
-        print("✅ OK")
+        logger.info("✅ OK")
 
     if cache_modificada:
         guardar_cache_ia(cache_ia)
 
     guardar_json_intermedio("processed_news.json", resultados)
 
-    print(
-        f"\nIA: {len(resultados)} procesadas, {cache_hits} cache hits, "
-        f"{cache_misses} cache misses, {sin_contenido} sin contenido"
+    logger.info(
+        "IA: %s procesadas, %s cache hits, %s cache misses, %s sin contenido",
+        len(resultados), cache_hits, cache_misses, sin_contenido,
     )
     if fallos_contenido:
-        print(f"Fallos de contenido: {fallos_contenido}")
+        logger.info("Fallos de contenido: %s", fallos_contenido)
 
     if not resultados:
-        print("❌ No hay resultados")
+        logger.error("❌ No hay resultados")
         return
 
     # 🔴 ETAPA 2: categorías
@@ -420,12 +427,12 @@ def ejecutar_proyecto(publicar=False):
     # 🔴 ETAPA 3 y 4
     for categoria, lista in categorias.items():
 
-        print(f"\n📂 {categoria.upper()} ({len(lista)} noticias)\n")
+        logger.info("📂 %s (%s noticias)", categoria.upper(), len(lista))
 
         res = agrupar_noticias(lista)
 
         if not res:
-            print("No se pudo agrupar con IA; se publican las noticias separadas.")
+            logger.warning("No se pudo agrupar con IA; se publican las noticias separadas.")
             grupos = []
         else:
             grupos = parsear_grupos(res)
@@ -494,22 +501,22 @@ LINKS:
     guardar_json_intermedio("groups.json", diagnostico_grupos)
     guardar_texto_intermedio("site_input.txt", salida_final)
 
-    print("\n--- OBTENIENDO DATOS FINANCIEROS ---\n")
+    logger.info("--- OBTENIENDO DATOS FINANCIEROS ---")
     datos_financieros = get_datos_financieros()
     guardar_json_intermedio("financial_data.json", datos_financieros)
-    print(f"Datos financieros: {len(datos_financieros.get('indicadores', []))} indicadores")
+    logger.info("Datos financieros: %s indicadores", len(datos_financieros.get("indicadores", [])))
 
-    print("\n--- GENERANDO WEB ---\n")
+    logger.info("--- GENERANDO WEB ---")
 
     generar_web(noticias_web, datos_financieros=datos_financieros)
 
-    print("🌐 Web generada: index.html")
+    logger.info("🌐 Web generada: index.html")
 
     # 🔥 NUEVO: subida automática
     if publicar:
         subir_index_github()
     else:
-        print("Publicacion omitida. Usa --publish para hacer git push desde local.")
+        logger.info("Publicacion omitida. Usa --publish para hacer git push desde local.")
 
 
 if __name__ == "__main__":

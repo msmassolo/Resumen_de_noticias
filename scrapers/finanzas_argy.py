@@ -1,9 +1,11 @@
 import html
+import logging
 import re
 
 import requests
 from bs4 import BeautifulSoup
 
+logger = logging.getLogger(__name__)
 
 FUENTE_NOMBRE = "Finanzas Argy"
 FUENTE_URL = "https://finanzasargy.com/"
@@ -187,7 +189,7 @@ def obtener_riesgo_pais():
                 return riesgo_pais
 
         except Exception as e:
-            print(f"No se pudo obtener Riesgo País desde {url}: {e}")
+            logger.warning("No se pudo obtener Riesgo País desde %s: %s", url, e)
 
     try:
         response = requests.get(API_RIESGO_PAIS_FALLBACK_URL, headers=HEADERS, timeout=TIMEOUT)
@@ -197,9 +199,9 @@ def obtener_riesgo_pais():
         if riesgo_pais:
             return riesgo_pais
     except Exception as e:
-        print(f"No se pudo obtener Riesgo País desde ArgentinaDatos: {e}")
+        logger.warning("No se pudo obtener Riesgo País desde ArgentinaDatos: %s", e)
 
-    print("No se pudo encontrar el dato de Riesgo País en Finanzas Argy")
+    logger.warning("No se pudo encontrar el dato de Riesgo País en Finanzas Argy")
     return None
 
 
@@ -211,7 +213,7 @@ def get_datos_financieros():
         response.raise_for_status()
         indicadores.extend(extraer_dolares(response.json()))
     except Exception as e:
-        print(f"No se pudieron obtener cotizaciones de dólar desde Finanzas Argy: {e}")
+        logger.warning("No se pudieron obtener cotizaciones de dólar desde Finanzas Argy: %s", e)
 
     riesgo_pais = obtener_riesgo_pais()
     if riesgo_pais:

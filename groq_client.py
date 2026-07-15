@@ -1,28 +1,19 @@
+import logging
 import os
 import time
 
 import requests
 from dotenv import load_dotenv
 
+from scrapers.utils import recortar_en_limite_natural as recortar_texto
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
 URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 RETRY_STATUS_CODES = {429, 500, 502, 503, 504}
-
-
-def recortar_texto(texto, max_chars):
-    texto = " ".join((texto or "").split())
-    if len(texto) <= max_chars:
-        return texto
-
-    recorte = texto[:max_chars].rsplit(" ", 1)[0].strip()
-    ultimo_cierre = max(recorte.rfind("."), recorte.rfind("!"), recorte.rfind("?"))
-    if ultimo_cierre >= int(max_chars * 0.55):
-        return recorte[: ultimo_cierre + 1].strip()
-
-    return recorte
 
 
 def _api_key():
@@ -53,25 +44,25 @@ def pedir_groq(system_prompt, user_prompt, *, max_tokens=160, temperature=0, ret
 
             if response.status_code in RETRY_STATUS_CODES and intento < retries:
                 espera = min(30, 4 * (2 ** intento))
-                print(f"Groq {response.status_code}. Reintentando en {espera}s...")
+                logger.warning("Groq %s. Reintentando en %ss...", response.status_code, espera)
                 time.sleep(espera)
                 continue
 
             if response.status_code != 200:
-                print(f"Error Groq {response.status_code}:", response.text[:300])
+                logger.error("Error Groq %s: %s", response.status_code, response.text[:300])
                 return None
 
             try:
                 return response.json()["choices"][0]["message"]["content"].strip()
             except (KeyError, IndexError, ValueError) as e:
-                print(f"Respuesta inesperada de Groq: {e}")
+                logger.error("Respuesta inesperada de Groq: %s", e)
                 return None
 
         except Exception as e:
-            print(f"Error Groq: {e}")
+            logger.error("Error Groq: %s", e)
             if intento < retries:
                 espera = min(30, 4 * (2 ** intento))
-                print(f"Reintentando en {espera}s...")
+                logger.warning("Reintentando en %ss...", espera)
                 time.sleep(espera)
 
     return None

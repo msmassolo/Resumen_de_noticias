@@ -1,5 +1,9 @@
+import logging
+
 from bs4 import BeautifulSoup
 from scrapers.utils import es_reciente, normalizar_url, obtener_html, titulo_mas_completo
+
+logger = logging.getLogger(__name__)
 
 
 def get_lanacion():
@@ -75,12 +79,12 @@ def get_lanacion():
                 })
 
             noticias += noticias_seccion[:limite]
-            print(
-                f"La Nacion {categoria}: {len(noticias_seccion[:limite])} noticias "
-                f"({candidatos} candidatas, {descartados} descartadas)"
+            logger.info(
+                "La Nacion %s: %s noticias (%s candidatas, %s descartadas)",
+                categoria, len(noticias_seccion[:limite]), candidatos, descartados,
             )
 
         except Exception as e:
-            print(f"⚠️ La Nación {categoria}: {e}")
+            logger.warning("⚠️ La Nación %s: %s", categoria, e)
 
     return noticias

@@ -1,8 +1,10 @@
+import logging
 import re
 from urllib.parse import urlparse
 
 from groq_client import pedir_groq, recortar_texto
 
+logger = logging.getLogger(__name__)
 
 STOPWORDS_EVENTO = {
     "actualizacion",
@@ -147,7 +149,7 @@ def agrupar_noticias(resultados):
     )
 
     max_tokens = min(220, 30 + len(resultados) * 8)
-    print(f"Groq grupos: {len(resultados)} noticias, prompt {len(prompt)} chars")
+    logger.info("Groq grupos: %s noticias, prompt %s chars", len(resultados), len(prompt))
     return pedir_groq(
         "Agrupas noticias por evento exacto.",
         prompt,

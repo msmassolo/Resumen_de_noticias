@@ -1,7 +1,10 @@
 import json
+import logging
 
 from bs4 import BeautifulSoup
 from scrapers.utils import limpiar_titulo, normalizar_url, obtener_html, titulo_mas_completo
+
+logger = logging.getLogger(__name__)
 
 
 def _iter_json_items(data):
@@ -136,12 +139,12 @@ def get_clarin():
                 })
 
             noticias += noticias_seccion[:limite]
-            print(
-                f"Clarin {categoria}: {len(noticias_seccion[:limite])} noticias "
-                f"({candidatos} candidatas, {descartados} descartadas)"
+            logger.info(
+                "Clarin %s: %s noticias (%s candidatas, %s descartadas)",
+                categoria, len(noticias_seccion[:limite]), candidatos, descartados,
             )
 
         except Exception as e:
-            print(f"⚠️ Clarín {categoria}: {e}")
+            logger.warning("⚠️ Clarín %s: %s", categoria, e)
 
     return noticias

@@ -32,7 +32,7 @@ jobs:
 
       - name: Instalar dependencias
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements-lock.txt
 
       - name: Ejecutar script
         env:

@@ -1,10 +1,12 @@
 import json
+import logging
 import re
 from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 
 import requests
 from bs4 import BeautifulSoup
 
+logger = logging.getLogger(__name__)
 
 MAX_CONTENIDO_CHARS = 2600
 HEADERS = {
@@ -83,7 +85,7 @@ def obtener_html(url, timeout=10):
         response = SESSION.get(url, timeout=timeout)
 
         if response.status_code != 200:
-            print(f"Pagina respondio {response.status_code}: {url}")
+            logger.warning("Pagina respondio %s: %s", response.status_code, url)
             return ""
 
         # Evita mojibake cuando el servidor no declara charset (requests asume
@@ -94,11 +96,11 @@ def obtener_html(url, timeout=10):
         return response.text
 
     except requests.exceptions.Timeout:
-        print(f"Timeout al cargar: {url}")
+        logger.warning("Timeout al cargar: %s", url)
         return ""
 
     except requests.exceptions.RequestException as e:
-        print(f"Error en request {url}: {e}")
+        logger.warning("Error en request %s: %s", url, e)
         return ""
 
 
@@ -173,13 +175,13 @@ def obtener_contenido_detalle(link):
         texto = "\n".join(textos)
 
         if len(texto) < 180:
-            print(f"Contenido insuficiente: {link}")
+            logger.warning("Contenido insuficiente: %s", link)
             return "", "contenido_insuficiente"
 
         return recortar_en_limite_natural(texto, MAX_CONTENIDO_CHARS), "parrafos"
 
     except Exception as e:
-        print(f"Error parseando contenido: {e}")
+        logger.warning("Error parseando contenido: %s", e)
         return "", "error_parseo"
 
 

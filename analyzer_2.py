@@ -1,7 +1,10 @@
 import json
+import logging
 import re
 
 from groq_client import pedir_groq, recortar_texto
+
+logger = logging.getLogger(__name__)
 
 
 def _normalizar(texto):
@@ -116,7 +119,7 @@ def unificar_bloques(texto):
         f"{eventos_txt}"
     )
 
-    print(f"Groq redaccion: {len(items)} eventos")
+    logger.info("Groq redaccion: %s eventos", len(items))
     respuesta = pedir_groq(
         "Redactas sintesis breves sin inventar.",
         prompt,

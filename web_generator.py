@@ -147,6 +147,17 @@ def normalizar_noticias(noticias):
 
 ORDEN_CATEGORIAS = ("ECONOMIA", "POLITICA", "INTERNACIONAL", "GENERAL")
 
+NOMBRES_CATEGORIAS = {
+    "ECONOMIA": "Economía",
+    "POLITICA": "Política",
+    "INTERNACIONAL": "Internacional",
+    "GENERAL": "General",
+}
+
+
+def nombre_categoria(categoria):
+    return NOMBRES_CATEGORIAS.get(categoria, categoria.title())
+
 
 def ordenar_categorias(categorias):
     orden = {categoria: indice for indice, categoria in enumerate(ORDEN_CATEGORIAS)}
@@ -174,7 +185,7 @@ def generar_html_noticias(noticias):
             html_noticias += f"""
             <section class="categoria-section" data-categoria="{escape(categoria)}">
                 <div class="section-heading">
-                    <h2>{escape(categoria.title())}</h2>
+                    <h2>{escape(nombre_categoria(categoria))}</h2>
                     <span>{total_categoria} noticias</span>
                 </div>
                 <div class="news-grid">
@@ -221,7 +232,7 @@ def generar_filtros(categorias, conteos):
     filtros_html += f'<button class="filtro-btn active" data-cat="TODAS" type="button">Todas <span>{total}</span></button>'
 
     for cat in ordenar_categorias(categorias):
-        filtros_html += f'<button class="filtro-btn" data-cat="{escape(cat)}" type="button">{escape(cat.title())} <span>{conteos.get(cat, 0)}</span></button>'
+        filtros_html += f'<button class="filtro-btn" data-cat="{escape(cat)}" type="button">{escape(nombre_categoria(cat))} <span>{conteos.get(cat, 0)}</span></button>'
 
     filtros_html += "</div>"
     return filtros_html
@@ -319,7 +330,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
         <style>
             * {
@@ -328,20 +339,55 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             :root {
                 color-scheme: light;
-                --background: #f3f4f3;
-                --surface: #f8f8f6;
-                --surface-soft: #ececea;
-                --primary: #66706f;
-                --secondary: #d7d4ce;
-                --accent: #6f6258;
-                --text-primary: #202326;
-                --text-secondary: #575f63;
-                --border: #d6d8d6;
+                --background: #f6f3ec;
+                --surface: #fffdf9;
+                --surface-soft: #efe9db;
+                --primary: #4d463c;
+                --secondary: #ded4bc;
+                --accent: #1f4b43;
+                --accent-soft: #e4ece9;
+                --text-primary: #211d16;
+                --text-secondary: #6b6155;
+                --border: #e2dcc9;
                 --infobae: #D8B08C;
                 --clarin: #C99999;
                 --lanacion: #AEBFCF;
-                --font-title: "Merriweather";
+                --font-title: "Fraunces";
                 --font-body: "IBM Plex Sans";
+                --font-mono: "IBM Plex Mono";
+                --shadow-card: 0 1px 2px rgba(33, 29, 22, 0.04), 0 10px 24px rgba(33, 29, 22, 0.05);
+            }
+
+            :root[data-theme="dark"] {
+                color-scheme: dark;
+                --background: #17140f;
+                --surface: #1e1a13;
+                --surface-soft: #262119;
+                --primary: #c9c0ac;
+                --secondary: #3a3327;
+                --accent: #7fb7a6;
+                --accent-soft: #24312c;
+                --text-primary: #f2ede1;
+                --text-secondary: #a89d88;
+                --border: #322c22;
+                --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px rgba(0, 0, 0, 0.28);
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root:not([data-theme="light"]) {
+                    color-scheme: dark;
+                    --background: #17140f;
+                    --surface: #1e1a13;
+                    --surface-soft: #262119;
+                    --primary: #c9c0ac;
+                    --secondary: #3a3327;
+                    --accent: #7fb7a6;
+                    --accent-soft: #24312c;
+                    --text-primary: #f2ede1;
+                    --text-secondary: #a89d88;
+                    --border: #322c22;
+                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px rgba(0, 0, 0, 0.28);
+                }
             }
 
             body {
@@ -351,12 +397,14 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 background: var(--background);
                 font-family: var(--font-body), "IBM Plex Sans";
                 letter-spacing: 0;
+                transition: background 200ms ease, color 200ms ease;
             }
 
             .header {
                 text-align: left;
-                padding: 24px 20px 10px;
+                padding: 30px 20px 14px;
                 background: transparent;
+                border-bottom: 1px solid var(--border);
             }
 
             .header-inner,
@@ -366,46 +414,88 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin: 0 auto;
             }
 
+            .header-inner {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 20px;
+            }
+
+            .header-copy {
+                min-width: 0;
+            }
+
             .eyebrow {
-                margin: 0 0 6px;
+                margin: 0 0 8px;
                 color: var(--accent);
-                font-size: 10px;
-                font-weight: 700;
-                letter-spacing: 0.12em;
+                font-family: var(--font-mono), monospace;
+                font-size: 10.5px;
+                font-weight: 500;
+                letter-spacing: 0.16em;
                 text-transform: uppercase;
             }
 
             .header h1 {
                 max-width: 820px;
                 margin: 0;
-                font-family: var(--font-title), "Merriweather";
-                font-size: clamp(26px, 3.4vw, 44px);
-                font-weight: 700;
-                line-height: 1.12;
-                letter-spacing: 0;
+                color: var(--text-primary);
+                font-family: var(--font-title), "Fraunces", serif;
+                font-optical-sizing: auto;
+                font-size: clamp(30px, 4vw, 52px);
+                font-weight: 600;
+                line-height: 1.06;
+                letter-spacing: -0.01em;
             }
 
             .header p {
-                max-width: 900px;
-                margin: 8px 0 0;
+                max-width: 640px;
+                margin: 10px 0 0;
                 color: var(--text-secondary);
-                font-size: 13px;
-                line-height: 1.48;
+                font-size: 13.5px;
+                line-height: 1.55;
+            }
+
+            .theme-toggle {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+                flex-shrink: 0;
+                min-height: 34px;
+                margin-bottom: 4px;
+                padding: 0 13px;
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                color: var(--text-secondary);
+                background: var(--surface);
+                cursor: pointer;
+                font-family: var(--font-mono), monospace;
+                font-size: 10.5px;
+                font-weight: 500;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                transition: border-color 160ms ease, color 160ms ease;
+            }
+
+            .theme-toggle:hover,
+            .theme-toggle:focus-visible {
+                border-color: var(--accent);
+                color: var(--accent);
+                outline: 0;
             }
 
             .toolbar {
                 display: grid;
                 grid-template-columns: minmax(240px, 1fr) auto;
                 gap: 10px;
-                padding: 12px 20px 6px;
+                padding: 16px 20px 10px;
             }
 
             .search-input {
                 width: 100%;
-                min-height: 36px;
+                min-height: 38px;
                 border: 1px solid var(--border);
-                border-radius: 6px;
-                padding: 0 12px;
+                border-radius: 7px;
+                padding: 0 14px;
                 color: var(--text-primary);
                 background: var(--surface);
                 font-family: var(--font-body), "IBM Plex Sans";
@@ -413,18 +503,22 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 transition: border-color 160ms ease, background 160ms ease;
             }
 
+            .search-input::placeholder {
+                color: var(--text-secondary);
+            }
+
             .search-input:focus,
             .compact-btn:focus-visible {
                 border-color: var(--accent);
                 outline: 0;
-                background: #fff;
+                background: var(--surface);
             }
 
             .compact-btn {
-                min-height: 36px;
+                min-height: 38px;
                 border: 1px solid var(--border);
-                border-radius: 6px;
-                padding: 0 12px;
+                border-radius: 7px;
+                padding: 0 14px;
                 color: var(--text-primary);
                 background: var(--surface);
                 cursor: pointer;
@@ -434,35 +528,40 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 transition: border-color 160ms ease, background 160ms ease;
             }
 
+            .compact-btn:hover {
+                border-color: var(--accent);
+            }
+
             .filtros {
                 justify-content: flex-start;
                 max-width: 1280px;
                 margin: 0 auto;
-                padding: 8px 20px 12px;
+                padding: 4px 20px 18px;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 6px;
+                gap: 7px;
             }
 
             .filtro-btn {
                 min-height: 30px;
-                padding: 0 10px;
+                padding: 0 11px;
                 border: 1px solid var(--border);
-                border-radius: 6px;
+                border-radius: 20px;
                 color: var(--text-secondary);
                 background: var(--surface);
                 cursor: pointer;
                 font-family: var(--font-body), "IBM Plex Sans";
-                font-size: 10px;
-                font-weight: 700;
-                letter-spacing: 0.04em;
+                font-size: 10.5px;
+                font-weight: 600;
+                letter-spacing: 0.05em;
                 text-transform: uppercase;
                 transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
             }
 
             .filtro-btn:hover,
             .filtro-btn:focus-visible {
-                border-color: var(--border);
+                border-color: var(--accent);
+                color: var(--text-primary);
                 outline: 0;
             }
 
@@ -473,21 +572,21 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 min-width: 19px;
                 min-height: 19px;
                 margin-left: 6px;
-                border-radius: 5px;
+                border-radius: 999px;
                 background: var(--surface-soft);
                 color: var(--accent);
                 font-size: 10px;
             }
 
             .filtro-btn.active {
-                color: var(--text-primary);
-                background: var(--surface-soft);
-                border-color: var(--border);
+                color: var(--surface);
+                background: var(--accent);
+                border-color: var(--accent);
             }
 
             .filtro-btn.active span {
-                background: var(--secondary);
-                color: var(--text-primary);
+                background: rgba(255, 255, 255, 0.22);
+                color: var(--surface);
             }
 
             .container {
@@ -512,21 +611,22 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             .finance-heading h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Merriweather";
-                font-size: clamp(18px, 1.7vw, 24px);
-                font-weight: 700;
+                font-family: var(--font-title), "Fraunces", serif;
+                font-size: clamp(18px, 1.7vw, 23px);
+                font-weight: 600;
                 line-height: 1.15;
             }
 
             .finance-grid {
                 display: grid;
                 grid-template-columns: repeat(4, minmax(0, 1fr));
-                gap: 8px;
+                gap: 10px;
             }
 
             .finance-card {
-                padding: 11px 12px;
+                padding: 13px 14px;
                 border: 1px solid var(--border);
+                border-left: 3px solid var(--accent);
                 border-radius: 8px;
                 background: var(--surface);
             }
@@ -536,21 +636,24 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 color: var(--text-secondary);
                 font-size: 10px;
                 font-weight: 700;
-                letter-spacing: 0.05em;
+                letter-spacing: 0.06em;
                 text-transform: uppercase;
             }
 
             .finance-card strong {
                 display: block;
-                margin-top: 4px;
+                margin-top: 5px;
                 color: var(--text-primary);
-                font-size: 18px;
+                font-family: var(--font-mono), monospace;
+                font-size: 19px;
+                font-weight: 500;
                 line-height: 1.15;
             }
 
             .finance-card strong + span {
                 margin-top: 4px;
                 color: var(--text-secondary);
+                font-family: var(--font-body), "IBM Plex Sans";
                 font-size: 11px;
                 font-weight: 500;
                 letter-spacing: 0;
@@ -558,14 +661,14 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             }
 
             .finance-source {
-                margin-top: 8px;
+                margin-top: 10px;
                 color: var(--text-secondary);
                 font-size: 12px;
                 font-weight: 500;
             }
 
             .finance-source a {
-                color: #0b3a66;
+                color: var(--accent);
                 font-weight: 600;
                 text-decoration: none;
             }
@@ -575,7 +678,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             }
 
             .categoria-section {
-                margin-top: 22px;
+                margin-top: 30px;
             }
 
             .section-heading {
@@ -583,33 +686,34 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 align-items: flex-end;
                 justify-content: space-between;
                 gap: 12px;
-                margin: 0 0 8px;
-                padding-bottom: 6px;
-                border-bottom: 1px solid var(--border);
+                margin: 0 0 12px;
+                padding-bottom: 8px;
+                border-bottom: 2px solid var(--text-primary);
             }
 
             .section-heading h2 {
                 margin: 0;
                 text-align: left;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Merriweather";
-                font-size: clamp(20px, 2vw, 28px);
-                font-weight: 700;
+                font-family: var(--font-title), "Fraunces", serif;
+                font-size: clamp(20px, 2vw, 27px);
+                font-weight: 600;
                 line-height: 1.15;
             }
 
             .section-heading span {
                 color: var(--text-secondary);
+                font-family: var(--font-mono), monospace;
                 font-size: 10px;
-                font-weight: 700;
-                letter-spacing: 0.08em;
+                font-weight: 500;
+                letter-spacing: 0.06em;
                 text-transform: uppercase;
             }
 
             .news-grid {
                 display: grid;
                 grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 10px;
+                gap: 12px;
             }
 
             .card {
@@ -617,37 +721,36 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 flex-direction: column;
                 min-height: 100%;
                 margin: 0;
-                padding: 14px;
+                padding: 16px;
                 border: 1px solid var(--border);
                 border-radius: 8px;
                 background: var(--surface);
-                box-shadow: 0 8px 22px rgba(28, 32, 34, 0.025);
-                transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+                box-shadow: var(--shadow-card);
+                transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
             }
 
             .card:hover {
-                border-color: #bcc2c2;
-                background: #fbfbfa;
-                transform: translateY(-1px);
+                border-color: var(--accent);
+                transform: translateY(-2px);
             }
 
             .card h3 {
                 margin: 0 0 8px;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Merriweather";
-                font-size: 16px;
-                font-weight: 700;
-                line-height: 1.24;
-                letter-spacing: 0;
+                font-family: var(--font-title), "Fraunces", serif;
+                font-size: 17px;
+                font-weight: 600;
+                line-height: 1.28;
+                letter-spacing: -0.005em;
                 overflow-wrap: break-word;
                 hyphens: none;
             }
 
             .card p {
-                margin: 0 0 12px;
+                margin: 0 0 14px;
                 color: var(--text-secondary);
                 font-size: 12.5px;
-                line-height: 1.48;
+                line-height: 1.55;
                 overflow-wrap: break-word;
                 hyphens: none;
             }
@@ -656,14 +759,14 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 margin-top: auto;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 5px;
+                gap: 6px;
             }
 
             .chip {
                 display: inline-flex;
                 align-items: center;
-                min-height: 22px;
-                padding: 0 7px;
+                min-height: 23px;
+                padding: 0 8px;
                 border-radius: 5px;
                 color: var(--text-primary);
                 font-family: var(--font-body), "IBM Plex Sans";
@@ -676,11 +779,12 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             }
 
             .chip:hover {
-                filter: saturate(1.04) brightness(0.98);
+                filter: saturate(1.1) brightness(0.96);
                 transform: translateY(-1px);
             }
 
-            .empty-state {
+            .empty-state,
+            .search-empty-state {
                 display: none;
                 max-width: 1280px;
                 margin: 24px auto 0;
@@ -716,24 +820,25 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             .search-results-heading h2 {
                 margin: 0;
                 color: var(--text-primary);
-                font-family: var(--font-title), "Merriweather";
-                font-size: clamp(20px, 2vw, 28px);
-                font-weight: 700;
+                font-family: var(--font-title), "Fraunces", serif;
+                font-size: clamp(20px, 2vw, 27px);
+                font-weight: 600;
                 line-height: 1.15;
             }
 
             .search-results-heading span {
                 color: var(--text-secondary);
+                font-family: var(--font-mono), monospace;
                 font-size: 10px;
-                font-weight: 700;
-                letter-spacing: 0.08em;
+                font-weight: 500;
+                letter-spacing: 0.06em;
                 text-transform: uppercase;
             }
 
             .search-results-grid {
                 display: grid;
                 grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 10px;
+                gap: 12px;
             }
 
             body.compact .card p {
@@ -748,12 +853,12 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 font-size: 14px;
             }
 
-            .infobae { background: rgba(216, 176, 140, 0.56); }
-            .clarin { background: rgba(201, 153, 153, 0.52); }
-            .lanacion { background: rgba(174, 191, 207, 0.58); }
-            .pagina12 { background: rgba(203, 187, 165, 0.46); }
-            .ambito { background: rgba(178, 165, 138, 0.42); }
-            .default { background: var(--surface-soft); }
+            .infobae { background: rgba(216, 176, 140, 0.56); color: #2b1c0d; }
+            .clarin { background: rgba(201, 153, 153, 0.52); color: #2c1414; }
+            .lanacion { background: rgba(174, 191, 207, 0.58); color: #16222f; }
+            .pagina12 { background: rgba(203, 187, 165, 0.46); color: #241d10; }
+            .ambito { background: rgba(178, 165, 138, 0.42); color: #241f10; }
+            .default { background: var(--surface-soft); color: var(--text-primary); }
 
             @media (max-width: 1100px) {
                 .news-grid {
@@ -767,7 +872,13 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             @media (max-width: 760px) {
                 .header {
-                    padding: 22px 14px 10px;
+                    padding: 22px 14px 14px;
+                }
+
+                .header-inner {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 12px;
                 }
 
                 .header h1 {
@@ -832,9 +943,10 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
             .footer h2 {
                 margin: 0;
-                font-family: var(--font-title), "Merriweather";
+                color: var(--text-primary);
+                font-family: var(--font-title), "Fraunces", serif;
                 font-size: 20px;
-                font-weight: 700;
+                font-weight: 600;
                 line-height: 1.15;
             }
 
@@ -875,9 +987,14 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
 
         <div class="header">
             <div class="header-inner">
-                <p class="eyebrow">Agente</p>
-                <h1>Resumen de Noticias</h1>
-                <p>Actualizado el __FECHA__ a las __HORA__ hs. Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información. </p>
+                <div class="header-copy">
+                    <p class="eyebrow">Agente · Edición diaria</p>
+                    <h1>Resumen de Noticias</h1>
+                    <p>Actualizado el __FECHA__ a las __HORA__ hs. Las noticias más relevantes de economía, política e internacionales, resumidas para una lectura rápida y con acceso directo a cada nota para ampliar la información.</p>
+                </div>
+                <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar entre modo claro y oscuro">
+                    <span class="theme-toggle-label">Modo oscuro</span>
+                </button>
             </div>
         </div>
 
@@ -901,6 +1018,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 <span class="search-results-count"></span>
             </div>
             <div class="search-results-grid"></div>
+            <p class="search-empty-state" style="display:none">No hay noticias que coincidan con tu búsqueda.</p>
         </section>
 
         <footer class="footer">
@@ -922,6 +1040,7 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
             const buscador = document.querySelector(".search-input");
             const botonCompacto = document.querySelector(".compact-btn");
             const estadoVacio = document.querySelector(".empty-state");
+            const estadoVacioBusqueda = document.querySelector(".search-empty-state");
             const contenedorPrincipal = document.querySelector(".container");
             const resultadosBusqueda = document.querySelector(".search-results");
             const grillaResultados = document.querySelector(".search-results-grid");
@@ -982,7 +1101,9 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                     contadorResultados.textContent = hayResultados
                         ? `${grillaResultados.children.length} noticias`
                         : "0 noticias";
-                    estadoVacio.style.display = hayResultados ? "none" : "block";
+                    if (estadoVacioBusqueda) {
+                        estadoVacioBusqueda.style.display = hayResultados ? "none" : "block";
+                    }
                     return;
                 }
 
@@ -1037,6 +1158,41 @@ def generar_web(contenido, output_path="index.html", datos_financieros=None):
                 botonCompacto.setAttribute("aria-pressed", String(activo));
                 botonCompacto.textContent = activo ? "Modo lectura" : "Modo compacto";
             });
+
+            (function () {
+                const CLAVE_TEMA = "tema-preferido";
+                const raiz = document.documentElement;
+                const botonTema = document.querySelector(".theme-toggle");
+                const etiquetaTema = document.querySelector(".theme-toggle-label");
+                const prefiereOscuro = window.matchMedia("(prefers-color-scheme: dark)");
+
+                function temaEfectivo() {
+                    const guardado = localStorage.getItem(CLAVE_TEMA);
+                    if (guardado === "dark" || guardado === "light") return guardado;
+                    return prefiereOscuro.matches ? "dark" : "light";
+                }
+
+                function aplicarTema(tema) {
+                    raiz.setAttribute("data-theme", tema);
+                    if (botonTema) botonTema.setAttribute("aria-pressed", String(tema === "dark"));
+                    if (etiquetaTema) etiquetaTema.textContent = tema === "dark" ? "Modo claro" : "Modo oscuro";
+                }
+
+                aplicarTema(temaEfectivo());
+
+                if (botonTema) {
+                    botonTema.addEventListener("click", () => {
+                        const nuevoTema = raiz.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                        localStorage.setItem(CLAVE_TEMA, nuevoTema);
+                        aplicarTema(nuevoTema);
+                    });
+                }
+
+                prefiereOscuro.addEventListener("change", (evento) => {
+                    if (localStorage.getItem(CLAVE_TEMA)) return;
+                    aplicarTema(evento.matches ? "dark" : "light");
+                });
+            })();
         </script>
 
     </body>

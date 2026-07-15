@@ -1,8 +1,10 @@
 import json
+import logging
 import re
 
 from groq_client import pedir_groq, recortar_texto
 
+logger = logging.getLogger(__name__)
 
 MAX_CONTENIDO_CHARS = 2200
 
@@ -75,7 +77,7 @@ def procesar_noticia(titulo, contenido):
         f"TITULO: {titulo}\nTEXTO: {contenido}"
     )
 
-    print(f"Groq evento: {titulo[:60]}...")
+    logger.info("Groq evento: %s...", titulo[:60])
     texto = pedir_groq(
         "Extraes hechos concretos de noticias.",
         prompt,
